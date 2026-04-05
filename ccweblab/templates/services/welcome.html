@@ -94,8 +94,23 @@
         </div>
 
         <div class="svc-row" aria-label="Services (scroll horizontally)">
-          <button class="card svc svc-btn" type="button" data-service="dev" aria-label="Website Development plans">
+          {% comment %} <button class="card svc svc-btn" type="button" data-service="dev" aria-label="Website Development plans">
             <img class="svc-img" src="{% static 'img/dev.jpg' %}" alt="Website development">
+            <div class="svc-body">
+              <h3>Website Development</h3>
+              <p>Modern websites with clean UI, strong UX, and fast performance.</p>
+              <span class="svc-meta">Ideal for: businesses & portfolios</span>
+            </div>
+          </button> {% endcomment %}
+
+          <button class="card svc svc-btn" type="button" data-service="dev" aria-label="Website Development plans">
+            <div class="svc-icon" aria-hidden="true">
+              <!-- Code icon -->
+              <svg viewBox="0 0 24 24" class="i">
+                <path d="M8 9l-3 3 3 3M16 9l3 3-3 3M14 7l-4 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+
             <div class="svc-body">
               <h3>Website Development</h3>
               <p>Modern websites with clean UI, strong UX, and fast performance.</p>
@@ -104,7 +119,13 @@
           </button>
 
           <button class="card svc svc-btn" type="button" data-service="ecom" aria-label="E-commerce plans">
-            <img class="svc-img" src="{% static 'img/ecommerce.jpg' %}" alt="E-commerce">
+            <div class="svc-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" class="i">
+                <path d="M6 6h15l-1.5 8.5a2 2 0 0 1-2 1.6H9.2a2 2 0 0 1-2-1.7L6 6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M6 6 5 3H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M9.5 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="currentColor"/>
+              </svg>
+            </div>
             <div class="svc-body">
               <h3>E‑commerce</h3>
               <p>Stores, product pages, payments, shipping, and launch support.</p>
@@ -113,7 +134,12 @@
           </button>
 
           <button class="card svc svc-btn" type="button" data-service="maint" aria-label="Maintenance plans">
-            <img class="svc-img" src="{% static 'img/maintenance.jpg' %}" alt="Maintenance">
+            <div class="svc-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" class="i">
+                <path d="M12 2 20 6v7c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M9 12l2 2 4-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
             <div class="svc-body">
               <h3>Maintenance & Updates</h3>
               <p>Security, backups, content updates, backups, security, and performance improvements.</p>
@@ -122,7 +148,12 @@
           </button>
 
           <button class="card svc svc-btn" type="button" data-service="geo" aria-label="Geo indoor location app plans">
-            <img class="svc-img" src="{% static 'img/locator_app.jpg' %}" alt="Indoor location app">
+            <div class="svc-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" class="i">
+                <path d="M12 22s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" fill="none" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
             <div class="svc-body">
               <h3>Indoor Geo Location App</h3>
               <p>Real-time indoor positioning & navigation for large venues.</p>
@@ -135,7 +166,7 @@
       <!-- WORK / PORTFOLIO -->
       <section id="work">
         <div class="section-head">
-          <h2>Recent work</h2>
+          <h2>Portafolio</h2>
           <p>Show real projects here. Replace images and text with your own.</p>
         </div>
 

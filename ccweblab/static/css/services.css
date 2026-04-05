@@ -552,3 +552,32 @@ footer{
   .modal-panel{margin: 16px auto}
   .plan-row{grid-auto-columns: 85%}
 }
+
+
+/* Service icon badge (white) */
+/* Bigger, centered icon badge */
+.svc-icon{
+  width: 72px;
+  height: 72px;
+  margin: 18px auto 0;          /* centers horizontally */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius: 22px;
+  color: rgba(17, 245, 245, 0.96); /* SVG uses currentColor => white */
+  /* background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 18px 55px rgba(124,92,255,.22); */
+}
+
+/* Bigger SVG inside */
+.svc-icon .i{
+  width: 38px;
+  height: 38px;
+  display:block;
+}
+
+.svc-body{
+  text-align: center;
+}
