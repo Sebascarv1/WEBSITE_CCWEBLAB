@@ -117,7 +117,7 @@
       <section id="services">
         <h2 style="margin:0 0 12px; font-size:24px;">Services</h2>
 
-        <div class="grid3">
+        <div class="svc-row" aria-label="Services (scroll horizontally)">
           <button class="card svc svc-btn" type="button" data-service="dev" aria-label="Website Development plans">
             <img class="svc-img" src="{% static 'img/dev.jpg' %}" alt="Website development">
             <div class="svc-body">
@@ -141,6 +141,16 @@
               <p>Monthly support, content updates, backups, security, and performance improvements.</p>
             </div>
           </button>
+
+          <button class="card svc svc-btn" type="button" data-service="maint" aria-label="Maintenance plans">
+            <img class="svc-img" src="{% static 'img/locator_app.jpg' %}" alt="Maintenance">
+            <div class="svc-body">
+              <h3>Geo indoor location app</h3>
+              <p>Real-time indoor positioning and navigation for large venues, enhancing user experience and operational efficiency.</p>
+            </div>
+          </button>
+
+
         </div>
       </section>
 

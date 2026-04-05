@@ -26,6 +26,9 @@ body{
     radial-gradient(900px 500px at 50% 100%, rgba(47,231,167,.12), transparent 60%),
     var(--bg);
   line-height:1.5;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 a{color:inherit}
@@ -458,4 +461,30 @@ footer{
 @media (max-width: 640px){
   .modal-panel{margin: 16px auto}
   .plan-row{grid-auto-columns: 85%}
+}
+
+/* Horizontal services row (1 line, scrollable) */
+.svc-row{
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(260px, 1fr);
+  gap: 14px;
+
+  overflow-x: auto;
+  padding-bottom: 10px;
+
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.svc-row > .svc-btn,
+.svc-row > .card{
+  scroll-snap-align: start;
+}
+
+/* Optional: nicer scrollbar */
+.svc-row::-webkit-scrollbar{height:10px}
+.svc-row::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,.18);
+  border-radius: 999px;
 }
