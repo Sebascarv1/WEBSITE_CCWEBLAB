@@ -4,8 +4,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CC Weblabs | Web Development Services</title>
+  <title>CC Weblab | Web Development Services</title>
   <meta name="description" content="Modern website design & development, landing pages, e-commerce, and maintenance. Get a fast, mobile-friendly website that converts." />
+
   <link rel="stylesheet" href="{% static 'css/services.css' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
 </head>
@@ -14,24 +15,20 @@
   <header>
     <div class="nav">
       <a class="brand" href="#top" aria-label="Home">
-        <img
-          class="logo"
-          src="{% static 'img/favicon.ico' %}"
-          alt="CC Weblab logo"
-          width="38"
-          height="38"
-        />
+        <!-- Recommended: use a PNG/SVG logo here, not the .ico -->
+        <img class="logo" src="{% static 'img/logo.png' %}" alt="CC Weblab logo" width="40" height="40" />
         <div>
           <strong>CC Weblab</strong>
           <span>Web Development & Website Services</span>
         </div>
       </a>
 
-
       <nav class="navlinks" aria-label="Primary">
         <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#testimonials">Testimonials</a>
         <a href="#process">Process</a>
-        <a href="#contact">Contact</a>
+        <a href="#faq">FAQ</a>
         <a class="btn primary" href="#contact">Get a Quote</a>
       </nav>
     </div>
@@ -39,44 +36,7 @@
 
   <main id="top">
     <div class="wrap">
-      {% comment %} <div class="hero">
-        <div class="card left">
-          <div class="kicker"><span class="dot"></span> Now accepting new projects</div>
-          <h1>We build fast, modern websites that help your business grow.</h1>
-          <p class="lead">
-            From landing pages to full business websites and e‑commerce, we design and develop
-            mobile‑friendly sites with clean code, great UX, and SEO basics included.
-          </p>
-
-          <div class="cta">
-            <a class="btn primary" href="#contact">Request a Free Estimate</a>
-            <a class="btn" href="#services">See Services</a>
-          </div>
-
-          <div class="mini" aria-label="Highlights">
-            <div><span class="check" aria-hidden="true">✓</span> Mobile-first & responsive</div>
-            <div><span class="check" aria-hidden="true">✓</span> Speed + SEO foundations</div>
-            <div><span class="check" aria-hidden="true">✓</span> Maintenance available</div>
-          </div>
-        </div>
-
-        <aside class="card right" aria-label="Quick stats and offer">
-          <div class="statgrid">
-            <div class="stat">
-              <b>What we deliver</b>
-              <small>Design, development, launch, and support.</small>
-            </div>
-            <div class="stat">
-              <b>Typical turnaround</b>
-              <small>1–3 weeks (depends on scope).</small>
-            </div>
-            <div class="stat">
-              <b>Best for</b>
-              <small>Local businesses, personal brands, startups, and online stores.</small>
-            </div>
-          </div>
-        </aside>
-      </div> {% endcomment %}
+      <!-- HERO -->
       <div class="hero hero--video">
         <div class="card left">
           <div class="kicker"><span class="dot"></span> Now accepting new projects</div>
@@ -101,9 +61,7 @@
         <aside class="card hero-media" aria-label="Hero video">
           <div class="video-wrap">
             <video autoplay muted loop playsinline preload="metadata" poster="{% static 'img/hero-poster.jpg' %}">
-              <!-- If you have a .webm, put it first -->
-              <!-- <source src="{% static 'video/hero.webm' %}" type="video/webm"> -->
-              <source src="{% static 'video/hero.mp4' %}" type="video/mp4">
+              <source src="{% static 'video/hero2.mp4' %}" type="video/mp4">
             </video>
             <div class="video-overlay">
               <div class="badge">Modern • Fast • SEO-ready</div>
@@ -112,17 +70,36 @@
         </aside>
       </div>
 
+      <!-- TRUST BAR -->
+      <section class="trustbar" aria-label="Key strengths">
+        <div class="trust-item">
+          <b>Performance</b><span>Speed optimized</span>
+        </div>
+        <div class="trust-item">
+          <b>SEO</b><span>Clean structure</span>
+        </div>
+        <div class="trust-item">
+          <b>Mobile</b><span>Responsive UI</span>
+        </div>
+        <div class="trust-item">
+          <b>Support</b><span>Maintenance plans</span>
+        </div>
+      </section>
 
       <!-- SERVICES -->
       <section id="services">
-        <h2 style="margin:0 0 12px; font-size:24px;">Services</h2>
+        <div class="section-head">
+          <h2>Services</h2>
+          <p>Click a service to compare packages and what’s included.</p>
+        </div>
 
         <div class="svc-row" aria-label="Services (scroll horizontally)">
           <button class="card svc svc-btn" type="button" data-service="dev" aria-label="Website Development plans">
             <img class="svc-img" src="{% static 'img/dev.jpg' %}" alt="Website development">
             <div class="svc-body">
               <h3>Website Development</h3>
-              <p>Custom websites with clean UI, responsive layouts, and modern best practices.</p>
+              <p>Modern websites with clean UI, strong UX, and fast performance.</p>
+              <span class="svc-meta">Ideal for: businesses & portfolios</span>
             </div>
           </button>
 
@@ -130,7 +107,8 @@
             <img class="svc-img" src="{% static 'img/ecommerce.jpg' %}" alt="E-commerce">
             <div class="svc-body">
               <h3>E‑commerce</h3>
-              <p>Online stores, product pages, payments, and shipping setup (Shopify / custom).</p>
+              <p>Stores, product pages, payments, shipping, and launch support.</p>
+              <span class="svc-meta">Ideal for: selling online</span>
             </div>
           </button>
 
@@ -138,56 +116,175 @@
             <img class="svc-img" src="{% static 'img/maintenance.jpg' %}" alt="Maintenance">
             <div class="svc-body">
               <h3>Maintenance & Updates</h3>
-              <p>Monthly support, content updates, backups, security, and performance improvements.</p>
+              <p>Security, backups, content updates, backups, security, and performance improvements.</p>
+              <span class="svc-meta">Ideal for: peace of mind</span>
             </div>
           </button>
 
-          <button class="card svc svc-btn" type="button" data-service="maint" aria-label="Maintenance plans">
-            <img class="svc-img" src="{% static 'img/locator_app.jpg' %}" alt="Maintenance">
+          <button class="card svc svc-btn" type="button" data-service="geo" aria-label="Geo indoor location app plans">
+            <img class="svc-img" src="{% static 'img/locator_app.jpg' %}" alt="Indoor location app">
             <div class="svc-body">
-              <h3>Geo indoor location app</h3>
-              <p>Real-time indoor positioning and navigation for large venues, enhancing user experience and operational efficiency.</p>
+              <h3>Indoor Geo Location App</h3>
+              <p>Real-time indoor positioning & navigation for large venues.</p>
+              <span class="svc-meta">Ideal for: malls, airports, hospitals</span>
             </div>
           </button>
-
-
         </div>
       </section>
 
+      <!-- WORK / PORTFOLIO -->
+      <section id="work">
+        <div class="section-head">
+          <h2>Recent work</h2>
+          <p>Show real projects here. Replace images and text with your own.</p>
+        </div>
+
+        <div class="work-grid">
+          <article class="card work-card">
+            <img class="work-img" src="{% static 'img/work1.jpg' %}" alt="Project 1 preview">
+            <div class="work-body">
+              <h3>Business Website Redesign</h3>
+              <p class="muted">Modern UI + faster loading + contact conversion improvements.</p>
+              <ul class="work-list">
+                <li>Responsive redesign</li>
+                <li>Improved page speed</li>
+                <li>SEO foundations</li>
+              </ul>
+              <div class="work-actions">
+                <a class="btn" href="#contact">Request similar</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card work-card">
+            <img class="work-img" src="{% static 'img/work2.jpg' %}" alt="Project 2 preview">
+            <div class="work-body">
+              <h3>Landing Page for Leads</h3>
+              <p class="muted">Designed for conversions with clean copy and strong CTA.</p>
+              <ul class="work-list">
+                <li>1-page funnel</li>
+                <li>Analytics setup</li>
+                <li>Fast delivery</li>
+              </ul>
+              <div class="work-actions">
+                <a class="btn" href="#contact">Request similar</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card work-card">
+            <img class="work-img" src="{% static 'img/work3.jpg' %}" alt="Project 3 preview">
+            <div class="work-body">
+              <h3>E‑commerce Setup</h3>
+              <p class="muted">Product pages, payments, shipping rules, and launch.</p>
+              <ul class="work-list">
+                <li>Store configuration</li>
+                <li>Payment integration</li>
+                <li>Checkout optimization</li>
+              </ul>
+              <div class="work-actions">
+                <a class="btn" href="#contact">Request similar</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section id="testimonials">
+        <div class="section-head">
+          <h2>What clients say</h2>
+          <p>Short quotes build trust. Replace with real testimonials.</p>
+        </div>
+
+        <div class="test-grid">
+          <figure class="card quote">
+            <blockquote>
+              “Super fast delivery and the website looks premium on mobile. We started getting more calls the same week.”
+            </blockquote>
+            <figcaption>— Client A, Local Business</figcaption>
+          </figure>
+
+          <figure class="card quote">
+            <blockquote>
+              “Clear communication, great design taste, and the final site loads extremely fast.”
+            </blockquote>
+            <figcaption>— Client B, Startup Founder</figcaption>
+          </figure>
+
+          <figure class="card quote">
+            <blockquote>
+              “The e‑commerce setup was smooth. Products, payments, shipping—everything ready to sell.”
+            </blockquote>
+            <figcaption>— Client C, Online Store</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- PROCESS -->
       <section id="process">
-        <h2 style="margin:0 0 12px; font-size:24px;">Our process</h2>
+        <div class="section-head">
+          <h2>Our process</h2>
+          <p>A simple, clear workflow so you always know what’s next.</p>
+        </div>
+
         <div class="split">
-          <div class="card svc">
+          <div class="card step">
             <h3>1) Discovery</h3>
             <p>We learn your goals, audience, and style, then define pages and features.</p>
           </div>
-          <div class="card svc">
+          <div class="card step">
             <h3>2) Design</h3>
             <p>We create a clean layout that matches your brand and works on all devices.</p>
           </div>
-          <div class="card svc">
+          <div class="card step">
             <h3>3) Development</h3>
-            <p>We build your site with fast loading, good accessibility, and SEO-ready structure.</p>
+            <p>We build your site with speed, accessibility, and SEO-ready structure.</p>
           </div>
-          <div class="card svc">
+          <div class="card step">
             <h3>4) Launch</h3>
             <p>We connect domain + hosting, set up analytics, and publish your website.</p>
           </div>
         </div>
       </section>
 
+      <!-- FAQ -->
+      <section id="faq">
+        <div class="section-head">
+          <h2>FAQ</h2>
+          <p>Quick answers to common questions.</p>
+        </div>
+
+        <div class="faq-grid">
+          <details class="card faq">
+            <summary>How long does a website take?</summary>
+            <p>Typical delivery is 1–3 weeks depending on pages, content, and features.</p>
+          </details>
+
+          <details class="card faq">
+            <summary>Do you help with domain and hosting?</summary>
+            <p>Yes. We can guide you or handle setup for domain, hosting, SSL, and launch.</p>
+          </details>
+
+          <details class="card faq">
+            <summary>Can you redesign an existing site?</summary>
+            <p>Yes. We can redesign and improve speed, structure, and mobile experience.</p>
+          </details>
+
+          <details class="card faq">
+            <summary>Do you offer ongoing maintenance?</summary>
+            <p>Yes. Monthly plans include updates, backups, and changes depending on the package.</p>
+          </details>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
       <section id="contact" class="card contact" aria-label="Contact form">
         <h2 style="margin:0 0 6px; font-size:24px;">Get a quote</h2>
         <p style="margin:0; color:var(--muted);">
-          Tell us what you need and we’ll reply with next steps.
+          Tell us what you need and we’ll reply with next steps (usually within 24 hours).
         </p>
 
-        <!--
-          This form is ready to paste. It does not submit anywhere until you set an action URL.
-          Options:
-          - Use a service like Formspree / Getform / Netlify Forms
-          - Or connect to your own backend endpoint
-        -->
         <form action="#" method="post">
           <div class="row2">
             <div>
@@ -208,6 +305,7 @@
                 <option>Landing Page</option>
                 <option>E-commerce</option>
                 <option>Maintenance</option>
+                <option>Indoor Geo Location App</option>
                 <option>Other</option>
               </select>
             </div>
@@ -222,17 +320,18 @@
             <textarea id="message" name="message" placeholder="What do you want to build? How many pages? Any examples you like?" required></textarea>
           </div>
 
-          <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:4px;">
+          <div class="contact-actions">
             <button class="btn primary" type="submit">Send</button>
-            <a class="btn" href="mailto:hello@example.com">Or email: hello@example.com</a>
-            <span class="note">Update the email address above.</span>
+            <a class="btn" href="mailto:hello@example.com">Email</a>
+            <a class="btn" href="tel:+10000000000">Call</a>
+            <span class="note">Update email/phone.</span>
           </div>
         </form>
       </section>
 
       <footer>
         <div class="wrap foot" style="padding:0;">
-          <div>© <span id="year"></span> Carvajal Camila Digital. All rights reserved.</div>
+          <div>© <span id="year"></span> CC Weblab. All rights reserved.</div>
           <div class="note">Built with HTML + CSS • Fast • Responsive</div>
         </div>
       </footer>
@@ -240,27 +339,29 @@
   </main>
 
   <!-- PRICING MODAL -->
-<div class="modal" id="pricingModal" aria-hidden="true">
-  <div class="modal-backdrop" data-close="true"></div>
+  <div class="modal" id="pricingModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="true"></div>
 
-  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-header">
-      <div>
-        <h2 id="modalTitle" class="modal-title">Plans</h2>
-        <p id="modalSubtitle" class="modal-subtitle">Choose a package that fits your needs.</p>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div>
+          <h2 id="modalTitle" class="modal-title">Plans</h2>
+          <p id="modalSubtitle" class="modal-subtitle">Choose a package that fits your needs.</p>
+        </div>
+        <button class="modal-close" type="button" aria-label="Close" data-close="true">✕</button>
       </div>
 
-      <button class="modal-close" type="button" aria-label="Close" data-close="true">✕</button>
-    </div>
-
-    <div class="modal-body">
-      <div class="plan-row" id="planRow" aria-label="Scrollable plans">
-        <!-- Cards injected by JS -->
+      <div class="modal-body">
+        <div class="plan-row" id="planRow" aria-label="Scrollable plans"></div>
       </div>
     </div>
   </div>
-</div>
 
-<script src="{% static 'js/services.js' %}"></script>
+  <script>
+    // If you don't want JS, remove this and set #year manually.
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <script src="{% static 'js/services.js' %}"></script>
 </body>
 </html>
