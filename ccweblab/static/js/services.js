@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dev: "Website Development Plans",
     ecom: "E‑commerce Plans",
     maint: "Maintenance & Updates Plans",
+    geo: "Indoor Geo Location App Plans",
   };
 
   // You can customize per service here
@@ -17,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         name: "Basic Plan",
         tag: "Best for: 1-page landing",
-        price: "Starting at $___",
+        price: "Starting at EUR 500",
         includes: [
           "1 landing page",
           "Mobile responsive design",
@@ -27,10 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
         ],
       },
       {
-        name: "Normal Package",
+        name: "Standard Package",
         tag: "Most popular",
         featured: true,
-        price: "Starting at $___",
+        price: "Starting at EUR 1000",
         includes: [
           "Up to 5 pages",
           "Custom design + animations",
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         name: "Premium Package",
         tag: "Best for: business growth",
-        price: "Starting at $___",
+        price: "Starting at EUR 2000",
         includes: [
           "Up to 10 pages",
           "Blog or CMS integration",
@@ -127,6 +128,44 @@ document.addEventListener("DOMContentLoaded", () => {
           "Security hardening",
           "Unlimited small edits (fair use)",
           "Priority support + faster SLA",
+        ],
+      },
+    ],
+    geo: [
+      {
+        name: "Basic Plan",
+        tag: "Indoor navigation",
+        price: "Starting at $___",
+        includes: [
+          "Real-time indoor positioning",
+          "Navigation for large venues",
+          "Customizable maps",
+          "Integration with existing systems",
+          "Support & maintenance",
+        ],
+      },
+      {
+        name: "Normal Package",
+        tag: "Most popular",
+        price: "Starting at $___",
+        includes: [
+          "Real-time indoor positioning",
+          "Navigation for large venues",
+          "Customizable maps",
+          "Integration with existing systems",
+          "Support & maintenance",
+        ],
+      },
+      {
+        name: "Premium Package",
+        tag: "Advanced features",
+        price: "Starting at $___",
+        includes: [
+          "Real-time indoor positioning",
+          "Navigation for large venues",
+          "Customizable maps",
+          "Integration with existing systems",
+          "Support & maintenance",
         ],
       },
     ],
