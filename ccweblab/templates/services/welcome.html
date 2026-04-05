@@ -35,6 +35,16 @@
   </header>
 
   <main id="top">
+
+    {% if messages %}
+      <div class="msgs">
+        {% for message in messages %}
+          <div class="msg {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+
     <div class="wrap">
       <!-- HERO -->
       <div class="hero hero--video">
@@ -316,7 +326,7 @@
           Tell us what you need and we’ll reply with next steps (usually within 24 hours).
         </p>
 
-        <form action="#" method="post">
+        <form action="{% url 'services:contact' %}" method="post">
           {% csrf_token %}
           <div class="row2">
             <div>

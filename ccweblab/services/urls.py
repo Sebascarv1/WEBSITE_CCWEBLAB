@@ -1,6 +1,10 @@
+# services/urls.py
 from django.urls import path
-from .views import welcome
+from . import views
+
+app_name = "services"
 
 urlpatterns = [
-    path("", welcome, name="welcome"),
+    path("", views.welcome, name="welcome"),
+    path("contact/", views.contact, name="contact"),
 ]
