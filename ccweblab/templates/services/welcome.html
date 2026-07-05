@@ -74,7 +74,7 @@
         <aside class="card hero-media" aria-label="Hero video">
           <div class="video-wrap">
             <video autoplay muted loop playsinline preload="metadata" poster="{% static 'img/hero-poster.jpg' %}">
-              <source src="{% static 'video/hero2.mp4' %}" type="video/mp4">
+              <source src="{% static 'video/hero4.mp4' %}" type="video/mp4">
             </video>
             <div class="video-overlay">
               <div class="badge">Modern • Fast • SEO-ready</div>
@@ -160,6 +160,20 @@
             </div>
           </button>
 
+          <button class="card svc svc-btn" type="button" data-service="booking" aria-label="Booking System plans">
+            <div class="svc-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" class="i">
+                <path d="M12 22s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" fill="none" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="svc-body">
+              <h3>Booking System</h3>
+              <p>Manage appointments, schedules, and client information efficiently.</p>
+              <span class="svc-meta">Ideal for: salon, spa, clinic abd restaurants.</span>
+            </div>
+          </button>
+
           <button class="card svc svc-btn" type="button" data-service="geo" aria-label="Geo indoor location app plans">
             <div class="svc-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" class="i">
@@ -173,11 +187,13 @@
               <span class="svc-meta">Ideal for: malls, airports, hospitals</span>
             </div>
           </button>
+
+          
         </div>
       </section>
 
       <!-- WORK / PORTFOLIO -->
-      <section id="work">
+      {% comment %} <section id="work">
         <div class="section-head">
           <h2>Services</h2>
           <p>Check real projects here. Have a look to existing pages built with our services.</p>
@@ -232,7 +248,7 @@
             </div>
           </article>
         </div>
-      </section>
+      </section> {% endcomment %}
 
       <!-- TESTIMONIALS -->
       <section id="testimonials">
