@@ -32,7 +32,7 @@
         <a href="#testimonials">Testimonials</a>
         <a href="#process">Process</a>
         <a href="#faq">FAQ</a>
-        <a class="btn primary" href="#contact">Get a Quote</a>
+        <a class="btn primary" href="{% url 'booking:home' %}">Book an Appointment</a>
       </nav>
     </div>
   </header>
@@ -60,7 +60,7 @@
           </p>
 
           <div class="cta">
-            <a class="btn primary" href="#contact">Request a Free Estimate</a>
+            <a class="btn primary" href="{% url 'booking:home' %}">Book an Appointment</a>
             <a class="btn" href="#services">See Services</a>
           </div>
 
@@ -195,7 +195,7 @@
                 <li>SEO foundations</li>
               </ul>
               <div class="work-actions">
-                <a class="btn" href="#contact">Request similar</a>
+                <a class="btn" href="{% url 'booking:home' %}">Request similar</a>
               </div>
             </div>
           </article>
@@ -211,7 +211,7 @@
                 <li>Fast delivery</li>
               </ul>
               <div class="work-actions">
-                <a class="btn" href="#contact">Request similar</a>
+                <a class="btn" href="{% url 'booking:home' %}">Request similar</a>
               </div>
             </div>
           </article>
@@ -227,7 +227,7 @@
                 <li>Checkout optimization</li>
               </ul>
               <div class="work-actions">
-                <a class="btn" href="#contact">Request similar</a>
+                <a class="btn" href="{% url 'booking:home' %}">Request similar</a>
               </div>
             </div>
           </article>
@@ -329,7 +329,7 @@
           Tell us what you need and we’ll reply with next steps (usually within 24 hours).
         </p>
 
-        <form action="{% url 'services:contact' %}" method="post">
+        <form action="{% url 'booking:home' %}" method="post">
           {% csrf_token %}
           <div class="row2">
             <div>

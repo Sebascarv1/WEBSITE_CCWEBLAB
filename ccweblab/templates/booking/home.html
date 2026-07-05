@@ -1,0 +1,60 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book an Appointment | CC Weblab</title>
+  <link rel="stylesheet" href="{% static 'css/services.css' %}">
+</head>
+<body>
+  <main class="wrap" style="padding-top:40px;">
+    <section class="card contact">
+      <h1 style="margin:0 0 8px;">Book an Appointment</h1>
+      <p class="lead" style="margin-bottom:18px;">
+        Select your service and preferred date. We’ll confirm your booking shortly.
+      </p>
+
+      <form method="post" action="#">
+        {% csrf_token %}
+        <div class="row2">
+          <div>
+            <label for="name">Full name</label>
+            <input id="name" name="name" placeholder="Your name" required>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" placeholder="you@email.com" required>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div>
+            <label for="service">Service</label>
+            <select id="service" name="service">
+              <option>Website Development</option>
+              <option>E-commerce</option>
+              <option>Maintenance</option>
+              <option>Consultation</option>
+            </select>
+          </div>
+          <div>
+            <label for="date">Preferred date</label>
+            <input id="date" type="date" name="date" required>
+          </div>
+        </div>
+
+        <div>
+          <label for="message">Project details (optional)</label>
+          <textarea id="message" name="message" placeholder="Tell us what you need..."></textarea>
+        </div>
+
+        <div class="contact-actions">
+          <button class="btn primary" type="submit">Submit Booking</button>
+          <a class="btn" href="/">Back Home</a>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
