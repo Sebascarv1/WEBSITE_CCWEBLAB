@@ -5,56 +5,142 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Book an Appointment | CC Weblab</title>
+  <meta name="description" content="Schedule your consultation with CC Weblab." />
+
   <link rel="stylesheet" href="{% static 'css/services.css' %}">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <main class="wrap" style="padding-top:40px;">
-    <section class="card contact">
-      <h1 style="margin:0 0 8px;">Book an Appointment</h1>
-      <p class="lead" style="margin-bottom:18px;">
-        Select your service and preferred date. We’ll confirm your booking shortly.
-      </p>
-
-      <form method="post" action="#">
-        {% csrf_token %}
-        <div class="row2">
-          <div>
-            <label for="name">Full name</label>
-            <input id="name" name="name" placeholder="Your name" required>
-          </div>
-          <div>
-            <label for="email">Email</label>
-            <input id="email" type="email" name="email" placeholder="you@email.com" required>
-          </div>
-        </div>
-
-        <div class="row2">
-          <div>
-            <label for="service">Service</label>
-            <select id="service" name="service">
-              <option>Website Development</option>
-              <option>E-commerce</option>
-              <option>Maintenance</option>
-              <option>Consultation</option>
-            </select>
-          </div>
-          <div>
-            <label for="date">Preferred date</label>
-            <input id="date" type="date" name="date" required>
-          </div>
-        </div>
-
+  <header>
+    <div class="nav">
+      <a class="brand" href="{% url 'services:welcome' %}" aria-label="Home">
+        <img class="logo" src="{% static 'img/logo.png' %}" alt="CC Weblab logo" width="40" height="40" />
         <div>
-          <label for="message">Project details (optional)</label>
-          <textarea id="message" name="message" placeholder="Tell us what you need..."></textarea>
+          <strong>CC Weblab</strong>
+          <span>Digital Systems • Web Development • Booking Platforms</span>
+        </div>
+      </a>
+
+      <nav class="navlinks" aria-label="Primary">
+        <a href="{% url 'services:welcome' %}#services">Services</a>
+        <a href="{% url 'services:welcome' %}#testimonials">Testimonials</a>
+        <a href="{% url 'services:welcome' %}#faq">FAQ</a>
+        <a class="btn" href="{% url 'services:welcome' %}">Back to Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero">
+        <div class="card left">
+          <div class="kicker"><span class="dot"></span> Priority scheduling available</div>
+          <h1>Book your consultation</h1>
+          <p class="lead">
+            Tell us about your project and preferred timeline.  
+            We’ll respond with availability and next steps within 24 hours.
+          </p>
+
+          <div class="mini">
+            <div><span class="check" aria-hidden="true">✓</span> Clear scope discussion</div>
+            <div><span class="check" aria-hidden="true">✓</span> Technical recommendations</div>
+            <div><span class="check" aria-hidden="true">✓</span> Transparent pricing path</div>
+          </div>
         </div>
 
-        <div class="contact-actions">
-          <button class="btn primary" type="submit">Submit Booking</button>
-          <a class="btn" href="/">Back Home</a>
+        <aside class="card hero-media" aria-label="Booking visual">
+          <div class="video-wrap">
+            <img src="{% static 'img/calendar.jpg' %}" alt="Booking consultation visual" style="width:100%;height:100%;object-fit:cover;">
+            <div class="video-overlay">
+              <div class="badge">Consultation • Planning • Execution</div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="book-form" class="card contact">
+        <div class="section-head" style="margin-bottom:14px;">
+          <h2>Appointment Request</h2>
+          <p>All fields marked required must be completed.</p>
         </div>
-      </form>
-    </section>
+
+        <form method="post" action="#">
+          {% csrf_token %}
+          <div class="row2">
+            <div>
+              <label for="name">Full name</label>
+              <input id="name" name="name" placeholder="Your name" required>
+            </div>
+            <div>
+              <label for="email">Email address</label>
+              <input id="email" type="email" name="email" placeholder="you@email.com" required>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label for="service">Service needed</label>
+              <select id="service" name="service" required>
+                <option value="">Select one</option>
+                <option>Website Development</option>
+                <option>E-commerce</option>
+                <option>Maintenance & Updates</option>
+                <option>Booking System</option>
+                <option>Indoor Geo Location App</option>
+              </select>
+            </div>
+            <div>
+              <label for="date">Preferred date</label>
+              <input id="date" type="date" name="preferred_date" required>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label for="budget">Estimated budget (optional)</label>
+              <input id="budget" name="budget" placeholder="$1,000 - $5,000">
+            </div>
+            <div>
+              <label for="timeline">Desired timeline (optional)</label>
+              <input id="timeline" name="timeline" placeholder="e.g. 2-4 weeks">
+            </div>
+          </div>
+
+          <div>
+            <label for="message">Project details</label>
+            <textarea id="message" name="message" placeholder="Describe your goals, required pages/features, references, and any constraints." required></textarea>
+          </div>
+
+          <div class="contact-actions">
+            <button class="btn primary" type="submit">Submit Request</button>
+            <a class="btn" href="mailto:hello@example.com">Email instead</a>
+            <a class="btn" href="tel:+10000000000">Call us</a>
+          </div>
+        </form>
+      </section>
+
+      <section class="stats">
+        <div class="stat card"><h3>24h</h3><p>Response time</p></div>
+        <div class="stat card"><h3>120+</h3><p>Projects delivered</p></div>
+        <div class="stat card"><h3>98%</h3><p>Client satisfaction</p></div>
+        <div class="stat card"><h3>6+ Years</h3><p>Experience</p></div>
+      </section>
+
+      <footer>
+        <div class="wrap foot" style="padding:0;">
+          <div>© <span id="year"></span> CC Weblab. All rights reserved.</div>
+          <div class="note">Booking portal • Premium support • Secure workflow</div>
+        </div>
+      </footer>
+    </div>
   </main>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

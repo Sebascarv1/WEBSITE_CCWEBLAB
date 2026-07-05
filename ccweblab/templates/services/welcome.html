@@ -4,31 +4,30 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CC Weblab | Web Development Services</title>
-  <meta name="description" content="Modern website design & development, landing pages, e-commerce, and maintenance. Get a fast, mobile-friendly website that converts." />
+  <title>CC Weblab | Premium Web Development & Booking Systems</title>
+  <meta name="description" content="Premium websites and booking platforms designed for performance, trust, and long-term growth." />
 
   <link rel="stylesheet" href="{% static 'css/services.css' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
   <header>
     <div class="nav">
       <a class="brand" href="#top" aria-label="Home">
-        <!-- Recommended: use a PNG/SVG logo here, not the .ico -->
         <img class="logo" src="{% static 'img/logo.png' %}" alt="CC Weblab logo" width="40" height="40" />
         <div>
           <strong>CC Weblab</strong>
-          <span>Web Development & Website Services</span>
+          <span>Digital Systems • Web Development • Booking Platforms</span>
         </div>
       </a>
 
       <nav class="navlinks" aria-label="Primary">
         <a href="#services">Services</a>
-        <a href="#work">Work</a>
+        <a href="#showcase">Showcase</a>
         <a href="#testimonials">Testimonials</a>
         <a href="#process">Process</a>
         <a href="#faq">FAQ</a>
@@ -38,36 +37,27 @@
   </header>
 
   <main id="top">
-
-    {% if messages %}
-      <div class="msgs">
-        {% for message in messages %}
-          <div class="msg {{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-
     <div class="wrap">
+
       <!-- HERO -->
-      <div class="hero hero--video">
+      <section class="hero hero--video">
         <div class="card left">
-          <div class="kicker"><span class="dot"></span> Now accepting new projects</div>
-          <h1>We build fast, modern websites that help your business grow.</h1>
+          <div class="kicker"><span class="dot"></span> Selective client onboarding</div>
+          <h1>We design and engineer high-performance digital experiences.</h1>
           <p class="lead">
-            From landing pages to full business websites and e‑commerce, we design and develop
-            mobile‑friendly sites with clean code, great UX, and SEO basics included.
+            From premium websites to robust booking platforms, we build elegant systems that
+            project trust and convert visitors into clients.
           </p>
 
           <div class="cta">
             <a class="btn primary" href="{% url 'booking:home' %}">Book an Appointment</a>
-            <a class="btn" href="#services">See Services</a>
+            <a class="btn" href="#services">Explore Services</a>
           </div>
 
           <div class="mini" aria-label="Highlights">
-            <div><span class="check" aria-hidden="true">✓</span> Mobile-first & responsive</div>
-            <div><span class="check" aria-hidden="true">✓</span> Speed + SEO foundations</div>
-            <div><span class="check" aria-hidden="true">✓</span> Maintenance available</div>
+            <div><span class="check" aria-hidden="true">✓</span> Premium visual direction</div>
+            <div><span class="check" aria-hidden="true">✓</span> Scalable architecture</div>
+            <div><span class="check" aria-hidden="true">✓</span> Booking-ready systems</div>
           </div>
         </div>
 
@@ -77,25 +67,49 @@
               <source src="{% static 'video/hero4.mp4' %}" type="video/mp4">
             </video>
             <div class="video-overlay">
-              <div class="badge">Modern • Fast • SEO-ready</div>
+              <div class="badge">Precision • Performance • Reliability</div>
             </div>
           </div>
         </aside>
-      </div>
+      </section>
 
-      <!-- TRUST BAR -->
-      <section class="trustbar" aria-label="Key strengths">
-        <div class="trust-item">
-          <b>Performance</b><span>Speed optimized</span>
+      <!-- STATS -->
+      <section class="stats">
+        <div class="stat card">
+          <h3>120+</h3><p>Projects Delivered</p>
         </div>
-        <div class="trust-item">
-          <b>SEO</b><span>Clean structure</span>
+        <div class="stat card">
+          <h3>6+ Years</h3><p>Industry Experience</p>
         </div>
-        <div class="trust-item">
-          <b>Mobile</b><span>Responsive UI</span>
+        <div class="stat card">
+          <h3>98%</h3><p>Client Satisfaction</p>
         </div>
-        <div class="trust-item">
-          <b>Support</b><span>Maintenance plans</span>
+        <div class="stat card">
+          <h3>24h</h3><p>Typical Response Time</p>
+        </div>
+      </section>
+
+      <!-- SHOWCASE -->
+      <section id="showcase">
+        <div class="section-head">
+          <h2>Selected Work & Capabilities</h2>
+          <p>A visual overview of systems we design and deliver.</p>
+        </div>
+        <div class="split showcase-grid">
+          <article class="card show-card">
+            <img src="{% static 'img/website.jpg' %}" alt="Premium business web project">
+            <div class="show-body">
+              <h3>Corporate Web Presence</h3>
+              <p>Elegant, conversion-focused websites built for credibility and growth.</p>
+            </div>
+          </article>
+          <article class="card show-card">
+            <img src="{% static 'img/booking.jpg' %}" alt="Booking system interface">
+            <div class="show-body">
+              <h3>Booking & Scheduling Platforms</h3>
+              <p>Appointments, slots, reminders, and admin dashboards in one system.</p>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -103,180 +117,86 @@
       <section id="services">
         <div class="section-head">
           <h2>Services</h2>
-          <p>Click a service to compare packages and what’s included.</p>
+          <p>Click any service to compare plans in detail.</p>
         </div>
 
         <div class="svc-row" aria-label="Services (scroll horizontally)">
-          {% comment %} <button class="card svc svc-btn" type="button" data-service="dev" aria-label="Website Development plans">
-            <img class="svc-img" src="{% static 'img/dev.jpg' %}" alt="Website development">
-            <div class="svc-body">
-              <h3>Website Development</h3>
-              <p>Modern websites with clean UI, strong UX, and fast performance.</p>
-              <span class="svc-meta">Ideal for: businesses & portfolios</span>
-            </div>
-          </button> {% endcomment %}
-
           <button class="card svc svc-btn" type="button" data-service="dev" aria-label="Website Development plans">
             <div class="svc-icon" aria-hidden="true">
-              <!-- Code icon -->
-              <svg viewBox="0 0 24 24" class="i">
-                <path d="M8 9l-3 3 3 3M16 9l3 3-3 3M14 7l-4 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <svg viewBox="0 0 24 24" class="i"><path d="M8 9l-3 3 3 3M16 9l3 3-3 3M14 7l-4 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-
             <div class="svc-body">
               <h3>Website Development</h3>
-              <p>Modern websites with clean UI, strong UX, and fast performance.</p>
-              <span class="svc-meta">Ideal for: businesses & portfolios</span>
+              <p>Premium websites with clean UX, speed and SEO foundations.</p>
+              <span class="svc-meta">Ideal for: brands & firms</span>
             </div>
           </button>
 
           <button class="card svc svc-btn" type="button" data-service="ecom" aria-label="E-commerce plans">
             <div class="svc-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="i">
-                <path d="M6 6h15l-1.5 8.5a2 2 0 0 1-2 1.6H9.2a2 2 0 0 1-2-1.7L6 6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M6 6 5 3H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M9.5 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="currentColor"/>
-              </svg>
+              <svg viewBox="0 0 24 24" class="i"><path d="M6 6h15l-1.5 8.5a2 2 0 0 1-2 1.6H9.2a2 2 0 0 1-2-1.7L6 6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 6 5 3H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9.5 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="currentColor"/></svg>
             </div>
             <div class="svc-body">
               <h3>E‑commerce</h3>
-              <p>Stores, product pages, payments, shipping, and launch support.</p>
-              <span class="svc-meta">Ideal for: selling online</span>
+              <p>Store setup, checkout optimization, integrations and launch support.</p>
+              <span class="svc-meta">Ideal for: online sales</span>
             </div>
           </button>
 
           <button class="card svc svc-btn" type="button" data-service="maint" aria-label="Maintenance plans">
             <div class="svc-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="i">
-                <path d="M12 2 20 6v7c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M9 12l2 2 4-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <svg viewBox="0 0 24 24" class="i"><path d="M12 2 20 6v7c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div class="svc-body">
               <h3>Maintenance & Updates</h3>
-              <p>Security, backups, content updates, backups, security, and performance improvements.</p>
-              <span class="svc-meta">Ideal for: peace of mind</span>
+              <p>Security, backups, updates and performance optimization.</p>
+              <span class="svc-meta">Ideal for: long-term stability</span>
             </div>
           </button>
 
-          <button class="card svc svc-btn" type="button" data-service="booking" aria-label="Booking System plans">
+          <button class="card svc svc-btn" type="button" data-service="book" aria-label="Booking System plans">
             <div class="svc-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="i">
-                <path d="M12 22s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" fill="none" stroke="currentColor" stroke-width="2"/>
-              </svg>
+              <svg viewBox="0 0 24 24" class="i"><path d="M8 2v3M16 2v3M4 8h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             </div>
             <div class="svc-body">
               <h3>Booking System</h3>
-              <p>Manage appointments, schedules, and client information efficiently.</p>
-              <span class="svc-meta">Ideal for: salon, spa, clinic abd restaurants.</span>
+              <p>Appointments, schedules, client flows, reminders and dashboards.</p>
+              <span class="svc-meta">Ideal for: clinics, salons, restaurants</span>
             </div>
           </button>
 
           <button class="card svc svc-btn" type="button" data-service="geo" aria-label="Geo indoor location app plans">
             <div class="svc-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="i">
-                <path d="M12 22s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" fill="none" stroke="currentColor" stroke-width="2"/>
-              </svg>
+              <svg viewBox="0 0 24 24" class="i"><path d="M12 22s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
             </div>
             <div class="svc-body">
               <h3>Indoor Geo Location App</h3>
-              <p>Real-time indoor positioning & navigation for large venues.</p>
-              <span class="svc-meta">Ideal for: malls, airports, hospitals</span>
+              <p>Real-time indoor positioning and navigation for large venues.</p>
+              <span class="svc-meta">Ideal for: hospitals, airports, malls</span>
             </div>
           </button>
-
-          
         </div>
       </section>
-
-      <!-- WORK / PORTFOLIO -->
-      {% comment %} <section id="work">
-        <div class="section-head">
-          <h2>Services</h2>
-          <p>Check real projects here. Have a look to existing pages built with our services.</p>
-        </div>
-
-        <div class="work-grid">
-          <article class="card work-card">
-            <img class="work-img" src="{% static 'img/work1.jpg' %}" alt="Project 1 preview">
-            <div class="work-body">
-              <h3>Business Website Redesign</h3>
-              <p class="muted">Modern UI + faster loading + contact conversion improvements.</p>
-              <ul class="work-list">
-                <li>Responsive redesign</li>
-                <li>Improved page speed</li>
-                <li>SEO foundations</li>
-              </ul>
-              <div class="work-actions">
-                <a class="btn" href="{% url 'booking:home' %}">Request similar</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card work-card">
-            <img class="work-img" src="{% static 'img/work2.jpg' %}" alt="Project 2 preview">
-            <div class="work-body">
-              <h3>Landing Page for Leads</h3>
-              <p class="muted">Designed for conversions with clean copy and strong CTA.</p>
-              <ul class="work-list">
-                <li>1-page funnel</li>
-                <li>Analytics setup</li>
-                <li>Fast delivery</li>
-              </ul>
-              <div class="work-actions">
-                <a class="btn" href="{% url 'booking:home' %}">Request similar</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card work-card">
-            <img class="work-img" src="{% static 'img/work1.jpg' %}" alt="Project 3 preview">
-            <div class="work-body">
-              <h3>E‑commerce Setup</h3>
-              <p class="muted">Product pages, payments, shipping rules, and launch.</p>
-              <ul class="work-list">
-                <li>Store configuration</li>
-                <li>Payment integration</li>
-                <li>Checkout optimization</li>
-              </ul>
-              <div class="work-actions">
-                <a class="btn" href="{% url 'booking:home' %}">Request similar</a>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section> {% endcomment %}
 
       <!-- TESTIMONIALS -->
       <section id="testimonials">
         <div class="section-head">
-          <h2>What clients say</h2>
-          <p>We appreciate our clients' feedback and strive to exceed their expectations.</p>
+          <h2>Client Testimonials</h2>
+          <p>Trusted by businesses that value quality, speed, and reliability.</p>
         </div>
 
         <div class="test-grid">
           <figure class="card quote">
-            <blockquote>
-              “Super fast delivery and the website looks premium on mobile. We started getting more calls the same week.”
-            </blockquote>
-            <figcaption>— Client A, Local Business</figcaption>
+            <blockquote>“Fast delivery, premium quality, and clear communication from day one.”</blockquote>
+            <figcaption>— Client A, Healthcare</figcaption>
           </figure>
-
           <figure class="card quote">
-            <blockquote>
-              “Clear communication, great design taste, and the final site loads extremely fast.”
-            </blockquote>
-            <figcaption>— Client B, Startup Founder</figcaption>
+            <blockquote>“Their booking platform improved our operations and reduced manual work drastically.”</blockquote>
+            <figcaption>— Client B, Service Business</figcaption>
           </figure>
-
           <figure class="card quote">
-            <blockquote>
-              “The e‑commerce setup was smooth. Products, payments, shipping—everything ready to sell.”
-            </blockquote>
-            <figcaption>— Client C, Online Store</figcaption>
+            <blockquote>“Excellent design judgment and strong technical execution.”</blockquote>
+            <figcaption>— Client C, Founder</figcaption>
           </figure>
         </div>
       </section>
@@ -284,27 +204,15 @@
       <!-- PROCESS -->
       <section id="process">
         <div class="section-head">
-          <h2>Our process</h2>
-          <p>A simple, clear workflow so you always know what’s next.</p>
+          <h2>Engagement Process</h2>
+          <p>A transparent workflow from strategy to launch.</p>
         </div>
 
         <div class="split">
-          <div class="card step">
-            <h3>1) Discovery</h3>
-            <p>We learn your goals, audience, and style, then define pages and features.</p>
-          </div>
-          <div class="card step">
-            <h3>2) Design</h3>
-            <p>We create a clean layout that matches your brand and works on all devices.</p>
-          </div>
-          <div class="card step">
-            <h3>3) Development</h3>
-            <p>We build your site with speed, accessibility, and SEO-ready structure.</p>
-          </div>
-          <div class="card step">
-            <h3>4) Launch</h3>
-            <p>We connect domain + hosting, set up analytics, and publish your website.</p>
-          </div>
+          <div class="card step"><h3>1) Discovery</h3><p>Goals, audience, requirements, and roadmap definition.</p></div>
+          <div class="card step"><h3>2) Design</h3><p>Premium visual direction and UX wireframes.</p></div>
+          <div class="card step"><h3>3) Development</h3><p>Scalable implementation with performance best practices.</p></div>
+          <div class="card step"><h3>4) Launch & Support</h3><p>Deployment, QA, monitoring and post-launch improvements.</p></div>
         </div>
       </section>
 
@@ -314,38 +222,20 @@
           <h2>FAQ</h2>
           <p>Quick answers to common questions.</p>
         </div>
-
         <div class="faq-grid">
-          <details class="card faq">
-            <summary>How long does a website take?</summary>
-            <p>Typical delivery is 1–3 weeks depending on pages, content, and features.</p>
-          </details>
-
-          <details class="card faq">
-            <summary>Do you help with domain and hosting?</summary>
-            <p>Yes. We can guide you or handle setup for domain, hosting, SSL, and launch.</p>
-          </details>
-
-          <details class="card faq">
-            <summary>Can you redesign an existing site?</summary>
-            <p>Yes. We can redesign and improve speed, structure, and mobile experience.</p>
-          </details>
-
-          <details class="card faq">
-            <summary>Do you offer ongoing maintenance?</summary>
-            <p>Yes. Monthly plans include updates, backups, and changes depending on the package.</p>
-          </details>
+          <details class="card faq"><summary>How long does a project take?</summary><p>Typically 1–4 weeks depending on complexity and integrations.</p></details>
+          <details class="card faq"><summary>Can you integrate booking with my current website?</summary><p>Yes. We can integrate with existing websites or build a new system end-to-end.</p></details>
+          <details class="card faq"><summary>Do you provide maintenance?</summary><p>Yes, with monthly maintenance, updates, backups, and support tiers.</p></details>
+          <details class="card faq"><summary>Can I scale later?</summary><p>Absolutely. We design systems to grow with your business.</p></details>
         </div>
       </section>
 
       <!-- CONTACT -->
       <section id="contact" class="card contact" aria-label="Contact form">
-        <h2 style="margin:0 0 6px; font-size:24px;">Get a quote</h2>
-        <p style="margin:0; color:var(--muted);">
-          Tell us what you need and we’ll reply with next steps (usually within 24 hours).
-        </p>
+        <h2 style="margin:0 0 6px;">Request a Consultation</h2>
+        <p style="margin:0;color:var(--muted);">Tell us your goals and we’ll respond within 24 hours.</p>
 
-        <form action="{% url 'booking:home' %}" method="post">
+        <form action="#" method="post">
           {% csrf_token %}
           <div class="row2">
             <div>
@@ -363,29 +253,27 @@
               <label for="service">Service</label>
               <select id="service" name="service">
                 <option>Website Development</option>
-                <option>Landing Page</option>
                 <option>E-commerce</option>
                 <option>Maintenance</option>
+                <option>Booking System</option>
                 <option>Indoor Geo Location App</option>
-                <option>Other</option>
               </select>
             </div>
             <div>
               <label for="budget">Budget (optional)</label>
-              <input id="budget" name="budget" placeholder="$500 - $2,000" />
+              <input id="budget" name="budget" placeholder="$1,000 - $5,000" />
             </div>
           </div>
 
           <div>
             <label for="message">Project details</label>
-            <textarea id="message" name="message" placeholder="What do you want to build? How many pages? Any examples you like?" required></textarea>
+            <textarea id="message" name="message" placeholder="Tell us what you want to build..." required></textarea>
           </div>
 
           <div class="contact-actions">
-            <button class="btn primary" type="submit">Send</button>
+            <button class="btn primary" type="submit">Send Request</button>
             <a class="btn" href="mailto:hello@example.com">Email</a>
             <a class="btn" href="tel:+10000000000">Call</a>
-            <span class="note">Update email/phone.</span>
           </div>
         </form>
       </section>
@@ -393,7 +281,7 @@
       <footer>
         <div class="wrap foot" style="padding:0;">
           <div>© <span id="year"></span> CC Weblab. All rights reserved.</div>
-          <div class="note">Built with HTML + CSS • Fast • Responsive</div>
+          <div class="note">Premium web systems • Performance-first • Scalable</div>
         </div>
       </footer>
     </div>
@@ -402,7 +290,6 @@
   <!-- PRICING MODAL -->
   <div class="modal" id="pricingModal" aria-hidden="true">
     <div class="modal-backdrop" data-close="true"></div>
-
     <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-header">
         <div>
@@ -411,18 +298,13 @@
         </div>
         <button class="modal-close" type="button" aria-label="Close" data-close="true">✕</button>
       </div>
-
       <div class="modal-body">
         <div class="plan-row" id="planRow" aria-label="Scrollable plans"></div>
       </div>
     </div>
   </div>
 
-  <script>
-    // If you don't want JS, remove this and set #year manually.
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
   <script src="{% static 'js/services.js' %}"></script>
 </body>
 </html>

@@ -1,4 +1,3 @@
-// services/static/js/services.js
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("pricingModal");
   const planRow = document.getElementById("planRow");
@@ -10,183 +9,44 @@ document.addEventListener("DOMContentLoaded", () => {
     ecom: "E‑commerce Plans",
     maint: "Maintenance & Updates Plans",
     geo: "Indoor Geo Location App Plans",
+    book: "Booking & Reservation App Plans",
   };
 
-  // You can customize per service here
   const plansByService = {
     dev: [
-      {
-        name: "Basic Plan",
-        tag: "Best for: 1-page landing",
-        price: "Starting at EUR 500",
-        includes: [
-          "1 landing page",
-          "Mobile responsive design",
-          "Contact form",
-          "Basic SEO setup",
-          "Deploy & launch support",
-        ],
-      },
-      {
-        name: "Standard Package",
-        tag: "Most popular",
-        featured: true,
-        price: "Starting at EUR 1000",
-        includes: [
-          "Up to 5 pages",
-          "Custom design + animations",
-          "Speed optimization",
-          "SEO foundations + sitemap",
-          "Google Analytics setup",
-        ],
-      },
-      {
-        name: "Premium Package",
-        tag: "Best for: business growth",
-        price: "Starting at EUR 2000",
-        includes: [
-          "Up to 10 pages",
-          "Blog or CMS integration",
-          "Advanced performance + accessibility",
-          "On-page SEO improvements",
-          "30 days priority support",
-        ],
-      },
+      { name:"Basic Plan", tag:"Best for: landing page", price:"Starting at €500", includes:["1 landing page","Responsive design","Contact form","Basic SEO","Launch support"] },
+      { name:"Standard Package", tag:"Most popular", featured:true, price:"Starting at €1,000", includes:["Up to 5 pages","Custom design","Speed optimization","SEO setup","Analytics"] },
+      { name:"Premium Package", tag:"Growth-ready", price:"Starting at €2,000", includes:["Up to 10 pages","CMS/blog","Advanced performance","Accessibility","Priority support"] },
     ],
     ecom: [
-      {
-        name: "Basic Plan",
-        tag: "Small store",
-        price: "Starting at $___",
-        includes: [
-          "Store setup (Shopify or similar)",
-          "Up to 10 products",
-          "Payments setup",
-          "Basic theme customization",
-          "Launch support",
-        ],
-      },
-      {
-        name: "Normal Package",
-        tag: "Most popular",
-        featured: true,
-        price: "Starting at $___",
-        includes: [
-          "Up to 30 products",
-          "Collections + product variants",
-          "Shipping & tax setup",
-          "Email capture + basic automation",
-          "Speed + SEO foundations",
-        ],
-      },
-      {
-        name: "Premium Package",
-        tag: "Scale-ready",
-        price: "Starting at $___",
-        includes: [
-          "Unlimited products (platform-dependent)",
-          "Custom sections/components",
-          "Conversion-focused UX",
-          "Integrations (reviews, CRM, pixels)",
-          "30 days priority support",
-        ],
-      },
+      { name:"Basic Plan", tag:"Small store", price:"Starting at €900", includes:["Store setup","Up to 10 products","Payments setup","Theme customization","Launch support"] },
+      { name:"Standard Package", tag:"Most popular", featured:true, price:"Starting at €1,800", includes:["Up to 30 products","Shipping/tax setup","Automation basics","SEO foundations","Performance optimization"] },
+      { name:"Premium Package", tag:"Scale-ready", price:"Starting at €3,000", includes:["Custom sections","Integrations","Conversion UX","Advanced tracking","Priority support"] },
     ],
     maint: [
-      {
-        name: "Basic Plan",
-        tag: "Keep it updated",
-        price: "$___ / month",
-        includes: [
-          "Monthly updates",
-          "Backups",
-          "Basic security checks",
-          "1 content change/month",
-          "Email support",
-        ],
-      },
-      {
-        name: "Normal Package",
-        tag: "Most popular",
-        featured: true,
-        price: "$___ / month",
-        includes: [
-          "Weekly updates",
-          "Uptime monitoring",
-          "Performance checks",
-          "Up to 4 content changes/month",
-          "Priority email support",
-        ],
-      },
-      {
-        name: "Premium Package",
-        tag: "Business critical",
-        price: "$___ / month",
-        includes: [
-          "Proactive monitoring",
-          "Speed optimization",
-          "Security hardening",
-          "Unlimited small edits (fair use)",
-          "Priority support + faster SLA",
-        ],
-      },
+      { name:"Basic Plan", tag:"Keep it stable", price:"€120 / month", includes:["Monthly updates","Backups","Security checks","1 content change","Email support"] },
+      { name:"Standard Package", tag:"Most popular", featured:true, price:"€250 / month", includes:["Weekly updates","Monitoring","Performance checks","4 content changes","Priority support"] },
+      { name:"Premium Package", tag:"Business critical", price:"€450 / month", includes:["Proactive monitoring","Security hardening","Speed optimization","Unlimited minor edits","Fast SLA"] },
     ],
     geo: [
-      {
-        name: "Basic Plan",
-        tag: "Indoor navigation",
-        price: "Starting at $___",
-        includes: [
-          "Real-time indoor positioning",
-          "Navigation for large venues",
-          "Customizable maps",
-          "Integration with existing systems",
-          "Support & maintenance",
-        ],
-      },
-      {
-        name: "Normal Package",
-        tag: "Most popular",
-        price: "Starting at $___",
-        includes: [
-          "Real-time indoor positioning",
-          "Navigation for large venues",
-          "Customizable maps",
-          "Integration with existing systems",
-          "Support & maintenance",
-        ],
-      },
-      {
-        name: "Premium Package",
-        tag: "Advanced features",
-        price: "Starting at $___",
-        includes: [
-          "Real-time indoor positioning",
-          "Navigation for large venues",
-          "Customizable maps",
-          "Integration with existing systems",
-          "Support & maintenance",
-        ],
-      },
+      { name:"Basic Plan", tag:"Indoor navigation", price:"Starting at €2,500", includes:["Real-time indoor positioning","Venue maps","Wayfinding UI","System integration","Support"] },
+      { name:"Standard Package", tag:"Most popular", featured:true, price:"Starting at €4,000", includes:["Advanced navigation","Admin controls","Analytics","API integration","Priority support"] },
+      { name:"Premium Package", tag:"Enterprise", price:"Starting at €7,000", includes:["Custom architecture","Multi-venue support","Deep integration","Custom dashboards","Dedicated support"] },
+    ],
+    book: [
+      { name:"Basic Plan", tag:"Essentials", price:"Starting at €1,200", includes:["Online booking","Calendar integration","Email notifications","Simple admin panel","Support"] },
+      { name:"Standard Package", tag:"Most popular", featured:true, price:"Starting at €2,200", includes:["Multi-service booking","Availability rules","Reminders","Reporting","Priority support"] },
+      { name:"Premium Package", tag:"All-inclusive", price:"Starting at €3,800", includes:["Advanced scheduling","Custom workflows","Roles/permissions","Analytics","Dedicated support"] },
     ],
   };
 
-  function openModal(serviceKey){
-    title.textContent = serviceTitles[serviceKey] || "Plans";
-    subtitle.textContent = "Swipe / scroll to compare the 3 packages. Click outside to close.";
-
-    const plans = plansByService[serviceKey] || [];
-    planRow.innerHTML = plans.map(planToHTML).join("");
-
-    modal.classList.add("is-open");
-    modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeModal(){
-    modal.classList.remove("is-open");
-    modal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
   }
 
   function planToHTML(p){
@@ -198,36 +58,49 @@ document.addEventListener("DOMContentLoaded", () => {
         <ul>${li}</ul>
         <div class="price">${escapeHtml(p.price || "")}</div>
         <div class="cta">
-          <a class="btn primary" href="#contact" onclick="document.getElementById('pricingModal').classList.remove('is-open')">
-            Choose this plan
-          </a>
+          <a class="btn primary" href="#contact" data-close="true">Choose this plan</a>
         </div>
       </article>
     `;
   }
 
-  function escapeHtml(str){
-    return String(str)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
+  function openModal(serviceKey){
+    title.textContent = serviceTitles[serviceKey] || "Plans";
+    subtitle.textContent = "Compare packages and choose what fits your goals.";
+    const plans = plansByService[serviceKey] || [];
+    planRow.innerHTML = plans.map(planToHTML).join("");
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
   }
 
-  // Click handlers on service cards
+  function closeModal(){
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
   document.querySelectorAll(".svc-btn").forEach(btn => {
     btn.addEventListener("click", () => openModal(btn.dataset.service));
   });
 
-  // Close modal (backdrop or close button)
-  modal.addEventListener("click", (e) => {
-    const close = e.target && e.target.dataset && e.target.dataset.close === "true";
-    if (close) closeModal();
+  modal?.addEventListener("click", (e) => {
+    if (e.target?.dataset?.close === "true") closeModal();
   });
 
-  // ESC closes modal
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal.classList.contains("is-open")) closeModal();
+  });
+
+  // reveal animation
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add("in");
+    });
+  }, { threshold: 0.14 });
+
+  document.querySelectorAll("section, .card, .svc-btn").forEach(el => {
+    el.classList.add("reveal");
+    observer.observe(el);
   });
 });
