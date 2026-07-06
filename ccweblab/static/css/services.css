@@ -470,3 +470,48 @@ footer{
   .service-copy h3{font-size:20px}
   .service-copy p{font-size:14px}
 }
+
+
+.slot-wrap{
+  margin-top:10px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px;
+  background:#fff;
+}
+.slot-note{
+  margin:0 0 8px;
+  font-size:13px;
+  color:var(--muted);
+}
+.slot-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.slot-btn{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  padding:9px 10px;
+  font-size:13px;
+  cursor:pointer;
+  transition:.15s ease;
+}
+.slot-btn:hover{
+  border-color:var(--line-strong);
+  background:#faf7f1;
+}
+.slot-btn.active{
+  border-color:#a8803b;
+  background:#f8f1e2;
+  font-weight:600;
+}
+.slot-btn.disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  text-decoration:line-through;
+}
+@media (max-width:640px){
+  .slot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}

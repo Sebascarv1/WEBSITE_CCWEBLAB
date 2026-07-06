@@ -93,6 +93,11 @@
               <div>
                 <label for="date">Preferred date</label>
                 <input id="date" type="date" name="preferred_date" required>
+                <div id="slotWrap" class="slot-wrap" aria-live="polite">
+                  <p class="slot-note">Select a date to see available times.</p>
+                  <div id="slotGrid" class="slot-grid"></div>
+                  <input type="hidden" id="selectedSlot" name="selected_slot" required>
+                </div>
               </div>
             </div>
 
@@ -145,5 +150,49 @@
   </main>
 
   <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  <script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const dateInput = document.getElementById("date");
+  const slotGrid = document.getElementById("slotGrid");
+  const slotNote = document.querySelector(".slot-note");
+  const selectedSlot = document.getElementById("selectedSlot");
+
+  // Example static availability (replace with backend fetch later)
+  const availability = {
+    "2026-07-07": ["09:00","10:00","11:30","14:00","15:30"],
+    "2026-07-08": ["10:00","13:00","16:00"],
+    "2026-07-09": ["09:30","12:00","17:00"]
+  };
+
+  function renderSlots(dateStr){
+    slotGrid.innerHTML = "";
+    selectedSlot.value = "";
+
+    const slots = availability[dateStr] || [];
+    if (!slots.length){
+      slotNote.textContent = "No spots available for this date.";
+      return;
+    }
+
+    slotNote.textContent = "Available time slots:";
+    slots.forEach(time => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "slot-btn";
+      b.textContent = time;
+
+      b.addEventListener("click", () => {
+        document.querySelectorAll(".slot-btn").forEach(x => x.classList.remove("active"));
+        b.classList.add("active");
+        selectedSlot.value = `${dateStr} ${time}`;
+      });
+
+      slotGrid.appendChild(b);
+    });
+  }
+
+  dateInput.addEventListener("change", e => renderSlots(e.target.value));
+</script>
 </body>
 </html>
