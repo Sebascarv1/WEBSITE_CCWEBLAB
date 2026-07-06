@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CC Weblab | Premium Web Development & Booking Systems</title>
-  <meta name="description" content="Premium websites and booking platforms designed for performance, trust, and long-term growth." />
+  <title>CC Weblab | Elite Web Engineering & Digital Platforms</title>
+  <meta name="description" content="CC Weblab builds elite websites, booking systems, and digital platforms for brands that demand excellence." />
 
   <link rel="stylesheet" href="{% static 'css/services.css' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
@@ -21,17 +21,17 @@
         <img class="logo" src="{% static 'img/logo.png' %}" alt="CC Weblab logo" width="40" height="40" />
         <div>
           <strong>CC Weblab</strong>
-          <span>Digital Systems • Web Development • Booking Platforms</span>
+          <span>Elite Digital Engineering • Premium Client Experience</span>
         </div>
       </a>
 
       <nav class="navlinks" aria-label="Primary">
         <a href="#services">Services</a>
-        <a href="#showcase">Showcase</a>
-        <a href="#testimonials">Testimonials</a>
+        <a href="#showcase">Portfolio</a>
+        <a href="#testimonials">Results</a>
         <a href="#process">Process</a>
         <a href="#faq">FAQ</a>
-        <a class="btn primary" href="{% url 'booking:home' %}">Book an Appointment</a>
+        <a class="btn primary" href="{% url 'booking:home' %}">Book Private Consultation</a>
       </nav>
     </div>
   </header>
@@ -42,19 +42,20 @@
       <div class="wrap">
         <section class="hero">
           <div class="hero-left">
-            <div class="kicker"><span class="dot"></span> Selective client onboarding</div>
-            <h1>We design and engineer high-performance digital experiences.</h1>
+            <div class="kicker"><span class="dot"></span> Limited client intake • High-touch delivery</div>
+            <h1>Digital platforms engineered to position you at the top of your market.</h1>
             <p class="lead">
-              From premium websites to robust booking platforms, we build elegant systems that project trust and convert visitors into clients.
+              We craft world-class websites and intelligent booking systems for companies that refuse average.
+              Every detail is designed to elevate trust, drive conversion, and scale with precision.
             </p>
             <div class="cta">
-              <a class="btn primary" href="{% url 'booking:home' %}">Book an Appointment</a>
-              <a class="btn" href="#services">Explore Services</a>
+              <a class="btn primary" href="{% url 'booking:home' %}">Book Private Consultation</a>
+              <a class="btn" href="#services">Explore Premium Services</a>
             </div>
             <div class="mini">
-              <div>Premium visual direction</div>
-              <div>Scalable architecture</div>
-              <div>Booking-ready systems</div>
+              <div>Luxury brand-level design</div>
+              <div>Enterprise-grade architecture</div>
+              <div>Conversion and performance focused</div>
             </div>
           </div>
 
@@ -63,7 +64,7 @@
               <source src="{% static 'video/hero4.mp4' %}" type="video/mp4">
             </video>
             <div class="hero-overlay"></div>
-            <div class="hero-badge">Precision • Performance • Reliability</div>
+            <div class="hero-badge">Precision • Authority • Performance</div>
           </aside>
         </section>
       </div>
@@ -73,10 +74,10 @@
     <section class="band white">
       <div class="wrap">
         <section class="stats">
-          <div class="stat"><h3>120+</h3><p>Projects Delivered</p></div>
-          <div class="stat"><h3>6+ Years</h3><p>Industry Experience</p></div>
-          <div class="stat"><h3>98%</h3><p>Client Satisfaction</p></div>
-          <div class="stat"><h3>24h</h3><p>Typical Response Time</p></div>
+          <div class="stat"><h3>150+</h3><p>High-Value Projects Delivered</p></div>
+          <div class="stat"><h3>7+ Years</h3><p>Advanced Engineering Experience</p></div>
+          <div class="stat"><h3>98%</h3><p>Client Retention & Satisfaction</p></div>
+          <div class="stat"><h3>24h</h3><p>Executive Response Window</p></div>
         </section>
       </div>
     </section>
@@ -85,22 +86,22 @@
     <section class="band cream" id="showcase">
       <div class="wrap">
         <div class="section-head">
-          <h2>Selected Work & Capabilities</h2>
-          <p>A visual overview of systems we design and deliver.</p>
+          <h2>Selected Portfolio</h2>
+          <p>Strategic digital systems built to outperform competitors.</p>
         </div>
         <div class="grid-2">
           <article class="show">
-            <img src="{% static 'img/website.jpg' %}" alt="Corporate web presence">
+            <img src="{% static 'img/website.jpg' %}" alt="Premium corporate website project">
             <div class="show-body">
-              <h3>Corporate Web Presence</h3>
-              <p>Elegant, conversion-focused websites built for credibility and growth.</p>
+              <h3>Executive Web Presence</h3>
+              <p>Premium websites designed to communicate authority, trust, and category leadership.</p>
             </div>
           </article>
           <article class="show">
-            <img src="{% static 'img/booking.jpg' %}" alt="Booking platform">
+            <img src="{% static 'img/booking.jpg' %}" alt="Advanced booking platform">
             <div class="show-body">
-              <h3>Booking & Scheduling Platforms</h3>
-              <p>Appointments, slots, reminders, and admin dashboards in one system.</p>
+              <h3>Advanced Booking Ecosystems</h3>
+              <p>Seamless appointment flows, automation, reminders, and management dashboards in one platform.</p>
             </div>
           </article>
         </div>
@@ -110,40 +111,55 @@
     <!-- SERVICES -->
     <section class="band white" id="services">
       <div class="wrap">
-        <div class="section-head">
-          <h2>Services</h2>
-          <p>Click any service to compare plans in detail.</p>
+        <div class="section-head services-head">
+          <h2>Premium Services</h2>
+          <p>Crafted for brands that expect excellence in every touchpoint.</p>
         </div>
 
-        <div class="svc-row" aria-label="Services">
-          <button class="svc svc-btn" type="button" data-service="dev">
-            <h3>Website Development</h3>
-            <p>Premium websites with clean UX, speed and SEO foundations.</p>
-            <span class="svc-meta">Ideal for: brands & firms</span>
+        <div class="services-rows" aria-label="Premium services">
+          <button class="service-row svc-btn" type="button" data-service="dev">
+            <span class="service-no">01</span>
+            <div class="service-copy">
+              <h3>Elite Website Development</h3>
+              <p>Bespoke websites engineered for authority, speed, and refined user experience.</p>
+            </div>
+            <span class="service-cta">View plans</span>
           </button>
 
-          <button class="svc svc-btn" type="button" data-service="ecom">
-            <h3>E‑commerce</h3>
-            <p>Store setup, checkout optimization, integrations and launch support.</p>
-            <span class="svc-meta">Ideal for: online sales</span>
+          <button class="service-row svc-btn" type="button" data-service="ecom">
+            <span class="service-no">02</span>
+            <div class="service-copy">
+              <h3>Luxury E‑commerce Systems</h3>
+              <p>High-conversion storefronts with premium checkout flows and scaling foundations.</p>
+            </div>
+            <span class="service-cta">View plans</span>
           </button>
 
-          <button class="svc svc-btn" type="button" data-service="maint">
-            <h3>Maintenance & Updates</h3>
-            <p>Security, backups, updates and performance optimization.</p>
-            <span class="svc-meta">Ideal for: long-term stability</span>
+          <button class="service-row svc-btn" type="button" data-service="maint">
+            <span class="service-no">03</span>
+            <div class="service-copy">
+              <h3>Priority Maintenance & Security</h3>
+              <p>Proactive updates, advanced protection, backups, and performance monitoring.</p>
+            </div>
+            <span class="service-cta">View plans</span>
           </button>
 
-          <button class="svc svc-btn" type="button" data-service="book">
-            <h3>Booking System</h3>
-            <p>Appointments, schedules, client flows, reminders and dashboards.</p>
-            <span class="svc-meta">Ideal for: clinics, salons, restaurants</span>
+          <button class="service-row svc-btn" type="button" data-service="book">
+            <span class="service-no">04</span>
+            <div class="service-copy">
+              <h3>Intelligent Booking Platforms</h3>
+              <p>Seamless scheduling, reminders, team calendars, and operational automation.</p>
+            </div>
+            <span class="service-cta">View plans</span>
           </button>
 
-          <button class="svc svc-btn" type="button" data-service="geo">
-            <h3>Indoor Geo Location App</h3>
-            <p>Real-time indoor positioning and navigation for large venues.</p>
-            <span class="svc-meta">Ideal for: hospitals, airports, malls</span>
+          <button class="service-row svc-btn" type="button" data-service="geo">
+            <span class="service-no">05</span>
+            <div class="service-copy">
+              <h3>Indoor Geo‑Location Platforms</h3>
+              <p>Real-time indoor positioning and navigation for complex, high-traffic spaces.</p>
+            </div>
+            <span class="service-cta">View plans</span>
           </button>
         </div>
       </div>
@@ -153,13 +169,22 @@
     <section class="band cream" id="testimonials">
       <div class="wrap">
         <div class="section-head">
-          <h2>Client Testimonials</h2>
-          <p>Trusted by businesses that value quality, speed, and reliability.</p>
+          <h2>Client Results</h2>
+          <p>Trusted by leaders who require excellence, speed, and reliability.</p>
         </div>
         <div class="test-grid">
-          <figure class="block"><blockquote>“Fast delivery, premium quality, and clear communication from day one.”</blockquote><figcaption>— Client A, Healthcare</figcaption></figure>
-          <figure class="block"><blockquote>“Their booking platform improved our operations and reduced manual work drastically.”</blockquote><figcaption>— Client B, Service Business</figcaption></figure>
-          <figure class="block"><blockquote>“Excellent design judgment and strong technical execution.”</blockquote><figcaption>— Client C, Founder</figcaption></figure>
+          <figure class="block">
+            <blockquote>“CC Weblab delivered a level of quality we usually only see in enterprise agencies. Exceptional execution.”</blockquote>
+            <figcaption>— Director, Private Healthcare Group</figcaption>
+          </figure>
+          <figure class="block">
+            <blockquote>“Our booking workflow became dramatically faster and cleaner. Their system transformed operations.”</blockquote>
+            <figcaption>— Founder, Multi-Location Service Brand</figcaption>
+          </figure>
+          <figure class="block">
+            <blockquote>“Strategic, technical, and visually world-class. They made our brand feel premium at every touchpoint.”</blockquote>
+            <figcaption>— CEO, High-Growth Company</figcaption>
+          </figure>
         </div>
       </div>
     </section>
@@ -168,14 +193,14 @@
     <section class="band white" id="process">
       <div class="wrap">
         <div class="section-head">
-          <h2>Engagement Process</h2>
-          <p>A transparent workflow from strategy to launch.</p>
+          <h2>Our Signature Delivery Framework</h2>
+          <p>A disciplined process designed for elite outcomes.</p>
         </div>
         <div class="split">
-          <div class="block"><h3>1) Discovery</h3><p>Goals, audience, requirements, and roadmap definition.</p></div>
-          <div class="block"><h3>2) Design</h3><p>Premium visual direction and UX wireframes.</p></div>
-          <div class="block"><h3>3) Development</h3><p>Scalable implementation with performance best practices.</p></div>
-          <div class="block"><h3>4) Launch & Support</h3><p>Deployment, QA, monitoring and post-launch improvements.</p></div>
+          <div class="block"><h3>1) Strategic Discovery</h3><p>Business goals, market positioning, and technical requirements defined with precision.</p></div>
+          <div class="block"><h3>2) Premium UX & Visual Direction</h3><p>Experience design that reflects authority, clarity, and conversion intent.</p></div>
+          <div class="block"><h3>3) Engineering & Integration</h3><p>Robust implementation, scalable architecture, and high-performance standards.</p></div>
+          <div class="block"><h3>4) Launch, Optimize, Scale</h3><p>Deployment, quality assurance, data-driven optimization, and long-term support.</p></div>
         </div>
       </div>
     </section>
@@ -185,13 +210,13 @@
       <div class="wrap">
         <div class="section-head">
           <h2>FAQ</h2>
-          <p>Quick answers to common questions.</p>
+          <p>Clear answers for high-level decision makers.</p>
         </div>
         <div class="faq-grid">
-          <details class="block"><summary>How long does a project take?</summary><p>Typically 1–4 weeks depending on complexity and integrations.</p></details>
-          <details class="block"><summary>Can you integrate booking with my current website?</summary><p>Yes. We can integrate with existing websites or build a new system end-to-end.</p></details>
-          <details class="block"><summary>Do you provide maintenance?</summary><p>Yes, with monthly maintenance, updates, backups, and support tiers.</p></details>
-          <details class="block"><summary>Can I scale later?</summary><p>Absolutely. We design systems to grow with your business.</p></details>
+          <details class="block"><summary>What is your typical project timeline?</summary><p>Most premium web projects launch in 2–6 weeks depending on complexity, integrations, and approval cadence.</p></details>
+          <details class="block"><summary>Can you work with our existing site and systems?</summary><p>Yes. We can modernize and integrate existing assets or rebuild from scratch when strategic value is higher.</p></details>
+          <details class="block"><summary>Do you offer long-term support?</summary><p>Absolutely. We provide priority maintenance retainers for security, updates, monitoring, and iterative growth.</p></details>
+          <details class="block"><summary>Can the solution scale as we grow?</summary><p>Yes. Scalability is engineered from day one in architecture, data flow, and operational tooling.</p></details>
         </div>
       </div>
     </section>
@@ -200,8 +225,8 @@
     <section class="band bottom-green" id="contact">
       <div class="wrap">
         <section class="contact">
-          <h2 style="margin:0 0 6px;">Request a Consultation</h2>
-          <p style="margin:0;color:var(--muted);">Tell us your goals and we’ll respond within 24 hours.</p>
+          <h2 style="margin:0 0 6px;">Request a Private Consultation</h2>
+          <p style="margin:0;color:var(--muted);">Share your vision. Our team will respond within 24 hours with next steps.</p>
 
           <form action="#" method="post">
             {% csrf_token %}
@@ -211,7 +236,7 @@
             </div>
             <div class="row2">
               <div>
-                <label for="service">Service</label>
+                <label for="service">Service of Interest</label>
                 <select id="service" name="service">
                   <option>Website Development</option>
                   <option>E-commerce</option>
@@ -220,11 +245,11 @@
                   <option>Indoor Geo Location App</option>
                 </select>
               </div>
-              <div><label for="budget">Budget (optional)</label><input id="budget" name="budget" placeholder="$1,000 - $5,000" /></div>
+              <div><label for="budget">Estimated Investment (optional)</label><input id="budget" name="budget" placeholder="$3,000 - $15,000+" /></div>
             </div>
-            <div><label for="message">Project details</label><textarea id="message" name="message" placeholder="Tell us what you want to build..." required></textarea></div>
+            <div><label for="message">Project Brief</label><textarea id="message" name="message" placeholder="Tell us about your goals, timeline, and required features..." required></textarea></div>
             <div class="contact-actions">
-              <button class="btn primary" type="submit">Send Request</button>
+              <button class="btn primary" type="submit">Submit Request</button>
               <a class="btn" href="mailto:hello@example.com">Email</a>
               <a class="btn" href="tel:+10000000000">Call</a>
             </div>

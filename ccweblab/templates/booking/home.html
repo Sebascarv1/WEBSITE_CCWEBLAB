@@ -4,11 +4,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Book an Appointment | CC Weblab</title>
-  <meta name="description" content="Schedule your consultation with CC Weblab." />
+  <title>Book Private Consultation | CC Weblab</title>
+  <meta name="description" content="Schedule a private consultation with CC Weblab for premium web and booking systems." />
 
   <link rel="stylesheet" href="{% static 'css/services.css' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
@@ -20,47 +21,61 @@
         <img class="logo" src="{% static 'img/logo.png' %}" alt="CC Weblab logo" width="40" height="40" />
         <div>
           <strong>CC Weblab</strong>
-          <span>Digital Systems • Web Development • Booking Platforms</span>
+          <span>Elite Digital Engineering • Premium Client Experience</span>
         </div>
       </a>
+
       <nav class="navlinks" aria-label="Primary">
         <a href="{% url 'services:welcome' %}">Home</a>
         <a href="{% url 'services:welcome' %}#services">Services</a>
+        <a href="{% url 'services:welcome' %}#showcase">Portfolio</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- TOP GREEN -->
     <section class="band top-green">
       <div class="wrap">
         <section class="hero">
           <div class="hero-left">
             <div class="kicker"><span class="dot"></span> Priority scheduling available</div>
-            <h1>Book your consultation</h1>
-            <p class="lead">Tell us about your project and preferred timeline. We’ll respond with availability and next steps within 24 hours.</p>
+            <h1>Book your private consultation</h1>
+            <p class="lead">
+              Tell us what you want to build. We’ll review your goals and respond with the best roadmap, timeline, and next steps.
+            </p>
+            <div class="mini">
+              <div>Strategic project review</div>
+              <div>Tailored technical direction</div>
+              <div>Clear execution plan</div>
+            </div>
           </div>
-          <aside class="hero-media">
-            <img src="{% static 'img/calendar.jpg' %}" alt="Booking consultation">
+
+          <aside class="hero-media" aria-label="Consultation visual">
+            <img src="{% static 'img/calendar.jpg' %}" alt="Premium consultation">
             <div class="hero-overlay"></div>
-            <div class="hero-badge">Consultation • Planning • Execution</div>
+            <div class="hero-badge">Consultation • Strategy • Execution</div>
           </aside>
         </section>
       </div>
     </section>
 
-    <!-- BOTTOM GREEN -->
-    <section class="band bottom-green">
+    <section class="band cream">
       <div class="wrap">
         <section class="contact">
-          <h2 style="margin:0 0 6px;">Appointment Request</h2>
-          <p style="margin:0;color:var(--muted);">Complete the form and we’ll contact you shortly.</p>
+          <h2 style="margin:0 0 6px;">Consultation Request</h2>
+          <p style="margin:0;color:var(--muted);">Complete the form and our team will contact you within 24 hours.</p>
 
           <form method="post" action="#">
             {% csrf_token %}
             <div class="row2">
-              <div><label for="name">Full name</label><input id="name" name="name" placeholder="Your name" required></div>
-              <div><label for="email">Email</label><input id="email" type="email" name="email" placeholder="you@email.com" required></div>
+              <div>
+                <label for="name">Full name</label>
+                <input id="name" name="name" placeholder="Your name" required>
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input id="email" type="email" name="email" placeholder="you@email.com" required>
+              </div>
             </div>
 
             <div class="row2">
@@ -75,15 +90,27 @@
                   <option>Indoor Geo Location App</option>
                 </select>
               </div>
-              <div><label for="date">Preferred date</label><input id="date" type="date" name="preferred_date" required></div>
+              <div>
+                <label for="date">Preferred date</label>
+                <input id="date" type="date" name="preferred_date" required>
+              </div>
             </div>
 
             <div class="row2">
-              <div><label for="budget">Estimated budget (optional)</label><input id="budget" name="budget" placeholder="$1,000 - $5,000"></div>
-              <div><label for="timeline">Desired timeline (optional)</label><input id="timeline" name="timeline" placeholder="e.g. 2-4 weeks"></div>
+              <div>
+                <label for="budget">Estimated budget (optional)</label>
+                <input id="budget" name="budget" placeholder="$3,000 - $15,000+">
+              </div>
+              <div>
+                <label for="timeline">Desired timeline (optional)</label>
+                <input id="timeline" name="timeline" placeholder="e.g. 2-6 weeks">
+              </div>
             </div>
 
-            <div><label for="message">Project details</label><textarea id="message" name="message" placeholder="Describe your goals and required features." required></textarea></div>
+            <div>
+              <label for="message">Project details</label>
+              <textarea id="message" name="message" placeholder="Describe your goals, current challenges, and what success looks like." required></textarea>
+            </div>
 
             <div class="contact-actions">
               <button class="btn primary" type="submit">Submit Request</button>
@@ -93,6 +120,30 @@
         </section>
       </div>
     </section>
+
+    <section class="band bottom-green">
+      <div class="wrap">
+        <footer>
+          <div class="foot">
+            <div>© <span id="year"></span> CC Weblab. All rights reserved.</div>
+
+            <div class="socials" aria-label="Social links">
+              <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 8H16V5h-2.5C11 5 9.5 6.6 9.5 9.2V11H7v3h2.5v5H13v-5h2.6l.4-3H13v-1.6c0-.9.3-1.4 1.5-1.4Z"/></svg>
+              </a>
+              <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              </a>
+              <a href="https://wa.me/10000000000" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11.9c0 4.7-3.8 8.5-8.5 8.5-1.5 0-3-.4-4.2-1.1L4 20l.8-3.1A8.4 8.4 0 0 1 3 11.9C3 7.2 6.8 3.4 11.5 3.4S20 7.2 20 11.9Zm-5.1 2.1-.6-.3c-.2-.1-.4-.1-.5.1l-.3.4c-.1.1-.3.2-.5.1-.9-.4-1.7-1.1-2.3-1.9-.1-.2-.1-.4 0-.5l.2-.3c.1-.2.1-.4 0-.5l-.3-.6c-.1-.2-.3-.3-.5-.2l-.4.1c-.2.1-.4.3-.5.5-.3.7-.2 1.4.1 2.1.9 1.7 2.3 3.1 4.1 4 .7.3 1.4.4 2.1.1.2-.1.4-.3.5-.5l.1-.4c.1-.2 0-.4-.2-.5Z"/></svg>
+              </a>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </section>
   </main>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>
