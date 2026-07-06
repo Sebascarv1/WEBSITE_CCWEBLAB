@@ -37,75 +37,67 @@
   </header>
 
   <main id="top">
-
-    <!-- TOP GREEN BAND -->
-    <section class="band green">
+    <!-- HERO -->
+    <section class="band top-green">
       <div class="wrap">
-        <section class="hero hero--video">
-          <div class="card left">
+        <section class="hero">
+          <div class="hero-left">
             <div class="kicker"><span class="dot"></span> Selective client onboarding</div>
             <h1>We design and engineer high-performance digital experiences.</h1>
             <p class="lead">
-              From premium websites to robust booking platforms, we build elegant systems that
-              project trust and convert visitors into clients.
+              From premium websites to robust booking platforms, we build elegant systems that project trust and convert visitors into clients.
             </p>
-
             <div class="cta">
               <a class="btn primary" href="{% url 'booking:home' %}">Book an Appointment</a>
               <a class="btn" href="#services">Explore Services</a>
             </div>
-
-            <div class="mini" aria-label="Highlights">
-              <div><span class="check" aria-hidden="true">✓</span> Premium visual direction</div>
-              <div><span class="check" aria-hidden="true">✓</span> Scalable architecture</div>
-              <div><span class="check" aria-hidden="true">✓</span> Booking-ready systems</div>
+            <div class="mini">
+              <div>Premium visual direction</div>
+              <div>Scalable architecture</div>
+              <div>Booking-ready systems</div>
             </div>
           </div>
 
-          <aside class="card hero-media" aria-label="Hero video">
-            <div class="video-wrap">
-              <video autoplay muted loop playsinline preload="metadata" poster="{% static 'img/hero-poster.jpg' %}">
-                <source src="{% static 'video/hero4.mp4' %}" type="video/mp4">
-              </video>
-              <div class="video-overlay">
-                <div class="badge">Precision • Performance • Reliability</div>
-              </div>
-            </div>
+          <aside class="hero-media" aria-label="Hero media">
+            <video autoplay muted loop playsinline preload="metadata" poster="{% static 'img/hero-poster.jpg' %}">
+              <source src="{% static 'video/hero4.mp4' %}" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+            <div class="hero-badge">Precision • Performance • Reliability</div>
           </aside>
         </section>
       </div>
     </section>
 
-    <!-- WHITE BAND -->
+    <!-- STATS -->
     <section class="band white">
       <div class="wrap">
         <section class="stats">
-          <div class="stat card"><h3>120+</h3><p>Projects Delivered</p></div>
-          <div class="stat card"><h3>6+ Years</h3><p>Industry Experience</p></div>
-          <div class="stat card"><h3>98%</h3><p>Client Satisfaction</p></div>
-          <div class="stat card"><h3>24h</h3><p>Typical Response Time</p></div>
+          <div class="stat"><h3>120+</h3><p>Projects Delivered</p></div>
+          <div class="stat"><h3>6+ Years</h3><p>Industry Experience</p></div>
+          <div class="stat"><h3>98%</h3><p>Client Satisfaction</p></div>
+          <div class="stat"><h3>24h</h3><p>Typical Response Time</p></div>
         </section>
       </div>
     </section>
 
-    <!-- WHITE BAND -->
-    <section class="band white" id="showcase">
+    <!-- SHOWCASE -->
+    <section class="band cream" id="showcase">
       <div class="wrap">
         <div class="section-head">
           <h2>Selected Work & Capabilities</h2>
           <p>A visual overview of systems we design and deliver.</p>
         </div>
-
-        <div class="split showcase-grid">
-          <article class="card show-card">
-            <img src="{% static 'img/website.jpg' %}" alt="Premium business web project">
+        <div class="grid-2">
+          <article class="show">
+            <img src="{% static 'img/website.jpg' %}" alt="Corporate web presence">
             <div class="show-body">
               <h3>Corporate Web Presence</h3>
               <p>Elegant, conversion-focused websites built for credibility and growth.</p>
             </div>
           </article>
-          <article class="card show-card">
-            <img src="{% static 'img/booking.jpg' %}" alt="Booking system interface">
+          <article class="show">
+            <img src="{% static 'img/booking.jpg' %}" alt="Booking platform">
             <div class="show-body">
               <h3>Booking & Scheduling Platforms</h3>
               <p>Appointments, slots, reminders, and admin dashboards in one system.</p>
@@ -115,7 +107,7 @@
       </div>
     </section>
 
-    <!-- WHITE BAND -->
+    <!-- SERVICES -->
     <section class="band white" id="services">
       <div class="wrap">
         <div class="section-head">
@@ -123,81 +115,56 @@
           <p>Click any service to compare plans in detail.</p>
         </div>
 
-        <div class="svc-row" aria-label="Services (scroll horizontally)">
-          <button class="card svc svc-btn" type="button" data-service="dev" aria-label="Website Development plans">
-            <div class="svc-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="i"><path d="M8 9l-3 3 3 3M16 9l3 3-3 3M14 7l-4 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="svc-body">
-              <h3>Website Development</h3>
-              <p>Premium websites with clean UX, speed and SEO foundations.</p>
-              <span class="svc-meta">Ideal for: brands & firms</span>
-            </div>
+        <div class="svc-row" aria-label="Services">
+          <button class="svc svc-btn" type="button" data-service="dev">
+            <h3>Website Development</h3>
+            <p>Premium websites with clean UX, speed and SEO foundations.</p>
+            <span class="svc-meta">Ideal for: brands & firms</span>
           </button>
 
-          <button class="card svc svc-btn" type="button" data-service="ecom" aria-label="E-commerce plans">
-            <div class="svc-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="i"><path d="M6 6h15l-1.5 8.5a2 2 0 0 1-2 1.6H9.2a2 2 0 0 1-2-1.7L6 6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 6 5 3H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9.5 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="currentColor"/></svg>
-            </div>
-            <div class="svc-body">
-              <h3>E‑commerce</h3>
-              <p>Store setup, checkout optimization, integrations and launch support.</p>
-              <span class="svc-meta">Ideal for: online sales</span>
-            </div>
+          <button class="svc svc-btn" type="button" data-service="ecom">
+            <h3>E‑commerce</h3>
+            <p>Store setup, checkout optimization, integrations and launch support.</p>
+            <span class="svc-meta">Ideal for: online sales</span>
           </button>
 
-          <button class="card svc svc-btn" type="button" data-service="maint" aria-label="Maintenance plans">
-            <div class="svc-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="i"><path d="M12 2 20 6v7c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="svc-body">
-              <h3>Maintenance & Updates</h3>
-              <p>Security, backups, updates and performance optimization.</p>
-              <span class="svc-meta">Ideal for: long-term stability</span>
-            </div>
+          <button class="svc svc-btn" type="button" data-service="maint">
+            <h3>Maintenance & Updates</h3>
+            <p>Security, backups, updates and performance optimization.</p>
+            <span class="svc-meta">Ideal for: long-term stability</span>
           </button>
 
-          <button class="card svc svc-btn" type="button" data-service="book" aria-label="Booking System plans">
-            <div class="svc-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="i"><path d="M8 2v3M16 2v3M4 8h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </div>
-            <div class="svc-body">
-              <h3>Booking System</h3>
-              <p>Appointments, schedules, client flows, reminders and dashboards.</p>
-              <span class="svc-meta">Ideal for: clinics, salons, restaurants</span>
-            </div>
+          <button class="svc svc-btn" type="button" data-service="book">
+            <h3>Booking System</h3>
+            <p>Appointments, schedules, client flows, reminders and dashboards.</p>
+            <span class="svc-meta">Ideal for: clinics, salons, restaurants</span>
           </button>
 
-          <button class="card svc svc-btn" type="button" data-service="geo" aria-label="Geo indoor location app plans">
-            <div class="svc-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="i"><path d="M12 22s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-            </div>
-            <div class="svc-body">
-              <h3>Indoor Geo Location App</h3>
-              <p>Real-time indoor positioning and navigation for large venues.</p>
-              <span class="svc-meta">Ideal for: hospitals, airports, malls</span>
-            </div>
+          <button class="svc svc-btn" type="button" data-service="geo">
+            <h3>Indoor Geo Location App</h3>
+            <p>Real-time indoor positioning and navigation for large venues.</p>
+            <span class="svc-meta">Ideal for: hospitals, airports, malls</span>
           </button>
         </div>
       </div>
     </section>
 
-    <!-- WHITE BAND -->
-    <section class="band white" id="testimonials">
+    <!-- TESTIMONIALS -->
+    <section class="band cream" id="testimonials">
       <div class="wrap">
         <div class="section-head">
           <h2>Client Testimonials</h2>
           <p>Trusted by businesses that value quality, speed, and reliability.</p>
         </div>
         <div class="test-grid">
-          <figure class="card quote"><blockquote>“Fast delivery, premium quality, and clear communication from day one.”</blockquote><figcaption>— Client A, Healthcare</figcaption></figure>
-          <figure class="card quote"><blockquote>“Their booking platform improved our operations and reduced manual work drastically.”</blockquote><figcaption>— Client B, Service Business</figcaption></figure>
-          <figure class="card quote"><blockquote>“Excellent design judgment and strong technical execution.”</blockquote><figcaption>— Client C, Founder</figcaption></figure>
+          <figure class="block"><blockquote>“Fast delivery, premium quality, and clear communication from day one.”</blockquote><figcaption>— Client A, Healthcare</figcaption></figure>
+          <figure class="block"><blockquote>“Their booking platform improved our operations and reduced manual work drastically.”</blockquote><figcaption>— Client B, Service Business</figcaption></figure>
+          <figure class="block"><blockquote>“Excellent design judgment and strong technical execution.”</blockquote><figcaption>— Client C, Founder</figcaption></figure>
         </div>
       </div>
     </section>
 
-    <!-- WHITE BAND -->
+    <!-- PROCESS -->
     <section class="band white" id="process">
       <div class="wrap">
         <div class="section-head">
@@ -205,34 +172,34 @@
           <p>A transparent workflow from strategy to launch.</p>
         </div>
         <div class="split">
-          <div class="card step"><h3>1) Discovery</h3><p>Goals, audience, requirements, and roadmap definition.</p></div>
-          <div class="card step"><h3>2) Design</h3><p>Premium visual direction and UX wireframes.</p></div>
-          <div class="card step"><h3>3) Development</h3><p>Scalable implementation with performance best practices.</p></div>
-          <div class="card step"><h3>4) Launch & Support</h3><p>Deployment, QA, monitoring and post-launch improvements.</p></div>
+          <div class="block"><h3>1) Discovery</h3><p>Goals, audience, requirements, and roadmap definition.</p></div>
+          <div class="block"><h3>2) Design</h3><p>Premium visual direction and UX wireframes.</p></div>
+          <div class="block"><h3>3) Development</h3><p>Scalable implementation with performance best practices.</p></div>
+          <div class="block"><h3>4) Launch & Support</h3><p>Deployment, QA, monitoring and post-launch improvements.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- WHITE BAND -->
-    <section class="band white" id="faq">
+    <!-- FAQ -->
+    <section class="band cream" id="faq">
       <div class="wrap">
         <div class="section-head">
           <h2>FAQ</h2>
           <p>Quick answers to common questions.</p>
         </div>
         <div class="faq-grid">
-          <details class="card faq"><summary>How long does a project take?</summary><p>Typically 1–4 weeks depending on complexity and integrations.</p></details>
-          <details class="card faq"><summary>Can you integrate booking with my current website?</summary><p>Yes. We can integrate with existing websites or build a new system end-to-end.</p></details>
-          <details class="card faq"><summary>Do you provide maintenance?</summary><p>Yes, with monthly maintenance, updates, backups, and support tiers.</p></details>
-          <details class="card faq"><summary>Can I scale later?</summary><p>Absolutely. We design systems to grow with your business.</p></details>
+          <details class="block"><summary>How long does a project take?</summary><p>Typically 1–4 weeks depending on complexity and integrations.</p></details>
+          <details class="block"><summary>Can you integrate booking with my current website?</summary><p>Yes. We can integrate with existing websites or build a new system end-to-end.</p></details>
+          <details class="block"><summary>Do you provide maintenance?</summary><p>Yes, with monthly maintenance, updates, backups, and support tiers.</p></details>
+          <details class="block"><summary>Can I scale later?</summary><p>Absolutely. We design systems to grow with your business.</p></details>
         </div>
       </div>
     </section>
 
-    <!-- BOTTOM GREEN BAND -->
-    <section class="band green" id="contact">
+    <!-- CONTACT + FOOTER -->
+    <section class="band bottom-green" id="contact">
       <div class="wrap">
-        <section class="card contact" aria-label="Contact form">
+        <section class="contact">
           <h2 style="margin:0 0 6px;">Request a Consultation</h2>
           <p style="margin:0;color:var(--muted);">Tell us your goals and we’ll respond within 24 hours.</p>
 
@@ -242,7 +209,6 @@
               <div><label for="name">Name</label><input id="name" name="name" autocomplete="name" placeholder="Your name" required /></div>
               <div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required /></div>
             </div>
-
             <div class="row2">
               <div>
                 <label for="service">Service</label>
@@ -256,9 +222,7 @@
               </div>
               <div><label for="budget">Budget (optional)</label><input id="budget" name="budget" placeholder="$1,000 - $5,000" /></div>
             </div>
-
             <div><label for="message">Project details</label><textarea id="message" name="message" placeholder="Tell us what you want to build..." required></textarea></div>
-
             <div class="contact-actions">
               <button class="btn primary" type="submit">Send Request</button>
               <a class="btn" href="mailto:hello@example.com">Email</a>
@@ -270,19 +234,10 @@
         <footer>
           <div class="foot">
             <div>© <span id="year"></span> CC Weblab. All rights reserved.</div>
-
             <div class="socials" aria-label="Social links">
-              <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M13.5 8H16V5h-2.5C11 5 9.5 6.6 9.5 9.2V11H7v3h2.5v5H13v-5h2.6l.4-3H13v-1.6c0-.9.3-1.4 1.5-1.4Z"/></svg>
-              </a>
-
-              <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
-              </a>
-
-              <a href="https://wa.me/10000000000" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-btn">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20 11.9c0 4.7-3.8 8.5-8.5 8.5-1.5 0-3-.4-4.2-1.1L4 20l.8-3.1A8.4 8.4 0 0 1 3 11.9C3 7.2 6.8 3.4 11.5 3.4S20 7.2 20 11.9Zm-5.1 2.1-.6-.3c-.2-.1-.4-.1-.5.1l-.3.4c-.1.1-.3.2-.5.1-.9-.4-1.7-1.1-2.3-1.9-.1-.2-.1-.4 0-.5l.2-.3c.1-.2.1-.4 0-.5l-.3-.6c-.1-.2-.3-.3-.5-.2l-.4.1c-.2.1-.4.3-.5.5-.3.7-.2 1.4.1 2.1.9 1.7 2.3 3.1 4.1 4 .7.3 1.4.4 2.1.1.2-.1.4-.3.5-.5l.1-.4c.1-.2 0-.4-.2-.5Z"/></svg>
-              </a>
+              <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">f</a>
+              <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">ig</a>
+              <a href="https://wa.me/10000000000" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-btn">wa</a>
             </div>
           </div>
         </footer>
