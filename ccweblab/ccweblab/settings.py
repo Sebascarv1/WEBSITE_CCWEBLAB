@@ -33,11 +33,17 @@ DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 ALLOWED_HOSTS = [
     "website-ccweblab.onrender.com",
     ".onrender.com",   # allows any subdomain on onrender.com
+    "gairalabs.com",
+    "www.gairalabs.com",
     "localhost",
     "127.0.0.1",
 ]
 
-CSRF_TRUSTED_ORIGINS = ["https://website-ccweblab.onrender.com"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://website-ccweblab.onrender.com",
+    "https://gairalabs.com",
+    "https://www.gairalabs.com",
+]
 
 # Application definition
 
