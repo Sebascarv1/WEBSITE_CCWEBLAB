@@ -1,9 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("pricingModal");
-  const planRow = document.getElementById("planRow");
-  const title = document.getElementById("modalTitle");
-  const subtitle = document.getElementById("modalSubtitle");
+  const featureModal = document.getElementById("featureModal");
+  const featureTitle = document.getElementById("featureModalTitle");
+  const featureSubtitle = document.getElementById("featureModalSubtitle");
+  const featureContent = document.getElementById("featureContent");
 
+  const pricingModal = document.getElementById("pricingModal");
+  const pricingTitle = document.getElementById("modalTitle");
+  const pricingSubtitle = document.getElementById("modalSubtitle");
+  const planRow = document.getElementById("planRow");
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  // PRICING DATA
   const serviceTitles = {
     dev: "Website Development Plans",
     ecom: "E‑commerce Plans",
@@ -40,15 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ],
   };
 
-  function escapeHtml(str){
-    return String(str)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-
   function planToHTML(p){
     const li = (p.includes || []).map(x => `<li>${escapeHtml(x)}</li>`).join("");
     return `
@@ -64,32 +70,154 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  function openModal(serviceKey){
-    title.textContent = serviceTitles[serviceKey] || "Plans";
-    subtitle.textContent = "Compare packages and choose what fits your goals.";
+  function openPricingModal(serviceKey){
+    pricingTitle.textContent = serviceTitles[serviceKey] || "Plans";
+    pricingSubtitle.textContent = "Compare packages and choose what fits your goals.";
     const plans = plansByService[serviceKey] || [];
     planRow.innerHTML = plans.map(planToHTML).join("");
-    modal.classList.add("is-open");
-    modal.setAttribute("aria-hidden", "false");
+    pricingModal.classList.add("is-open");
+    pricingModal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
   }
 
-  function closeModal(){
-    modal.classList.remove("is-open");
-    modal.setAttribute("aria-hidden", "true");
+  function closePricingModal(){
+    pricingModal.classList.remove("is-open");
+    pricingModal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
   }
 
-  document.querySelectorAll(".svc-btn").forEach(btn => {
-    btn.addEventListener("click", () => openModal(btn.dataset.service));
+  // FEATURE DATA
+  const featureData = {
+    websites: {
+      title: "Custom Websites",
+      subtitle: "Bespoke, high-converting websites designed to elevate your brand",
+      description: "Our custom website solutions are tailored to your brand's unique identity and business goals. We create high-converting websites that attract and engage your ideal clients.",
+      features: [
+        "Responsive design that looks perfect on all devices",
+        "Fast-loading optimized pages",
+        "SEO-optimized structure",
+        "CMS integration for easy content management",
+        "Custom functionality tailored to your needs"
+      ]
+    },
+    booking: {
+      title: "Booking Software",
+      subtitle: "Powerful booking and client management",
+      description: "Streamline your appointment scheduling with our intuitive booking software. Reduce no-shows, manage availability, and provide a seamless client experience.",
+      features: [
+        "Easy online appointment scheduling",
+        "Automated confirmation & reminder emails",
+        "Client database management",
+        "Calendar synchronization",
+        "Payment integration"
+      ]
+    },
+    experience: {
+      title: "Client Experience",
+      subtitle: "Seamless digital experiences for your clients",
+      description: "Transform how your clients interact with your business. Our solutions make booking, managing services, and staying connected effortless.",
+      features: [
+        "Intuitive user interface",
+        "Self-service portal for clients",
+        "Automated communications",
+        "Mobile-friendly design",
+        "Personalized client journeys"
+      ]
+    },
+    growth: {
+      title: "Business Growth",
+      subtitle: "Conversion-focused design and tools",
+      description: "Scale your business sustainably with tools and strategies designed to drive growth. From conversion optimization to client retention, we've got you covered.",
+      features: [
+        "Conversion rate optimization",
+        "Analytics and reporting",
+        "Client retention strategies",
+        "Marketing automation",
+        "Growth consulting"
+      ]
+    },
+    support: {
+      title: "Ongoing Support",
+      subtitle: "Reliable support and maintenance",
+      description: "We're here when you need us. Our dedicated support team ensures your business stays ahead with proactive maintenance and responsive assistance.",
+      features: [
+        "24/7 technical support",
+        "Regular updates and maintenance",
+        "Security monitoring",
+        "Performance optimization",
+        "Proactive issue resolution"
+      ]
+    }
+  };
+
+  function openFeatureModal(featureKey){
+    const data = featureData[featureKey];
+    if (!data) return;
+
+    featureTitle.textContent = data.title;
+    featureSubtitle.textContent = data.subtitle;
+
+    const featureHTML = `
+      <h3>${escapeHtml(data.description)}</h3>
+      <ul>
+        ${data.features.map(f => `<li>${escapeHtml(f)}</li>`).join('')}
+      </ul>
+    `;
+
+    featureContent.innerHTML = featureHTML;
+    featureModal.classList.add("is-open");
+    featureModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeFeatureModal(){
+    featureModal.classList.remove("is-open");
+    featureModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  // Map feature keys to service keys for pricing
+  const featureToServiceMap = {
+    websites: "dev",
+    booking: "book",
+    experience: "book",
+    growth: "ecom",
+    support: "maint"
+  };
+
+  // Feature card click handlers - open pricing modal
+  document.querySelectorAll(".feature-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const featureKey = btn.dataset.feature;
+      const serviceKey = featureToServiceMap[featureKey];
+      if (serviceKey) {
+        openPricingModal(serviceKey);
+      }
+    });
   });
 
-  modal?.addEventListener("click", (e) => {
-    if (e.target?.dataset?.close === "true") closeModal();
+  // Modal backdrop and close button handlers
+  featureModal?.addEventListener("click", (e) => {
+    if (e.target?.dataset?.close === "true") closeFeatureModal();
+    if (e.target === featureModal) closeFeatureModal();
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("is-open")) closeModal();
+    if (e.key === "Escape" && featureModal.classList.contains("is-open")) closeFeatureModal();
+  });
+
+  // Pricing modal event listeners
+  document.querySelectorAll(".svc-btn").forEach(btn => {
+    btn.addEventListener("click", () => openPricingModal(btn.dataset.service));
+  });
+
+  pricingModal?.addEventListener("click", (e) => {
+    if (e.target?.dataset?.close === "true") closePricingModal();
+    if (e.target === pricingModal) closePricingModal();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && pricingModal.classList.contains("is-open")) closePricingModal();
   });
 
   // reveal animation
@@ -99,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }, { threshold: 0.14 });
 
-  document.querySelectorAll("section, .card, .svc-btn").forEach(el => {
+  document.querySelectorAll("section, .card, .feature-btn, .svc-btn").forEach(el => {
     el.classList.add("reveal");
     observer.observe(el);
   });

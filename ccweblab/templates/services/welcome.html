@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CC Weblab | Elite Web Engineering & Digital Platforms</title>
-  <meta name="description" content="CC Weblab builds elite websites, booking systems, and digital platforms for brands that demand excellence." />
+  <title>Premium Beauty & Wellness Booking Software | CC Labs</title>
+  <meta name="description" content="Premium websites and booking software for beauty & wellness brands. Elevate your client experience with CC Labs." />
 
   <link rel="stylesheet" href="{% static 'css/services.css' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
@@ -17,261 +17,210 @@
 <body>
   <header>
     <div class="nav">
-      <a class="brand" href="#top" aria-label="Home">
-        <img class="logo" src="{% static 'img/logo.png' %}" alt="CC Weblab logo" width="40" height="40" />
-        <div>
-          <strong>CC Weblab</strong>
-          <span>Elite Digital Engineering • Premium Client Experience</span>
-        </div>
+      <a class="brand" href="{% url 'services:welcome' %}" aria-label="Home">
+        <img class="logo" src="{% static 'img/logo.png' %}" alt="CC Labs logo" width="40" height="40" />
+        <strong>CC LABS</strong>
       </a>
 
-      <button class="nav-toggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle menu">
-        <span></span>
-      </button>
-
-      <nav class="navlinks" id="primaryNav" aria-label="Primary">
-        <a href="#services">Services</a>
-        <a href="#showcase">Portfolio</a>
-        <a href="#testimonials">Results</a>
-        <a href="#process">Process</a>
-        <a href="#faq">FAQ</a>
-        <a class="btn primary" href="{% url 'booking:home' %}">Book Private Consultation</a>
+      <nav class="navlinks" aria-label="Primary">
+        <a href="#services">SERVICES</a>
+        <a href="#solutions">SOLUTIONS</a>
+        <a href="#work">WORK</a>
+        <a href="#pricing">PRICING</a>
+        <a href="#about">ABOUT</a>
+        <a href="#resources">RESOURCES</a>
       </nav>
+
+      <a href="{% url 'booking:home' %}" class="btn primary btn-sm">BOOK A CALL</a>
     </div>
   </header>
 
   <main id="top">
-    <!-- HERO -->
-    <section class="band top-green">
+    <!-- Hero Section -->
+    <section class="band cream hero-band">
       <div class="wrap">
         <section class="hero">
           <div class="hero-left">
-            <div class="kicker"><span class="dot"></span> Limited client intake • High-touch delivery</div>
-            <h1>Websites and booking systems built by people who read every line before it ships.</h1>
+            <div class="kicker">
+              <span class="dot"></span> WEBSITES & BOOKING SOFTWARE
+            </div>
+            <h1>Digital solutions that elevate beauty & wellness brands.</h1>
             <p class="lead">
-              We build custom websites, booking systems, and e-commerce platforms for teams who'd rather do it once, properly.
-              No templates, no plugin stacks held together with hope.
+              CC Labs builds premium websites and booking software that help beauty and wellness businesses attract clients, streamline operations and grow with confidence.
             </p>
             <div class="cta">
-              <a class="btn primary" href="{% url 'booking:home' %}">Book Private Consultation</a>
-              <a class="btn" href="#services">Explore Services</a>
-            </div>
-            <div class="mini">
-              <div>Hand-coded, not templated</div>
-              <div>Built to handle real traffic</div>
-              <div>Tested before it reaches you</div>
+              <a href="{% url 'booking:home' %}" class="btn primary">EXPLORE SOLUTIONS</a>
+              <a href="#work" class="btn">VIEW OUR WORK</a>
             </div>
           </div>
 
-          <aside class="hero-media" aria-label="Hero media">
-            <video autoplay muted loop playsinline preload="metadata" poster="{% static 'img/hero-poster.jpg' %}">
-              <source src="{% static 'video/hero4.mp4' %}" type="video/mp4">
-            </video>
+          <aside class="hero-media" aria-label="Platform showcase">
+            <img src="{% static 'img/hero_beauty.png' %}" alt="Premium platform mockup">
             <div class="hero-overlay"></div>
-            <div class="hero-badge">Precision • Authority • Performance</div>
           </aside>
         </section>
       </div>
     </section>
 
-    <!-- STATS -->
-    <section class="band white">
+    <!-- Trusted By Section -->
+    <section class="band white trusted-by">
       <div class="wrap">
-        <section class="stats">
-          <div class="stat"><h3>150+</h3><p>Projects Delivered</p></div>
-          <div class="stat"><h3>7+ Years</h3><p>In Production</p></div>
-          <div class="stat"><h3>98%</h3><p>Client Retention</p></div>
-          <div class="stat"><h3>24h</h3><p>Response Window</p></div>
-        </section>
-      </div>
-    </section>
-
-    <!-- SHOWCASE -->
-    <section class="band cream" id="showcase">
-      <div class="wrap">
-        <div class="section-head">
-          <h2>Selected Work</h2>
-          <p>A couple of the systems we've shipped recently.</p>
-        </div>
-        <div class="grid-2">
-          <article class="show">
-            <img src="{% static 'img/analytics.jpg' %}" alt="Premium corporate website project">
-            <div class="show-body">
-              <h3>Executive Web Presence</h3>
-              <p>A corporate site rebuilt from scratch — faster, cleaner, and easier to update.</p>
-            </div>
-          </article>
-          <article class="show">
-            <img src="{% static 'img/booking.jpg' %}" alt="Advanced booking platform">
-            <div class="show-body">
-              <h3>Booking, End to End</h3>
-              <p>Appointment flows, reminders, and a management dashboard, in one platform.</p>
-            </div>
-          </article>
+        <p class="trusted-label">TRUSTED BY LEADING BEAUTY & WELLNESS BRANDS</p>
+        <div class="brand-grid">
+          <div class="brand-item">skinlab</div>
+          <div class="brand-item">LUXE BEAUTY</div>
+          <div class="brand-item">PURE WELLNESS</div>
+          <div class="brand-item">ELAN CLINIC</div>
+          <div class="brand-item">BEAUTY COLLECTIVE</div>
+          <div class="brand-item">BALANCE STUDIO</div>
         </div>
       </div>
     </section>
 
-    <!-- SERVICES -->
+    <!-- Features Section -->
     <section class="band white" id="services">
       <div class="wrap">
-        <div class="section-head services-head">
-          <h2>Five things we build well. Nothing we outsource.</h2>
-          <p>Each service below is handled in-house, start to finish.</p>
-        </div>
-
-        <div class="services-rows" aria-label="Services">
-          <button class="service-row svc-btn" type="button" data-service="dev">
-            <span class="service-no">01</span>
-            <div class="service-copy">
-              <h3>Website Development</h3>
-              <p>Custom-built sites, coded from scratch for speed and clarity — no page-builder bloat.</p>
-            </div>
-            <span class="service-cta">View plans</span>
+        <div class="features-grid">
+          <button class="feature-card feature-btn" type="button" data-feature="websites">
+            <div class="feature-icon">🌐</div>
+            <h3>Custom Websites</h3>
+            <p>Bespoke, high-converting websites designed to elevate your brand and attract high-value clients.</p>
           </button>
 
-          <button class="service-row svc-btn" type="button" data-service="ecom">
-            <span class="service-no">02</span>
-            <div class="service-copy">
-              <h3>E-commerce Systems</h3>
-              <p>Storefronts built to convert, with checkout flows people actually finish.</p>
-            </div>
-            <span class="service-cta">View plans</span>
+          <button class="feature-card feature-btn" type="button" data-feature="booking">
+            <div class="feature-icon">📅</div>
+            <h3>Booking Software</h3>
+            <p>Powerful booking and client management for beauty and wellness businesses.</p>
           </button>
 
-          <button class="service-row svc-btn" type="button" data-service="maint">
-            <span class="service-no">03</span>
-            <div class="service-copy">
-              <h3>Maintenance & Security</h3>
-              <p>Updates, backups, and monitoring handled before something breaks — not after.</p>
-            </div>
-            <span class="service-cta">View plans</span>
+          <button class="feature-card feature-btn" type="button" data-feature="experience">
+            <div class="feature-icon">👥</div>
+            <h3>Client Experience</h3>
+            <p>Seamless digital experiences that make booking appointments and managing services effortless.</p>
           </button>
 
-          <button class="service-row svc-btn" type="button" data-service="book">
-            <span class="service-no">04</span>
-            <div class="service-copy">
-              <h3>Booking Platforms</h3>
-              <p>Scheduling that syncs calendars, sends reminders, and runs without you checking it daily.</p>
-            </div>
-            <span class="service-cta">View plans</span>
+          <button class="feature-card feature-btn" type="button" data-feature="growth">
+            <div class="feature-icon">📊</div>
+            <h3>Business Growth</h3>
+            <p>Conversion-focused design and tools that help you grow and scale sustainably.</p>
           </button>
 
-          <button class="service-row svc-btn" type="button" data-service="geo">
-            <span class="service-no">05</span>
-            <div class="service-copy">
-              <h3>Indoor Geo-Location</h3>
-              <p>Real-time indoor navigation for venues where people get lost — malls, campuses, hospitals.</p>
-            </div>
-            <span class="service-cta">View plans</span>
+          <button class="feature-card feature-btn" type="button" data-feature="support">
+            <div class="feature-icon">🎧</div>
+            <h3>Ongoing Support</h3>
+            <p>Reliable support and maintenance so your business always stays ahead.</p>
           </button>
         </div>
       </div>
     </section>
 
-    <!-- TESTIMONIALS -->
-    <section class="band cream" id="testimonials">
+    <!-- Platform Features Section -->
+    <section class="band navy-dark" id="solutions">
       <div class="wrap">
-        <div class="section-head">
-          <h2>Client Results</h2>
-          <p>What people say after working with us.</p>
-        </div>
-        <div class="test-grid">
-          <figure class="block">
-            <blockquote>"CC Weblab delivered a level of quality we usually only see in enterprise agencies. Exceptional execution."</blockquote>
-            <figcaption>— Director, Private Healthcare Group</figcaption>
-          </figure>
-          <figure class="block">
-            <blockquote>"Our booking workflow became dramatically faster and cleaner. Their system transformed operations."</blockquote>
-            <figcaption>— Founder, Multi-Location Service Brand</figcaption>
-          </figure>
-          <figure class="block">
-            <blockquote>"Strategic, technical, and visually world-class. They made our brand feel premium at every touchpoint."</blockquote>
-            <figcaption>— CEO, High-Growth Company</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <!-- PROCESS -->
-    <section class="band white" id="process">
-      <div class="wrap">
-        <div class="section-head">
-          <h2>How We Work</h2>
-          <p>The same process, every project.</p>
-        </div>
-        <div class="split">
-          <div class="block"><h3>1) Discovery</h3><p>Business goals, market positioning, and technical requirements defined up front.</p></div>
-          <div class="block"><h3>2) UX & Visual Direction</h3><p>Experience design that reflects your brand and drives the outcome you want.</p></div>
-          <div class="block"><h3>3) Engineering</h3><p>Robust implementation, built on architecture that scales.</p></div>
-          <div class="block"><h3>4) Launch & Support</h3><p>Deployment, testing, and long-term support once you're live.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="band cream" id="faq">
-      <div class="wrap">
-        <div class="section-head">
-          <h2>FAQ</h2>
-          <p>Common questions before getting started.</p>
-        </div>
-        <div class="faq-grid">
-          <details class="block"><summary>What is your typical project timeline?</summary><p>Most projects launch in 2–6 weeks depending on complexity, integrations, and approval cadence.</p></details>
-          <details class="block"><summary>Can you work with our existing site and systems?</summary><p>Yes. We can modernize and integrate existing assets or rebuild from scratch when that makes more sense.</p></details>
-          <details class="block"><summary>Do you offer long-term support?</summary><p>Yes — we offer maintenance retainers for security, updates, monitoring, and iterative growth.</p></details>
-          <details class="block"><summary>Can the solution scale as we grow?</summary><p>Yes. Scalability is built into the architecture and data flow from day one.</p></details>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT + FOOTER -->
-    <section class="band bottom-green" id="contact">
-      <div class="wrap">
-        <section class="contact">
-          <h2 style="margin:0 0 6px;">Request a Consultation</h2>
-          <p style="margin:0;color:var(--muted);">Share your vision. We'll respond within 24 hours with next steps.</p>
-
-          <form action="#" method="post">
-            {% csrf_token %}
-            <div class="row2">
-              <div><label for="name">Name</label><input id="name" name="name" autocomplete="name" placeholder="Your name" required /></div>
-              <div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required /></div>
-            </div>
-            <div class="row2">
-              <div>
-                <label for="service">Service of Interest</label>
-                <select id="service" name="service">
-                  <option>Website Development</option>
-                  <option>E-commerce</option>
-                  <option>Maintenance</option>
-                  <option>Booking System</option>
-                  <option>Indoor Geo Location App</option>
-                </select>
+        <div class="platform-container">
+          <div class="platform-content">
+            <h2>Everything you need to run and grow your business.</h2>
+            <p>From beautiful websites to intelligent booking and client management — our platform is designed to simplify your workflow and elevate your brand.</p>
+            
+            <div class="platform-grid">
+              <div class="feature-highlight">
+                <h3>📊 Dashboard</h3>
+                <p>Real-time insights into your business metrics and client activity.</p>
               </div>
-              <div><label for="budget">Estimated Investment (optional)</label><input id="budget" name="budget" placeholder="$3,000 - $15,000+" /></div>
-            </div>
-            <div><label for="message">Project Brief</label><textarea id="message" name="message" placeholder="Tell us about your goals, timeline, and required features..." required></textarea></div>
-            <div class="contact-actions">
-              <button class="btn primary" type="submit">Submit Request</button>
-              <a class="btn" href="mailto:hello@example.com">Email</a>
-              <a class="btn" href="tel:+10000000000">Call</a>
-            </div>
-          </form>
-        </section>
 
+              <div class="feature-highlight">
+                <h3>📅 Booking</h3>
+                <p>Seamless appointment booking system for your clients.</p>
+              </div>
+
+              <div class="feature-highlight">
+                <h3>👥 Clients</h3>
+                <p>Complete client management and communication tools.</p>
+              </div>
+
+              <div class="feature-highlight">
+                <h3>💰 Analytics</h3>
+                <p>Track revenue, performance, and growth trends.</p>
+              </div>
+
+              <div class="feature-highlight">
+                <h3>🔧 Settings</h3>
+                <p>Full control over your business configuration.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="platform-image">
+            <img src="{% static 'img/analytics.jpg' %}" alt="Dashboard preview" class="platform-preview">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Features -->
+    <section class="band white" id="work">
+      <div class="wrap">
+        <div class="bottom-features">
+          <div class="bottom-feature">
+            <div class="feature-num">1</div>
+            <h3>Bespoke Solutions</h3>
+            <p>Tailored to your brand's unique needs and goals.</p>
+          </div>
+
+          <div class="bottom-feature">
+            <div class="feature-num">2</div>
+            <h3>Secure & Reliable</h3>
+            <p>Bank-with-enterprise-grade security and uptime.</p>
+          </div>
+
+          <div class="bottom-feature">
+            <div class="feature-num">3</div>
+            <h3>Mobile Optimized</h3>
+            <p>Perfect experience on any device.</p>
+          </div>
+
+          <div class="bottom-feature">
+            <div class="feature-num">4</div>
+            <h3>Integrated & Scalable</h3>
+            <p>Designed to grow with your business.</p>
+          </div>
+
+          <div class="bottom-feature">
+            <div class="feature-num">5</div>
+            <h3>Dedicated Support</h3>
+            <p>We're here when you need us.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="band bottom-green">
+      <div class="wrap">
+        <div class="cta-section">
+          <h2>Ready to transform your business?</h2>
+          <p>Let's discuss how CC Labs can elevate your brand and streamline your operations.</p>
+          <a href="{% url 'booking:home' %}" class="btn primary btn-lg">Schedule a Consultation</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <section class=\"band navy-dark\">
+      <div class=\"wrap\">
         <footer>
-          <div class="foot">
-            <div>© <span id="year"></span> CC Weblab. All rights reserved.</div>
-            <div class="socials" aria-label="Social links">
-              <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 8H16V5h-2.5C11 5 9.5 6.6 9.5 9.2V11H7v3h2.5v5H13v-5h2.6l.4-3H13v-1.6c0-.9.3-1.4 1.5-1.4Z"/></svg>
+          <div class=\"foot\">
+            <div>© <span id=\"year\"></span> CC Labs. All rights reserved.</div>
+
+            <div class=\"socials\" aria-label=\"Social links\">
+              <a href=\"https://facebook.com/\" target=\"_blank\" rel=\"noopener\" aria-label=\"Facebook\" class=\"social-btn\">
+                <svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M13.5 8H16V5h-2.5C11 5 9.5 6.6 9.5 9.2V11H7v3h2.5v5H13v-5h2.6l.4-3H13v-1.6c0-.9.3-1.4 1.5-1.4Z\"/></svg>
               </a>
-              <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              <a href=\"https://instagram.com/\" target=\"_blank\" rel=\"noopener\" aria-label=\"Instagram\" class=\"social-btn\">
+                <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"5\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><circle cx=\"17.5\" cy=\"6.5\" r=\"1\"/></svg>
               </a>
-              <a href="https://wa.me/10000000000" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11.9c0 4.7-3.8 8.5-8.5 8.5-1.5 0-3-.4-4.2-1.1L4 20l.8-3.1A8.4 8.4 0 0 1 3 11.9C3 7.2 6.8 3.4 11.5 3.4S20 7.2 20 11.9Zm-5.1 2.1-.6-.3c-.2-.1-.4-.1-.5.1l-.3.4c-.1.1-.3.2-.5.1-.9-.4-1.7-1.1-2.3-1.9-.1-.2-.1-.4 0-.5l.2-.3c.1-.2.1-.4 0-.5l-.3-.6c-.1-.2-.3-.3-.5-.2l-.4.1c-.2.1-.4.3-.5.5-.3.7-.2 1.4.1 2.1.9 1.7 2.3 3.1 4.1 4 .7.3 1.4.4 2.1.1.2-.1.4-.3.5-.5l.1-.4c.1-.2 0-.4-.2-.5Z"/></svg>
+              <a href=\"https://wa.me/10000000000\" target=\"_blank\" rel=\"noopener\" aria-label=\"WhatsApp\" class=\"social-btn\">
+                <svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M20 11.9c0 4.7-3.8 8.5-8.5 8.5-1.5 0-3-.4-4.2-1.1L4 20l.8-3.1A8.4 8.4 0 0 1 3 11.9C3 7.2 6.8 3.4 11.5 3.4S20 7.2 20 11.9Zm-5.1 2.1-.6-.3c-.2-.1-.4-.1-.5.1l-.3.4c-.1.1-.3.2-.5.1-.9-.4-1.7-1.1-2.3-1.9-.1-.2-.1-.4 0-.5l.2-.3c.1-.2.1-.4 0-.5l-.3-.6c-.1-.2-.3-.3-.5-.2l-.4.1c-.2.1-.4.3-.5.5-.3.7-.2 1.4.1 2.1.9 1.7 2.3 3.1 4.1 4 .7.3 1.4.4 2.1.1.2-.1.4-.3.5-.5l.1-.4c.1-.2 0-.4-.2-.5Z\"/></svg>
               </a>
             </div>
           </div>
@@ -279,6 +228,26 @@
       </div>
     </section>
   </main>
+
+  <!-- FEATURE DETAILS MODAL -->
+  <div class="modal" id="featureModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="featureModalTitle">
+      <div class="modal-header">
+        <div>
+          <h2 id="featureModalTitle" class="modal-title">Feature</h2>
+          <p id="featureModalSubtitle" class="modal-subtitle">Learn more about this feature.</p>
+        </div>
+        <button class="modal-close" type="button" aria-label="Close" data-close="true">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="featureContent" class="feature-content"></div>
+        <div class="modal-cta">
+          <a href="{% url 'booking:home' %}" class="btn primary" data-close="true">Book a Call</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- PRICING MODAL -->
   <div class="modal" id="pricingModal" aria-hidden="true">
@@ -298,22 +267,6 @@
   </div>
 
   <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
-
-  <script>
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinks = document.getElementById('primaryNav');
-    navToggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('open');
-      navToggle.setAttribute('aria-expanded', isOpen);
-    });
-    navLinks.querySelectorAll('a').forEach(link =>
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      })
-    );
-  </script>
-
   <script src="{% static 'js/services.js' %}"></script>
 </body>
 </html>

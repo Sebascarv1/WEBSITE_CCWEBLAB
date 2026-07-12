@@ -149,6 +149,43 @@
     </section>
   </main>
 
+  <!-- FEATURE DETAILS MODAL -->
+  <div class="modal" id="featureModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="featureModalTitle">
+      <div class="modal-header">
+        <div>
+          <h2 id="featureModalTitle" class="modal-title">Feature</h2>
+          <p id="featureModalSubtitle" class="modal-subtitle">Learn more about this feature.</p>
+        </div>
+        <button class="modal-close" type="button" aria-label="Close" data-close="true">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="featureContent" class="feature-content"></div>
+        <div class="modal-cta">
+          <a href="{% url 'booking:home' %}" class="btn primary" data-close="true">Book a Call</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICING MODAL -->
+  <div class="modal" id="pricingModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div>
+          <h2 id="modalTitle" class="modal-title">Plans</h2>
+          <p id="modalSubtitle" class="modal-subtitle">Choose a package that fits your needs.</p>
+        </div>
+        <button class="modal-close" type="button" aria-label="Close" data-close="true">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="plan-row" id="planRow" aria-label="Scrollable plans"></div>
+      </div>
+    </div>
+  </div>
+
   <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
   <script>
   document.getElementById("year").textContent = new Date().getFullYear();
@@ -194,5 +231,6 @@
 
   dateInput.addEventListener("change", e => renderSlots(e.target.value));
 </script>
+  <script src="{% static 'js/services.js' %}"></script>
 </body>
 </html>
