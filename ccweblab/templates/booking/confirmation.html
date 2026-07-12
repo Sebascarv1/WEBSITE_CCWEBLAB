@@ -1,0 +1,215 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Booking Confirmed | CC Labs</title>
+  <meta name="description" content="Your booking has been confirmed. Thank you for choosing CC Labs." />
+
+  <link rel="stylesheet" href="{% static 'css/services.css' %}">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    .confirmation-container {
+      text-align: center;
+      padding: 60px 0;
+    }
+
+    .confirmation-icon {
+      font-size: 80px;
+      margin-bottom: 28px;
+      animation: scaleIn 0.6s ease;
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .confirmation-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--navy);
+    }
+
+    .confirmation-message {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    .booking-details {
+      max-width: 600px;
+      margin: 32px auto;
+      background: linear-gradient(135deg, rgba(166, 135, 92, 0.05), rgba(166, 135, 92, 0.02));
+      border: 1px solid rgba(166, 135, 92, 0.2);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-align: left;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(166, 135, 92, 0.1);
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .detail-value {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .confirmation-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .next-steps {
+      max-width: 700px;
+      margin: 48px auto;
+      text-align: left;
+    }
+
+    .next-steps h3 {
+      font-size: 1.15rem;
+      margin-bottom: 20px;
+    }
+
+    .next-steps ol {
+      list-style: decimal;
+      padding-left: 24px;
+      color: var(--muted);
+    }
+
+    .next-steps li {
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <a class="brand" href="{% url 'services:welcome' %}" aria-label="Home">
+        <img class="logo" src="{% static 'img/logo.png' %}" alt="CC Labs logo" width="40" height="40" />
+        <strong>CC LABS</strong>
+      </a>
+
+      <nav class="navlinks" aria-label="Primary">
+        <a href="{% url 'services:welcome' %}">Home</a>
+        <a href="{% url 'services:welcome' %}#services">Services</a>
+        <a href="{% url 'services:welcome' %}#solutions">Platform</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="band cream">
+      <div class="wrap">
+        <div class="confirmation-container">
+          <div class="confirmation-icon">✓</div>
+          <h1 class="confirmation-title">Booking Confirmed!</h1>
+          <p class="confirmation-message">
+            Thank you, {{ booking.full_name }}! Your consultation has been scheduled. 
+            We'll contact you at {{ booking.email }} to confirm all the details and prepare for your meeting.
+          </p>
+
+          <div class="booking-details">
+            <div class="detail-row">
+              <span class="detail-label">Service:</span>
+              <span class="detail-value">{{ booking.activity.name }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Date:</span>
+              <span class="detail-value">{{ booking.booking_date|date:"l, F j, Y" }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Time:</span>
+              <span class="detail-value">{{ booking.booking_time|time:"H:i" }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Duration:</span>
+              <span class="detail-value">{{ booking.activity.duration_minutes }} minutes</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Confirmation ID:</span>
+              <span class="detail-value">#{{ booking.id }}</span>
+            </div>
+          </div>
+
+          <div class="next-steps">
+            <h3>What happens next?</h3>
+            <ol>
+              <li><strong>Confirmation email</strong> — Check your inbox for a confirmation email with calendar invite and meeting details</li>
+              <li><strong>Pre-consultation prep</strong> — Review the project details you've shared so we can be fully prepared</li>
+              <li><strong>Project review</strong> — During the consultation, we'll discuss your goals, timeline, and vision</li>
+              <li><strong>Custom proposal</strong> — After our discussion, we'll send a tailored proposal with next steps</li>
+            </ol>
+          </div>
+
+          <div class="confirmation-actions">
+            <a href="{% url 'services:welcome' %}" class="btn primary">Back to Home</a>
+            <a href="mailto:hello@cclabs.es" class="btn">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="band bottom-green">
+      <div class="wrap">
+        <div class="cta-section">
+          <h2>Have questions before your consultation?</h2>
+          <p>Reach out to our team — we're here to help ensure your experience is seamless.</p>
+          <a href="mailto:hello@cclabs.es" class="btn primary">Email Us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <section class="band navy-dark">
+      <div class="wrap">
+        <footer>
+          <div class="foot">
+            <div>© <span id="year"></span> CC Labs. All rights reserved.</div>
+            <div class="socials" aria-label="Social links">
+              <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 8H16V5h-2.5C11 5 9.5 6.6 9.5 9.2V11H7v3h2.5v5H13v-5h2.6l.4-3H13v-1.6c0-.9.3-1.4 1.5-1.4Z"/></svg>
+              </a>
+              <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              </a>
+              <a href="https://wa.me/10000000000" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11.9c0 4.7-3.8 8.5-8.5 8.5-1.5 0-3-.4-4.2-1.1L4 20l.8-3.1A8.4 8.4 0 0 1 3 11.9C3 7.2 6.8 3.4 11.5 3.4S20 7.2 20 11.9Zm-5.1 2.1-.6-.3c-.2-.1-.4-.1-.5.1l-.3.4c-.1.1-.3.2-.5.1-.9-.4-1.7-1.1-2.3-1.9-.1-.2-.1-.4 0-.5l.2-.3c.1-.2.1-.4 0-.5l-.3-.6c-.1-.2-.3-.3-.5-.2l-.4.1c-.2.1-.4.3-.5.5-.3.7-.2 1.4.1 2.1.9 1.7 2.3 3.1 4.1 4 .7.3 1.4.4 2.1.1.2-.1.4-.3.5-.5l.1-.4c.1-.2 0-.4-.2-.5Z"/></svg>
+              </a>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

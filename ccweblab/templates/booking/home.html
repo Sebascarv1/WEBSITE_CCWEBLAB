@@ -4,10 +4,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Book Private Consultation | CC Weblab</title>
-  <meta name="description" content="Schedule a private consultation with CC Weblab for premium web and booking systems." />
+  <title>Book Private Consultation | CC Labs</title>
+  <meta name="description" content="Schedule a private consultation with CC Labs for premium web and booking systems." />
 
   <link rel="stylesheet" href="{% static 'css/services.css' %}">
+  <link rel="stylesheet" href="{% static 'css/booking.css' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,18 +19,17 @@
   <header>
     <div class="nav">
       <a class="brand" href="{% url 'services:welcome' %}" aria-label="Home">
-        <img class="logo" src="{% static 'img/logo.png' %}" alt="CC Weblab logo" width="40" height="40" />
-        <div>
-          <strong>CC Weblab</strong>
-          <span>Elite Digital Engineering • Premium Client Experience</span>
-        </div>
+        <img class="logo" src="{% static 'img/logo.png' %}" alt="CC Labs logo" width="40" height="40" />
+        <strong>CC LABS</strong>
       </a>
 
       <nav class="navlinks" aria-label="Primary">
         <a href="{% url 'services:welcome' %}">Home</a>
         <a href="{% url 'services:welcome' %}#services">Services</a>
-        <a href="{% url 'services:welcome' %}#showcase">Portfolio</a>
+        <a href="{% url 'services:welcome' %}#solutions">Platform</a>
       </nav>
+
+      <a href="#booking-form" class="btn primary btn-sm">BOOK NOW</a>
     </div>
   </header>
 
@@ -59,67 +59,155 @@
       </div>
     </section>
 
-    <section class="band cream">
+    <section class="band cream" id="booking-form">
       <div class="wrap">
         <section class="contact">
-          <h2 style="margin:0 0 6px;">Consultation Request</h2>
-          <p style="margin:0;color:var(--muted);">Complete the form and our team will contact you within 24 hours.</p>
+          <h2 style="margin:0 0 12px;">Consultation Request</h2>
+          <p style="margin:0 0 32px; color:var(--muted);">Fill out the form and select your preferred time slot. Our team will contact you within 24 hours to confirm.</p>
 
-          <form method="post" action="#">
+          {% if error %}
+            <div class="alert alert-error" role="alert">
+              <strong>Error:</strong> {{ error }}
+            </div>
+          {% endif %}
+
+          <form method="post" action="{% url 'booking:home' %}" id="bookingForm">
             {% csrf_token %}
-            <div class="row2">
-              <div>
-                <label for="name">Full name</label>
-                <input id="name" name="name" placeholder="Your name" required>
-              </div>
-              <div>
-                <label for="email">Email</label>
-                <input id="email" type="email" name="email" placeholder="you@email.com" required>
+
+            <!-- Step 1: Activity Selection -->
+            <div class="form-step active" id="step-1">
+              <h3 class="step-title">1. What service do you need?</h3>
+              
+              <div class="activity-grid">
+                {% for activity in activities %}
+                  <label class="activity-card">
+                    <input type="radio" name="activity" value="{{ activity.id }}" required data-activity-id="{{ activity.id }}">
+                    <div class="activity-content">
+                      <div class="activity-name">{{ activity.name }}</div>
+                      <div class="activity-desc">{{ activity.description }}</div>
+                      <div class="activity-duration">{{ activity.duration_minutes }} min</div>
+                    </div>
+                  </label>
+                {% endfor %}
               </div>
             </div>
 
-            <div class="row2">
-              <div>
-                <label for="service">Service needed</label>
-                <select id="service" name="service" required>
-                  <option value="">Select one</option>
-                  <option>Website Development</option>
-                  <option>E-commerce</option>
-                  <option>Maintenance & Updates</option>
-                  <option>Booking System</option>
-                  <option>Indoor Geo Location App</option>
-                </select>
+            <!-- Step 2: Date & Time Selection -->
+            <div class="form-step" id="step-2">
+              <h3 class="step-title">2. When would you like to meet?</h3>
+              <p class="step-hint">Click any green slot to select your preferred date and time.</p>
+
+              <div class="week-schedule-container">
+                <div class="week-nav">
+                  <button type="button" class="week-nav-btn" id="prevWeekBtn" onclick="navigateWeek(-1)" disabled>‹ Prev week</button>
+                  <span id="weekRangeText" class="week-range-text"></span>
+                  <button type="button" class="week-nav-btn" id="nextWeekBtn" onclick="navigateWeek(1)">Next week ›</button>
+                </div>
+                <div id="weekSchedule" class="week-schedule">
+                  <p class="slot-loading">Loading available slots...</p>
+                </div>
               </div>
-              <div>
-                <label for="date">Preferred date</label>
-                <input id="date" type="date" name="preferred_date" required>
-                <div id="slotWrap" class="slot-wrap" aria-live="polite">
-                  <p class="slot-note">Select a date to see available times.</p>
-                  <div id="slotGrid" class="slot-grid"></div>
-                  <input type="hidden" id="selectedSlot" name="selected_slot" required>
+
+              <div id="selectedSlotDisplay" class="selected-slot-display" style="display:none;">
+                <span class="selected-slot-icon">✓</span>
+                <span id="selectedSlotText"></span>
+              </div>
+
+              <input type="hidden" id="booking_date" name="booking_date" required>
+              <input type="hidden" id="booking_time" name="booking_time" required>
+            </div>
+
+            <!-- Step 3: Contact Information -->
+            <div class="form-step" id="step-3">
+              <h3 class="step-title">3. Your contact information</h3>
+              
+              <div class="row2">
+                <div>
+                  <label for="full_name">Full name *</label>
+                  <input type="text" id="full_name" name="full_name" placeholder="Your name" required>
+                </div>
+                <div>
+                  <label for="email">Email *</label>
+                  <input type="email" id="email" name="email" placeholder="you@email.com" required>
+                </div>
+              </div>
+
+              <div class="row2">
+                <div>
+                  <label for="phone">Phone (optional)</label>
+                  <input type="tel" id="phone" name="phone" placeholder="+34 123 456 789">
+                </div>
+                <div>
+                  <label for="budget">Estimated budget (optional)</label>
+                  <input type="text" id="budget" name="budget" placeholder="€3,000 - €15,000+">
+                </div>
+              </div>
+
+              <div class="row2">
+                <div>
+                  <label for="timeline">Desired timeline (optional)</label>
+                  <input type="text" id="timeline" name="timeline" placeholder="e.g., 2-6 weeks">
                 </div>
               </div>
             </div>
 
-            <div class="row2">
+            <!-- Step 4: Project Details -->
+            <div class="form-step" id="step-4">
+              <h3 class="step-title">4. Tell us about your project</h3>
+              
               <div>
-                <label for="budget">Estimated budget (optional)</label>
-                <input id="budget" name="budget" placeholder="$3,000 - $15,000+">
-              </div>
-              <div>
-                <label for="timeline">Desired timeline (optional)</label>
-                <input id="timeline" name="timeline" placeholder="e.g. 2-6 weeks">
+                <label for="project_details">Project details *</label>
+                <textarea id="project_details" name="project_details" placeholder="Describe your goals, current challenges, and what success looks like." required style="min-height: 140px;"></textarea>
               </div>
             </div>
 
-            <div>
-              <label for="message">Project details</label>
-              <textarea id="message" name="message" placeholder="Describe your goals, current challenges, and what success looks like." required></textarea>
+            <!-- Step 5: Terms & Conditions -->
+            <div class="form-step" id="step-5">
+              <h3 class="step-title">5. Review & Confirm</h3>
+              
+              <div class="terms-section">
+                <details class="terms-details" open>
+                  <summary class="terms-summary">
+                    <span class="terms-toggle">▼</span>
+                    Terms & Conditions
+                  </summary>
+                  <div class="terms-content">
+                    {% if terms %}
+                      {{ terms.content | safe }}
+                    {% else %}
+                      <p>By booking a consultation, you agree to our standard terms and conditions. We will use your information to schedule and conduct your consultation in accordance with our privacy policy.</p>
+                    {% endif %}
+                  </div>
+                </details>
+
+                <label class="checkbox-label" style="margin-top: 24px;">
+                  <input type="checkbox" name="terms_accepted" id="terms_accepted" required>
+                  <span>I accept the terms and conditions *</span>
+                </label>
+              </div>
+
+              <div class="booking-summary">
+                <h4>Booking Summary</h4>
+                <div class="summary-item">
+                  <span class="label">Service:</span>
+                  <span class="value" id="summaryActivity">-</span>
+                </div>
+                <div class="summary-item">
+                  <span class="label">Date & Time:</span>
+                  <span class="value" id="summaryDateTime">-</span>
+                </div>
+                <div class="summary-item">
+                  <span class="label">Duration:</span>
+                  <span class="value" id="summaryDuration">-</span>
+                </div>
+              </div>
             </div>
 
-            <div class="contact-actions">
-              <button class="btn primary" type="submit">Submit Request</button>
-              <a class="btn" href="{% url 'services:welcome' %}">Back Home</a>
+            <!-- Form Navigation -->
+            <div class="form-navigation">
+              <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display:none;">← Back</button>
+              <button type="button" class="btn primary" id="nextBtn" onclick="changeStep(1)">Next →</button>
+              <button type="submit" class="btn primary" id="submitBtn" style="display:none;">Confirm Booking</button>
             </div>
           </form>
         </section>
@@ -128,10 +216,20 @@
 
     <section class="band bottom-green">
       <div class="wrap">
+        <div class="cta-section">
+          <h2>Questions?</h2>
+          <p>Our team is here to help. Contact us directly or choose a time that works best for you.</p>
+          <a href="mailto:hello@cclabs.es" class="btn primary">Get in Touch</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <section class="band navy-dark">
+      <div class="wrap">
         <footer>
           <div class="foot">
-            <div>© <span id="year"></span> CC Weblab. All rights reserved.</div>
-
+            <div>© <span id="year"></span> CC Labs. All rights reserved.</div>
             <div class="socials" aria-label="Social links">
               <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 8H16V5h-2.5C11 5 9.5 6.6 9.5 9.2V11H7v3h2.5v5H13v-5h2.6l.4-3H13v-1.6c0-.9.3-1.4 1.5-1.4Z"/></svg>
@@ -149,88 +247,261 @@
     </section>
   </main>
 
-  <!-- FEATURE DETAILS MODAL -->
-  <div class="modal" id="featureModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close="true"></div>
-    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="featureModalTitle">
-      <div class="modal-header">
-        <div>
-          <h2 id="featureModalTitle" class="modal-title">Feature</h2>
-          <p id="featureModalSubtitle" class="modal-subtitle">Learn more about this feature.</p>
-        </div>
-        <button class="modal-close" type="button" aria-label="Close" data-close="true">✕</button>
-      </div>
-      <div class="modal-body">
-        <div id="featureContent" class="feature-content"></div>
-        <div class="modal-cta">
-          <a href="{% url 'booking:home' %}" class="btn primary" data-close="true">Book a Call</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PRICING MODAL -->
-  <div class="modal" id="pricingModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close="true"></div>
-    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal-header">
-        <div>
-          <h2 id="modalTitle" class="modal-title">Plans</h2>
-          <p id="modalSubtitle" class="modal-subtitle">Choose a package that fits your needs.</p>
-        </div>
-        <button class="modal-close" type="button" aria-label="Close" data-close="true">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="plan-row" id="planRow" aria-label="Scrollable plans"></div>
-      </div>
-    </div>
-  </div>
-
-  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
   <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-  const dateInput = document.getElementById("date");
-  const slotGrid = document.getElementById("slotGrid");
-  const slotNote = document.querySelector(".slot-note");
-  const selectedSlot = document.getElementById("selectedSlot");
+    const apiUrl = "{% url 'booking:api_available_slots' %}";
 
-  // Example static availability (replace with backend fetch later)
-  const availability = {
-    "2026-07-07": ["09:00","10:00","11:30","14:00","15:30"],
-    "2026-07-08": ["10:00","13:00","16:00"],
-    "2026-07-09": ["09:30","12:00","17:00"]
-  };
+    const activityInputs = document.querySelectorAll('input[name="activity"]');
+    const activityElements = {};
 
-  function renderSlots(dateStr){
-    slotGrid.innerHTML = "";
-    selectedSlot.value = "";
+    activityInputs.forEach(input => {
+      const label = input.closest('.activity-card');
+      if (label) {
+        const nameEl = label.querySelector('.activity-name');
+        const durationEl = label.querySelector('.activity-duration');
+        if (nameEl && durationEl) {
+          activityElements[input.value] = {
+            name: nameEl.textContent.trim(),
+            duration: durationEl.textContent.trim()
+          };
+        }
+      }
+    });
 
-    const slots = availability[dateStr] || [];
-    if (!slots.length){
-      slotNote.textContent = "No spots available for this date.";
-      return;
+    let currentStep = 1;
+    const totalSteps = 5;
+    let weekOffset = 0;
+    let currentActivityId = null;
+
+    function formatDate(d) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     }
 
-    slotNote.textContent = "Available time slots:";
-    slots.forEach(time => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "slot-btn";
-      b.textContent = time;
+    function getTodayStr() { return formatDate(new Date()); }
 
-      b.addEventListener("click", () => {
-        document.querySelectorAll(".slot-btn").forEach(x => x.classList.remove("active"));
-        b.classList.add("active");
-        selectedSlot.value = `${dateStr} ${time}`;
+    function getWeekDates(offset) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const days = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() + (offset * 7) + i);
+        days.push(d);
+      }
+      return days;
+    }
+
+    async function loadWeekSchedule() {
+      if (!currentActivityId) return;
+      const days = getWeekDates(weekOffset);
+      const scheduleEl = document.getElementById('weekSchedule');
+      scheduleEl.innerHTML = '<p class="slot-loading">Loading schedule...</p>';
+
+      const first = days[0], last = days[6];
+      document.getElementById('weekRangeText').textContent =
+        `${first.toLocaleDateString('en-US', {month:'short',day:'numeric'})} – ${last.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'})}`;
+      document.getElementById('prevWeekBtn').disabled = weekOffset <= 0;
+
+      const todayStr = getTodayStr();
+      const fetchPromises = days.map(d => {
+        const dateStr = formatDate(d);
+        if (dateStr < todayStr) return Promise.resolve({ date: dateStr, dateObj: d, slots: [], past: true });
+        return fetch(`${apiUrl}?activity_id=${currentActivityId}&date=${dateStr}`)
+          .then(r => r.json())
+          .then(data => ({ date: dateStr, dateObj: d, slots: data.slots || [], past: false }))
+          .catch(() => ({ date: dateStr, dateObj: d, slots: [], past: false }));
       });
 
-      slotGrid.appendChild(b);
-    });
-  }
+      const results = await Promise.all(fetchPromises);
+      renderWeekGrid(results);
+    }
 
-  dateInput.addEventListener("change", e => renderSlots(e.target.value));
-</script>
+    function renderWeekGrid(dayData) {
+      const scheduleEl = document.getElementById('weekSchedule');
+      const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const todayStr = getTodayStr();
+
+      const allTimes = new Set();
+      dayData.forEach(day => day.slots.forEach(s => allTimes.add(s.time)));
+
+      if (allTimes.size === 0) {
+        scheduleEl.innerHTML = '<p class="slot-loading" style="color:var(--muted);">No available slots this week. Try the next week →</p>';
+        return;
+      }
+
+      const sortedTimes = Array.from(allTimes).sort();
+      let html = '<div class="week-grid">';
+
+      // Header
+      html += '<div class="week-row week-header-row">';
+      html += '<div class="week-cell time-header"></div>';
+      dayData.forEach(day => {
+        const isToday = day.date === todayStr;
+        html += `<div class="week-cell day-header${isToday ? ' today' : ''}">
+          <span class="day-name">${DAY_NAMES[day.dateObj.getDay()]}</span>
+          <span class="day-date">${day.dateObj.toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
+        </div>`;
+      });
+      html += '</div>';
+
+      // Rows per time slot
+      sortedTimes.forEach(time => {
+        html += '<div class="week-row">';
+        html += `<div class="week-cell time-label">${time}</div>`;
+        dayData.forEach(day => {
+          if (day.past) { html += '<div class="week-cell slot-cell slot-past"></div>'; return; }
+          const slot = day.slots.find(s => s.time === time);
+          if (!slot) {
+            html += '<div class="week-cell slot-cell slot-empty"></div>';
+          } else if (!slot.available) {
+            html += '<div class="week-cell slot-cell slot-taken" title="Already booked"><span class="taken-dot"></span></div>';
+          } else {
+            const low = slot.spots_left <= 2 ? `<span class="spots-badge">${slot.spots_left} left</span>` : '';
+            html += `<div class="week-cell slot-cell slot-available"
+              data-date="${day.date}" data-time="${slot.time}"
+              onclick="selectSlot(this,'${day.date}','${slot.time}')">
+              <span class="slot-time-label">${slot.time}</span>${low}
+            </div>`;
+          }
+        });
+        html += '</div>';
+      });
+
+      html += '</div>';
+      scheduleEl.innerHTML = html;
+    }
+
+    function selectSlot(el, date, time) {
+      document.querySelectorAll('.slot-available.selected').forEach(s => s.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('booking_date').value = date;
+      document.getElementById('booking_time').value = time;
+      const [y, m, d] = date.split('-').map(Number);
+      const dateObj = new Date(y, m - 1, d);
+      const formatted = dateObj.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', year:'numeric'});
+      document.getElementById('selectedSlotText').textContent = `${formatted} at ${time}`;
+      document.getElementById('selectedSlotDisplay').style.display = 'flex';
+      updateSummary();
+    }
+
+    function navigateWeek(direction) {
+      weekOffset = Math.max(0, weekOffset + direction);
+      loadWeekSchedule();
+    }
+
+    function changeStep(direction) {
+      const nextStep = currentStep + direction;
+      if (direction === 1 && !validateCurrentStep()) return;
+      if (nextStep > 0 && nextStep <= totalSteps) {
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        currentStep = nextStep;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        updateFormNavigation();
+        window.scrollTo({ top: document.querySelector('.contact').offsetTop - 100, behavior: 'smooth' });
+      }
+    }
+
+    function validateCurrentStep() {
+      const currentStepEl = document.getElementById(`step-${currentStep}`);
+      const inputs = currentStepEl.querySelectorAll('input[required], textarea[required], select[required]');
+      const checkedRadioGroups = new Set();
+
+      for (let input of inputs) {
+        if (input.type === 'radio') {
+          const groupName = input.name;
+          if (!checkedRadioGroups.has(groupName)) {
+            if (!currentStepEl.querySelector(`input[name="${groupName}"]:checked`)) {
+              input.focus(); return false;
+            }
+            checkedRadioGroups.add(groupName);
+          }
+        } else if (input.type === 'checkbox') {
+          if (!input.checked) { input.focus(); return false; }
+        } else if (input.type === 'hidden') {
+          if (!input.value.trim()) {
+            const scheduleEl = document.getElementById('weekSchedule');
+            if (scheduleEl) {
+              scheduleEl.classList.add('schedule-error');
+              setTimeout(() => scheduleEl.classList.remove('schedule-error'), 600);
+            }
+            return false;
+          }
+        } else if (!input.value.trim()) {
+          input.focus(); return false;
+        }
+      }
+      return true;
+    }
+
+    function updateFormNavigation() {
+      document.getElementById('prevBtn').style.display = currentStep > 1 ? 'block' : 'none';
+      document.getElementById('nextBtn').style.display = currentStep < totalSteps ? 'block' : 'none';
+      document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'block' : 'none';
+    }
+
+    // Auto-advance to step 2 when activity is clicked
+    document.querySelectorAll('input[name="activity"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        if (this.checked) {
+          currentActivityId = this.value;
+          weekOffset = 0;
+          document.getElementById('booking_date').value = '';
+          document.getElementById('booking_time').value = '';
+          document.getElementById('selectedSlotDisplay').style.display = 'none';
+          document.getElementById(`step-${currentStep}`).classList.remove('active');
+          currentStep = 2;
+          document.getElementById(`step-${currentStep}`).classList.add('active');
+          updateFormNavigation();
+          window.scrollTo({ top: document.querySelector('.contact').offsetTop - 100, behavior: 'smooth' });
+          loadWeekSchedule();
+        }
+      });
+    });
+
+    function updateSummary() {
+      const activityId = document.querySelector('input[name="activity"]:checked')?.value;
+      const date = document.getElementById('booking_date').value;
+      const time = document.getElementById('booking_time').value;
+      if (activityId && activityElements[activityId]) {
+        document.getElementById('summaryActivity').textContent = activityElements[activityId].name;
+        document.getElementById('summaryDuration').textContent = activityElements[activityId].duration;
+      }
+      if (date && time) {
+        const [y, m, d] = date.split('-').map(Number);
+        const dateObj = new Date(y, m - 1, d);
+        const formatted = dateObj.toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+        document.getElementById('summaryDateTime').textContent = `${formatted} at ${time}`;
+      }
+    }
+
+    updateFormNavigation();
+  </script>
   <script src="{% static 'js/services.js' %}"></script>
 </body>
 </html>
+
+    <!-- Footer -->
+    <section class="band navy-dark">
+      <div class="wrap">
+        <footer>
+          <div class="foot">
+            <div>© <span id="year"></span> CC Labs. All rights reserved.</div>
+            <div class="socials" aria-label="Social links">
+              <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 8H16V5h-2.5C11 5 9.5 6.6 9.5 9.2V11H7v3h2.5v5H13v-5h2.6l.4-3H13v-1.6c0-.9.3-1.4 1.5-1.4Z"/></svg>
+              </a>
+              <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              </a>
+              <a href="https://wa.me/10000000000" target="_blank" rel="noopener" aria-label="WhatsApp" class="social-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11.9c0 4.7-3.8 8.5-8.5 8.5-1.5 0-3-.4-4.2-1.1L4 20l.8-3.1A8.4 8.4 0 0 1 3 11.9C3 7.2 6.8 3.4 11.5 3.4S20 7.2 20 11.9Zm-5.1 2.1-.6-.3c-.2-.1-.4-.1-.5.1l-.3.4c-.1.1-.3.2-.5.1-.9-.4-1.7-1.1-2.3-1.9-.1-.2-.1-.4 0-.5l.2-.3c.1-.2.1-.4 0-.5l-.3-.6c-.1-.2-.3-.3-.5-.2l-.4.1c-.2.1-.4.3-.5.5-.3.7-.2 1.4.1 2.1.9 1.7 2.3 3.1 4.1 4 .7.3 1.4.4 2.1.1.2-.1.4-.3.5-.5l.1-.4c.1-.2 0-.4-.2-.5Z"/></svg>
+              </a>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </section>
