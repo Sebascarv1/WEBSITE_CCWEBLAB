@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     maint: "Maintenance & Updates Plans",
     geo: "Indoor Geo Location App Plans",
     book: "Booking & Reservation App Plans",
+    analytics: "Data Analytics Plans",
   };
 
   const plansByService = {
@@ -52,6 +53,11 @@ document.addEventListener("DOMContentLoaded", () => {
       { name:"Basic Plan", tag:"Essentials", price:"Starting at €1,200", includes:["Online booking","Calendar integration","Email notifications","Simple admin panel","Support"] },
       { name:"Standard Package", tag:"Most popular", featured:true, price:"Starting at €2,200", includes:["Multi-service booking","Availability rules","Reminders","Reporting","Priority support"] },
       { name:"Premium Package", tag:"All-inclusive", price:"Starting at €3,800", includes:["Advanced scheduling","Custom workflows","Roles/permissions","Analytics","Dedicated support"] },
+    ],
+    analytics: [
+      { name:"Basic Plan", tag:"Getting started", price:"Starting at €800", includes:["Dashboard setup","Basic reporting","Data visualization","Monthly insights","Support"] },
+      { name:"Standard Package", tag:"Most popular", featured:true, price:"Starting at €1,500", includes:["Advanced analytics","Custom reports","Real-time dashboards","Predictive insights","Priority support"] },
+      { name:"Premium Package", tag:"Enterprise insights", price:"Starting at €2,500", includes:["AI-powered analytics","Custom integrations","Advanced segmentation","Dedicated analyst","24/7 support"] },
     ],
   };
 
@@ -196,6 +202,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Service card click handlers - open pricing modal
+  document.querySelectorAll(".service-card").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const serviceMap = {
+        websites: "dev",
+        booking: "book",
+        ecommerce: "ecom",
+        analytics: "analytics",
+        gps: "geo"
+      };
+      const serviceKey = serviceMap[btn.dataset.service];
+      if (serviceKey) {
+        openPricingModal(serviceKey);
+      }
+    });
+  });
+
   // Modal backdrop and close button handlers
   featureModal?.addEventListener("click", (e) => {
     if (e.target?.dataset?.close === "true") closeFeatureModal();
@@ -227,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }, { threshold: 0.14 });
 
-  document.querySelectorAll("section, .card, .feature-btn, .svc-btn").forEach(el => {
+  document.querySelectorAll("section, .card, .feature-btn, .svc-btn, .service-card, .process-step").forEach(el => {
     el.classList.add("reveal");
     observer.observe(el);
   });
