@@ -243,6 +243,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape" && pricingModal.classList.contains("is-open")) closePricingModal();
   });
 
+  // Process step click handlers - expand/collapse
+  document.querySelectorAll(".process-step").forEach(step => {
+    step.addEventListener("click", () => {
+      const isExpanded = step.classList.contains("expanded");
+      
+      // Close all other steps
+      document.querySelectorAll(".process-step").forEach(s => {
+        s.classList.remove("expanded");
+      });
+      
+      // Toggle current step
+      if (!isExpanded) {
+        step.classList.add("expanded");
+      }
+    });
+  });
+
   // reveal animation
   const observer = new IntersectionObserver((entries)=>{
     entries.forEach(entry => {
