@@ -570,7 +570,7 @@ def delete_availability_slot(request, slot_id):
 @login_required(login_url="admin:login")
 @user_passes_test(is_admin, login_url="admin:login")
 def booking_agenda(request):
-    """Weekly calendar view of bookings"""
+    """Unified weekly calendar view - all services in one grid"""
     template_name = "booking/agenda.html"
     
     # Get date from request or use today
@@ -588,74 +588,75 @@ def booking_agenda(request):
     week_start = selected_date - timedelta(days=days_since_monday)
     week_end = week_start + timedelta(days=6)
     
-    # Get all active slots for the week (0=Monday to 6=Sunday)
-    all_slots = AvailabilitySlot.objects.filter(
-        is_active=True
-    ).select_related("activity").order_by("start_time")
+    # Build unified calendar: one grid for all services
+    calendar_grid = []
     
-    # Build calendar data as list (no custom filters needed)
-    activities = Activity.objects.filter(is_active=True).order_by("name")
-    
-    calendar_data = []
-    for activity in activities:
-        activity_data = {
-            "name": activity.name,
-            "duration": activity.duration_minutes,
-            "days": []
+    # For each day of the week (0=Monday, 6=Sunday)
+    for day_offset in range(7):
+        current_date = week_start + timedelta(days=day_offset)
+        day_of_week = day_offset
+        
+        day_data = {
+            "date": current_date,
+            "date_str": current_date.strftime("%m/%d"),
+            "day_name": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][day_offset],
+            "hours": []
         }
         
-        # For each day of the week (0=Monday, 6=Sunday)
-        for day_offset in range(7):
-            current_date = week_start + timedelta(days=day_offset)
-            day_of_week = day_offset
-            
-            day_data = {
-                "date": current_date,
-                "date_str": current_date.strftime("%m/%d"),
-                "day_name": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][day_offset],
-                "hours": []
+        # Get all slots for this day (all activities, all times)
+        all_day_slots = AvailabilitySlot.objects.filter(
+            day_of_week=day_of_week,
+            is_active=True
+        ).select_related("activity").order_by("start_time")
+        
+        # Build time grid (8am to 6pm)
+        for hour in range(8, 19):
+            time_str = f"{hour:02d}:00"
+            hour_data = {
+                "hour": hour,
+                "time": time_str,
+                "bookings": [],
+                "activities": [],  # Activities available in this slot
+                "total_capacity": 0,
+                "is_available": False
             }
             
-            # Get slots for this activity on this day
-            day_slots = all_slots.filter(activity=activity, day_of_week=day_of_week)
+            # Find all slots and bookings for this hour (from any activity)
+            hour_slots = all_day_slots.filter(
+                start_time__hour=hour
+            )
             
-            # Build time grid (8am to 6pm)
-            for hour in range(8, 19):
-                time_str = f"{hour:02d}:00"
-                hour_data = {
-                    "hour": hour,
-                    "time": time_str,
-                    "bookings": [],
-                    "has_slots": False
-                }
+            for slot in hour_slots:
+                hour_data["activities"].append({
+                    "id": slot.activity.id,
+                    "name": slot.activity.name,
+                    "capacity": slot.max_bookings_per_slot,
+                })
+                hour_data["total_capacity"] += slot.max_bookings_per_slot
+                hour_data["is_available"] = True
                 
-                # Find matching availability slots and bookings for this hour
-                for slot in day_slots:
-                    slot_hour = int(slot.start_time.strftime("%H"))
-                    if slot_hour == hour:
-                        hour_data["has_slots"] = True
-                        bookings = Booking.objects.filter(
-                            activity=activity,
-                            booking_date=current_date,
-                            booking_time=slot.start_time,
-                        ).order_by("created_at")
-                        
-                        for booking in bookings:
-                            hour_data["bookings"].append({
-                                "id": booking.id,
-                                "name": booking.full_name,
-                                "email": booking.email,
-                                "phone": booking.phone,
-                                "details": booking.project_details,
-                                "status": booking.status,
-                                "status_display": booking.get_status_display(),
-                            })
+                # Get all bookings for this slot
+                bookings = Booking.objects.filter(
+                    activity=slot.activity,
+                    booking_date=current_date,
+                    booking_time=slot.start_time,
+                ).order_by("created_at")
                 
-                day_data["hours"].append(hour_data)
+                for booking in bookings:
+                    hour_data["bookings"].append({
+                        "id": booking.id,
+                        "name": booking.full_name,
+                        "email": booking.email,
+                        "phone": booking.phone,
+                        "details": booking.project_details,
+                        "status": booking.status,
+                        "status_display": booking.get_status_display(),
+                        "activity": slot.activity.name,
+                    })
             
-            activity_data["days"].append(day_data)
+            day_data["hours"].append(hour_data)
         
-        calendar_data.append(activity_data)
+        calendar_grid.append(day_data)
     
     # Navigation
     prev_week = week_start - timedelta(days=7)
@@ -665,7 +666,7 @@ def booking_agenda(request):
         "week_start": week_start,
         "week_end": week_end,
         "selected_date": selected_date,
-        "calendar_data": calendar_data,
+        "calendar_grid": calendar_grid,
         "prev_week": prev_week,
         "next_week": next_week,
         "hours": range(8, 19),

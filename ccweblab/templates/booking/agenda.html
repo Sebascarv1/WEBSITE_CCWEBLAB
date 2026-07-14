@@ -49,8 +49,12 @@
 
     .slot-content { display: flex; flex-direction: column; gap: 2px; height: 100%; }
     
-    .booking-badge { background: var(--brass); color: white; padding: 3px 6px; border-radius: 3px; font-size: 0.7rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+    .booking-badge { background: var(--brass); color: white; padding: 3px 6px; border-radius: 3px; font-size: 0.7rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; display: block; }
     .booking-badge:hover { background: var(--brass-light); }
+    .service-name { font-weight: 700; }
+    
+    .time-slot.has-bookings { background: #fffbf0; }
+    .time-slot.no-availability { background: #f5f5f5; opacity: 0.8; }
     
     .booking-status { display: inline-block; padding: 1px 3px; border-radius: 2px; font-size: 0.65rem; margin-top: 1px; }
     .status-pending { background: #fff3cd; color: #856404; }
@@ -59,6 +63,8 @@
     .status-cancelled { background: #f8d7da; color: #721c24; }
 
     .available-slot { background: #d4edda; padding: 2px 4px; border-radius: 3px; font-size: 0.7rem; font-weight: 600; text-align: center; color: #155724; }
+    .no-availability { background: #f0f0f0; padding: 2px 4px; border-radius: 3px; font-size: 0.7rem; color: #999; text-align: center; }
+    .slot-capacity { font-size: 0.65rem; color: #999; text-align: center; }
 
     .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
     .modal.active { display: flex; }
@@ -122,57 +128,55 @@
       </div>
     </div>
 
-    <!-- Weekly Calendar for Each Activity -->
-    {% for activity_data in calendar_data %}
-      <div class="activity-calendar">
-        <div class="activity-title">
-          <h3>{{ activity_data.name }} ({{ activity_data.duration }}min)</h3>
-        </div>
+    <!-- Unified Weekly Calendar - All Services Mixed -->
+    <div class="activity-calendar">
+      <div class="activity-title">
+        <h3>📅 Master Booking Calendar - All Services</h3>
+      </div>
 
-        <div class="calendar-wrapper">
-          <div class="calendar-grid">
-            <!-- Header Row -->
-            <div class="time-cell"></div>
-            {% for day_data in activity_data.days %}
-              <div class="day-header">
-                {{ day_data.day_name }}
-                <span class="day-date">{{ day_data.date_str }}</span>
-              </div>
-            {% endfor %}
+      <div class="calendar-wrapper">
+        <div class="calendar-grid">
+          <!-- Header Row -->
+          <div class="time-cell"></div>
+          {% for day_data in calendar_grid %}
+            <div class="day-header">
+              {{ day_data.day_name }}
+              <span class="day-date">{{ day_data.date_str }}</span>
+            </div>
+          {% endfor %}
 
-            <!-- Time Rows -->
-            {% for hour in hours %}
-              <div class="time-cell">{{ hour|stringformat:"02d" }}:00</div>
-              
-              {% for day_data in activity_data.days %}
-                {% for hour_slot in day_data.hours %}
-                  {% if hour_slot.hour == hour %}
-                    <div class="time-slot" {% if hour_slot.bookings %}onclick="openFirstBookingModal(event, {{ hour_slot.bookings|first }})"{% endif %}>
-                      <div class="slot-content">
-                        {% if hour_slot.bookings %}
-                          {% for booking in hour_slot.bookings %}
-                            <div class="booking-badge" title="{{ booking.name }} - {{ booking.email }}" onclick="openBookingModal(event, {{ booking.id }}, '{{ booking.name|escapejs }}', '{{ booking.email|escapejs }}', '{{ booking.phone|escapejs }}', '{{ booking.details|escapejs }}', '{{ booking.status }}')">
-                              {{ booking.name|truncatewords:1 }}
-                            </div>
-                            <span class="booking-status status-{{ booking.status }}">{{ booking.status_display|truncatewords:1 }}</span>
-                          {% endfor %}
-                        {% elif hour_slot.has_slots %}
-                          <div class="available-slot">✓ Available</div>
-                        {% endif %}
-                      </div>
+          <!-- Time Rows -->
+          {% for hour in hours %}
+            <div class="time-cell">{{ hour|stringformat:"02d" }}:00</div>
+            
+            {% for day_data in calendar_grid %}
+              {% for hour_slot in day_data.hours %}
+                {% if hour_slot.hour == hour %}
+                  <div class="time-slot {% if hour_slot.bookings %}has-bookings{% endif %} {% if not hour_slot.is_available %}no-availability{% endif %}" {% if hour_slot.bookings %}onclick="openFirstBookingModal(event, {{ hour_slot.bookings|first }})"{% endif %}>
+                    <div class="slot-content">
+                      {% if hour_slot.bookings %}
+                        <!-- Show all bookings in this slot -->
+                        {% for booking in hour_slot.bookings %}
+                          <div class="booking-badge" title="{{ booking.activity }}: {{ booking.name }} - {{ booking.email }}" onclick="openBookingModal(event, {{ booking.id }}, '{{ booking.name|escapejs }}', '{{ booking.email|escapejs }}', '{{ booking.phone|escapejs }}', '{{ booking.details|escapejs }}', '{{ booking.status }}', '{{ booking.activity|escapejs }}')">
+                            <span class="service-name">{{ booking.activity|truncatewords:1 }}</span> • {{ booking.name|truncatewords:1 }}
+                          </div>
+                          <span class="booking-status status-{{ booking.status }}">{{ booking.status_display }}</span>
+                        {% endfor %}
+                      {% elif hour_slot.is_available %}
+                        <div class="available-slot">✓ Available</div>
+                        <span class="slot-capacity">{{ hour_slot.activities|length }} service(s)</span>
+                      {% else %}
+                        <div class="no-availability">No services</div>
+                      {% endif %}
                     </div>
-                  {% endif %}
-                {% endfor %}
+                  </div>
+                {% endif %}
               {% endfor %}
             {% endfor %}
-          </div>
+          {% endfor %}
         </div>
       </div>
-    {% empty %}
-      <div class="no-data">
-        <p>No activities scheduled.</p>
-      </div>
-    {% endfor %}
+    </div>
   </div>
 
   <!-- Booking Details Modal -->
@@ -181,6 +185,11 @@
       <span class="modal-close" onclick="closeBookingModal()">&times;</span>
       <h2 class="modal-title">Booking Details</h2>
       
+      <div class="modal-field">
+        <label>Service</label>
+        <input type="text" id="bookingService" readonly>
+      </div>
+
       <div class="modal-field">
         <label>Name</label>
         <input type="text" id="bookingName" readonly>
@@ -223,12 +232,13 @@
 
     function openFirstBookingModal(event, booking) {
       event.stopPropagation();
-      openBookingModal(event, booking.id, booking.name, booking.email, booking.phone, booking.details, booking.status);
+      openBookingModal(event, booking.id, booking.name, booking.email, booking.phone, booking.details, booking.status, booking.activity);
     }
 
-    function openBookingModal(event, bookingId, name, email, phone, details, status) {
+    function openBookingModal(event, bookingId, name, email, phone, details, status, activity) {
       if (event) event.stopPropagation();
       currentBookingId = bookingId;
+      document.getElementById('bookingService').value = activity || '';
       document.getElementById('bookingName').value = name;
       document.getElementById('bookingEmail').value = email;
       document.getElementById('bookingPhone').value = phone;
