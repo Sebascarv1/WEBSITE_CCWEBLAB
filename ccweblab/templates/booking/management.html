@@ -61,11 +61,19 @@
     .logout-btn { background: #e74c3c; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
     .logout-btn:hover { background: #c0392b; }
 
+    .admin-actions { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+    .action-link { background: var(--brass); color: white; padding: 10px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; }
+    .action-link:hover { background: var(--brass-light); transform: translateY(-2px); }
+    .action-link.secondary { background: #666; color: white; }
+    .action-link.secondary:hover { background: #555; }
+
     @media (max-width: 768px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .filters { grid-template-columns: 1fr; }
       th, td { padding: 8px 12px; font-size: 0.85rem; }
       .status-badge, .action-btn { font-size: 0.75rem; padding: 2px 8px; }
+      .admin-actions { flex-direction: column; }
+      .action-link { width: 100%; text-align: center; }
     }
   </style>
 </head>
@@ -90,6 +98,13 @@
       <div style="margin-bottom: 32px;">
         <h1 style="margin-bottom: 8px;">Booking Management</h1>
         <p style="color: var(--muted);">Manage all customer bookings and consultations</p>
+      </div>
+
+      <!-- Admin Actions -->
+      <div class="admin-actions">
+        <a href="{% url 'booking:add_activity' %}" class="action-link">➕ Add Activity</a>
+        <a href="{% url 'booking:add_availability_slot' %}" class="action-link">⏰ Add Availability Slot</a>
+        <a href="{% url 'admin:index' %}" class="action-link secondary">⚙️ Django Admin</a>
       </div>
 
       <!-- Statistics -->

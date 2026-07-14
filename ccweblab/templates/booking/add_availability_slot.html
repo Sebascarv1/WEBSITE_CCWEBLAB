@@ -1,0 +1,199 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Availability Slot | Gaira Labs Admin</title>
+  <meta name="description" content="Admin availability slot management" />
+
+  <link rel="stylesheet" href="{% static 'css/services.css' %}">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .admin-header { background: #0f172e; color: white; padding: 16px 0; }
+    .admin-header a { color: #fff; text-decoration: none; }
+    .admin-header .nav { display: flex; justify-content: space-between; align-items: center; }
+    .admin-header strong { font-size: 1.1rem; }
+    .admin-nav { display: flex; gap: 24px; align-items: center; }
+    .admin-nav a { font-size: 0.95rem; padding: 8px 0; border-bottom: 2px solid transparent; transition: border-color 0.2s; }
+    .admin-nav a:hover { border-bottom-color: var(--brass); }
+    
+    .container { max-width: 900px; margin: 0 auto; padding: 32px 16px; }
+    .admin-form { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; }
+    
+    .form-section { margin-bottom: 48px; }
+    .form-section h2 { font-size: 1.5rem; margin-bottom: 24px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+    .form-group input,
+    .form-group select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; font-family: inherit; }
+    .form-group input:focus,
+    .form-group select:focus { outline: none; border-color: var(--brass); box-shadow: 0 0 0 3px rgba(166,135,92,0.1); }
+    
+    .checkbox-group { display: flex; align-items: center; gap: 12px; }
+    .checkbox-group input { width: auto; }
+    
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    
+    .button-group { display: flex; gap: 12px; }
+    .btn-primary { background: var(--brass); color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem; }
+    .btn-primary:hover { background: var(--brass-light); }
+    .btn-secondary { background: #e0e0e0; color: #333; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem; }
+    .btn-secondary:hover { background: #d0d0d0; }
+    
+    .alert { padding: 16px; border-radius: 6px; margin-bottom: 24px; }
+    .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .alert-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    
+    .slots-list { margin-top: 32px; }
+    .slots-table { width: 100%; border-collapse: collapse; }
+    .slots-table th { background: #f5f5f5; padding: 12px; text-align: left; font-weight: 700; border-bottom: 2px solid var(--border); }
+    .slots-table td { padding: 12px; border-bottom: 1px solid var(--border); }
+    .slots-table tr:hover { background: #fafaf9; }
+    .slot-status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+    .status-active { background: #d4edda; color: #155724; }
+    .status-inactive { background: #f8d7da; color: #721c24; }
+
+    .breadcrumb { margin-bottom: 24px; }
+    .breadcrumb a { color: var(--brass); text-decoration: none; margin-right: 8px; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      .admin-form { padding: 20px; }
+      .container { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="nav" style="max-width: 1200px; margin: 0 auto; padding: 0 16px;">
+      <strong>🔒 ADMIN PANEL</strong>
+      <div class="admin-nav">
+        <a href="{% url 'booking:management' %}">← Back to Dashboard</a>
+        <a href="{% url 'services:welcome' %}">View Site</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="{% url 'booking:management' %}">Dashboard</a> > Add Availability Slot
+    </div>
+
+    <div class="admin-form">
+      <!-- Add Availability Slot Form -->
+      <div class="form-section">
+        <h2>Add Availability Slot</h2>
+        
+        {% if error %}
+          <div class="alert alert-error">{{ error }}</div>
+        {% endif %}
+        
+        {% if success %}
+          <div class="alert alert-success">✓ {{ success }}</div>
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          
+          <div class="form-group">
+            <label for="activity">Activity *</label>
+            <select id="activity" name="activity" required>
+              <option value="">-- Select an activity --</option>
+              {% for activity in activities %}
+                <option value="{{ activity.id }}">{{ activity.name }} ({{ activity.duration_minutes }} min)</option>
+              {% endfor %}
+            </select>
+            <small style="color: var(--muted);">Choose which activity this slot is for</small>
+          </div>
+
+          <div class="form-group">
+            <label for="day_of_week">Day of Week *</label>
+            <select id="day_of_week" name="day_of_week" required>
+              <option value="">-- Select a day --</option>
+              <option value="0">Monday</option>
+              <option value="1">Tuesday</option>
+              <option value="2">Wednesday</option>
+              <option value="3">Thursday</option>
+              <option value="4">Friday</option>
+              <option value="5">Saturday</option>
+              <option value="6">Sunday</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="start_time">Start Time *</label>
+              <input type="time" id="start_time" name="start_time" required>
+            </div>
+            <div class="form-group">
+              <label for="end_time">End Time *</label>
+              <input type="time" id="end_time" name="end_time" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="max_bookings">Max Bookings per Slot *</label>
+              <input type="number" id="max_bookings" name="max_bookings_per_slot" value="1" min="1" max="100" required>
+              <small style="color: var(--muted);">How many people can book this time slot</small>
+            </div>
+            <div class="form-group">
+              <label style="margin-bottom: 0;">Options</label>
+              <div class="checkbox-group" style="margin-top: 8px;">
+                <input type="checkbox" id="is_active" name="is_active" checked>
+                <label for="is_active" style="margin: 0;">Active</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button type="submit" class="btn-primary">✓ Add Slot</button>
+            <a href="{% url 'booking:management' %}" class="btn-secondary" style="text-decoration: none; display: inline-block;">Cancel</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Existing Slots -->
+      {% if slots %}
+        <div class="slots-list">
+          <h3>Existing Slots ({{ slots.count }})</h3>
+          <table class="slots-table">
+            <thead>
+              <tr>
+                <th>Activity</th>
+                <th>Day</th>
+                <th>Time</th>
+                <th>Max Bookings</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for slot in slots %}
+                <tr>
+                  <td>{{ slot.activity.name }}</td>
+                  <td>{{ slot.get_day_of_week_display }}</td>
+                  <td>{{ slot.start_time|time:"H:i" }} - {{ slot.end_time|time:"H:i" }}</td>
+                  <td>{{ slot.max_bookings_per_slot }}</td>
+                  <td>
+                    <span class="slot-status {% if slot.is_active %}status-active{% else %}status-inactive{% endif %}">
+                      {{ slot.is_active|yesno:"Active,Inactive" }}
+                    </span>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

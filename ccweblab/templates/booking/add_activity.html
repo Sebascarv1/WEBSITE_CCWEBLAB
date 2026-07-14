@@ -1,0 +1,164 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Activity | Gaira Labs Admin</title>
+  <meta name="description" content="Admin activity management" />
+
+  <link rel="stylesheet" href="{% static 'css/services.css' %}">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .admin-header { background: #0f172e; color: white; padding: 16px 0; }
+    .admin-header a { color: #fff; text-decoration: none; }
+    .admin-header .nav { display: flex; justify-content: space-between; align-items: center; }
+    .admin-header strong { font-size: 1.1rem; }
+    .admin-nav { display: flex; gap: 24px; align-items: center; }
+    .admin-nav a { font-size: 0.95rem; padding: 8px 0; border-bottom: 2px solid transparent; transition: border-color 0.2s; }
+    .admin-nav a:hover { border-bottom-color: var(--brass); }
+    
+    .container { max-width: 800px; margin: 0 auto; padding: 32px 16px; }
+    .admin-form { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; }
+    
+    .form-section { margin-bottom: 48px; }
+    .form-section h2 { font-size: 1.5rem; margin-bottom: 24px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+    .form-group input,
+    .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; font-family: inherit; }
+    .form-group textarea { min-height: 100px; resize: vertical; }
+    .form-group input:focus,
+    .form-group textarea:focus { outline: none; border-color: var(--brass); box-shadow: 0 0 0 3px rgba(166,135,92,0.1); }
+    
+    .checkbox-group { display: flex; align-items: center; gap: 12px; }
+    .checkbox-group input { width: auto; }
+    
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    
+    .button-group { display: flex; gap: 12px; }
+    .btn-primary { background: var(--brass); color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem; }
+    .btn-primary:hover { background: var(--brass-light); }
+    .btn-secondary { background: #e0e0e0; color: #333; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem; }
+    .btn-secondary:hover { background: #d0d0d0; }
+    
+    .alert { padding: 16px; border-radius: 6px; margin-bottom: 24px; }
+    .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .alert-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    
+    .activities-list { margin-top: 32px; }
+    .activity-item { background: #f9f9f9; padding: 16px; border-radius: 6px; margin-bottom: 12px; border-left: 4px solid var(--brass); }
+    .activity-item h4 { margin: 0 0 8px; color: var(--brass); }
+    .activity-item p { margin: 4px 0; font-size: 0.9rem; color: var(--muted); }
+    .activity-status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+    .status-active { background: #d4edda; color: #155724; }
+    .status-inactive { background: #f8d7da; color: #721c24; }
+
+    .breadcrumb { margin-bottom: 24px; }
+    .breadcrumb a { color: var(--brass); text-decoration: none; margin-right: 8px; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .form-row { grid-template-columns: 1fr; }
+      .admin-form { padding: 20px; }
+      .container { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="nav" style="max-width: 1200px; margin: 0 auto; padding: 0 16px;">
+      <strong>🔒 ADMIN PANEL</strong>
+      <div class="admin-nav">
+        <a href="{% url 'booking:management' %}">← Back to Dashboard</a>
+        <a href="{% url 'services:welcome' %}">View Site</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="{% url 'booking:management' %}">Dashboard</a> > Add Activity
+    </div>
+
+    <div class="admin-form">
+      <!-- Add Activity Form -->
+      <div class="form-section">
+        <h2>Add New Activity</h2>
+        
+        {% if error %}
+          <div class="alert alert-error">{{ error }}</div>
+        {% endif %}
+        
+        {% if success %}
+          <div class="alert alert-success">✓ {{ success }}</div>
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          
+          <div class="form-group">
+            <label for="name">Activity Name *</label>
+            <input type="text" id="name" name="name" placeholder="e.g., Website Development" required>
+            <small style="color: var(--muted);">Unique name for this service/activity</small>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" placeholder="Describe what this activity includes..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="duration">Duration (minutes) *</label>
+              <input type="number" id="duration" name="duration_minutes" value="30" min="15" max="480" required>
+              <small style="color: var(--muted);">Between 15 and 480 minutes</small>
+            </div>
+
+            <div class="form-group">
+              <label style="margin-bottom: 0;">Options</label>
+              <div class="checkbox-group" style="margin-top: 8px;">
+                <input type="checkbox" id="is_active" name="is_active" checked>
+                <label for="is_active" style="margin: 0;">Active</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button type="submit" class="btn-primary">✓ Create Activity</button>
+            <a href="{% url 'booking:management' %}" class="btn-secondary" style="text-decoration: none; display: inline-block;">Cancel</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Existing Activities -->
+      {% if activities %}
+        <div class="activities-list">
+          <h3>Existing Activities ({{ activities.count }})</h3>
+          {% for activity in activities %}
+            <div class="activity-item">
+              <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div>
+                  <h4>{{ activity.name }}</h4>
+                  {% if activity.description %}
+                    <p>{{ activity.description }}</p>
+                  {% endif %}
+                  <p><strong>Duration:</strong> {{ activity.duration_minutes }} minutes</p>
+                </div>
+                <span class="activity-status {% if activity.is_active %}status-active{% else %}status-inactive{% endif %}">
+                  {{ activity.is_active|yesno:"Active,Inactive" }}
+                </span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
