@@ -1,0 +1,161 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Availability Slot | Gaira Labs Admin</title>
+
+  <link rel="stylesheet" href="{% static 'css/services.css' %}">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .admin-header { background: #0f172e; color: white; padding: 16px 0; }
+    .admin-header a { color: #fff; text-decoration: none; }
+    .admin-header .nav { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto; padding: 0 16px; }
+    .admin-header strong { font-size: 1.1rem; }
+    .admin-nav { display: flex; gap: 24px; align-items: center; }
+    .admin-nav a { font-size: 0.95rem; }
+    .container { max-width: 600px; margin: 0 auto; padding: 32px 16px; }
+    .admin-form { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; }
+    .form-section h2 { margin: 0 0 24px; font-size: 1.5rem; color: var(--brass); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; }
+    .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; font-family: inherit; box-sizing: border-box; color: #333; }
+    .form-group select option { color: #333; background: white; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--brass); box-shadow: 0 0 0 3px rgba(166,135,92,0.1); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .alert { padding: 16px; border-radius: 6px; margin-bottom: 24px; }
+    .alert-success { background: #d4edda; color: #155724; }
+    .alert-error { background: #f8d7da; color: #721c24; }
+    .button-group { display: flex; gap: 12px; margin-top: 24px; }
+    .btn-primary { background: var(--brass); color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .btn-primary:hover { background: var(--brass-light); }
+    .btn-secondary { background: #e0e0e0; color: #333; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; }
+    .btn-danger { background: #e74c3c; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .btn-danger:hover { background: #c0392b; }
+  </style>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="nav">
+      <strong>🔒 ADMIN PANEL</strong>
+      <div class="admin-nav">
+        <a href="{% url 'booking:add_availability_slot' %}">← Back</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="admin-form">
+      <div class="form-section">
+        <h2>Edit Availability Slot</h2>
+        
+        {% if error %}
+          <div class="alert alert-error">{{ error }}</div>
+        {% endif %}
+        
+        {% if success %}
+          <div class="alert alert-success">✓ {{ success }}</div>
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          
+          <div class="form-group">
+            <label>Activity *</label>
+            <select name="activity" required>
+              {% for activity in activities %}
+                <option value="{{ activity.id }}" {% if activity.id == slot.activity.id %}selected{% endif %}>{{ activity.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Day of Week *</label>
+            <select name="day_of_week" required>
+              {% for value, label in days_of_week %}
+                <option value="{{ value }}" {% if value == slot.day_of_week %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Start Time *</label>
+              <input type="time" name="start_time" value="{{ slot.start_time|time:'H:i' }}" required>
+            </div>
+            <div class="form-group">
+              <label>End Time *</label>
+              <input type="time" name="end_time" value="{{ slot.end_time|time:'H:i' }}" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Max Bookings per Slot *</label>
+            <input type="number" name="max_bookings_per_slot" value="{{ slot.max_bookings_per_slot }}" min="1" max="100" required>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <input type="checkbox" name="is_active" {% if slot.is_active %}checked{% endif %}>
+              Active
+            </label>
+          </div>
+
+          <div class="button-group">
+            <button type="submit" class="btn-primary">✓ Save Changes</button>
+            <a href="{% url 'booking:add_availability_slot' %}" class="btn-secondary" style="padding: 12px 24px; text-decoration: none;">Cancel</a>
+            <button type="button" class="btn-danger" onclick="deleteSlot({{ slot.id }})">🗑 Delete</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function deleteSlot(slotId) {
+      if (!confirm('Are you sure you want to delete this availability slot?')) return;
+      
+      const formData = new FormData();
+      formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+
+      fetch(`/booking/admin/delete-availability-slot/${slotId}/`, {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+          window.location.href = '{% url "booking:add_availability_slot" %}';
+        } else {
+          alert('Error: ' + (data.error || 'Failed to delete'));
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting slot');
+      });
+    }
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  </script>
+</body>
+</html>

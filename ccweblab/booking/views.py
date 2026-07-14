@@ -386,3 +386,244 @@ def add_availability_slot(request):
         "slots": AvailabilitySlot.objects.select_related("activity").order_by("activity", "day_of_week", "start_time"),
     }
     return render(request, template_name, context)
+
+
+@login_required(login_url="admin:login")
+@user_passes_test(is_admin, login_url="admin:login")
+def edit_activity(request, activity_id):
+    """Edit an existing activity"""
+    template_name = "booking/edit_activity.html"
+    
+    try:
+        activity = Activity.objects.get(id=activity_id)
+    except Activity.DoesNotExist:
+        return redirect("booking:add_activity")
+    
+    if request.method == "POST":
+        try:
+            name = request.POST.get("name", "").strip()
+            description = request.POST.get("description", "").strip()
+            duration_minutes = request.POST.get("duration_minutes", "30")
+            is_active = request.POST.get("is_active") == "on"
+            
+            if not name:
+                return render(request, template_name, {"error": "Activity name is required", "activity": activity})
+            
+            if name != activity.name and Activity.objects.filter(name__iexact=name).exists():
+                return render(request, template_name, {"error": "Activity with this name already exists", "activity": activity})
+            
+            try:
+                duration = int(duration_minutes)
+                if duration < 15 or duration > 480:
+                    raise ValueError("Duration must be between 15 and 480 minutes")
+            except ValueError:
+                return render(request, template_name, {"error": "Invalid duration", "activity": activity})
+            
+            activity.name = name
+            activity.description = description
+            activity.duration_minutes = duration
+            activity.is_active = is_active
+            activity.save()
+            
+            return render(request, template_name, {
+                "success": f"Activity '{activity.name}' updated successfully!",
+                "activity": activity,
+            })
+        
+        except Exception as e:
+            return render(request, template_name, {"error": f"Error: {str(e)}", "activity": activity})
+    
+    context = {"activity": activity}
+    return render(request, template_name, context)
+
+
+@login_required(login_url="admin:login")
+@user_passes_test(is_admin, login_url="admin:login")
+@require_http_methods(["POST"])
+def delete_activity(request, activity_id):
+    """Delete an activity"""
+    try:
+        activity = Activity.objects.get(id=activity_id)
+        activity_name = activity.name
+        activity.delete()
+        return JsonResponse({"success": True, "message": f"Activity '{activity_name}' deleted successfully"})
+    except Activity.DoesNotExist:
+        return JsonResponse({"error": "Activity not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+@login_required(login_url="admin:login")
+@user_passes_test(is_admin, login_url="admin:login")
+def edit_availability_slot(request, slot_id):
+    """Edit an existing availability slot"""
+    template_name = "booking/edit_availability_slot.html"
+    
+    try:
+        slot = AvailabilitySlot.objects.select_related("activity").get(id=slot_id)
+    except AvailabilitySlot.DoesNotExist:
+        return redirect("booking:add_availability_slot")
+    
+    if request.method == "POST":
+        try:
+            activity_id = request.POST.get("activity")
+            day_of_week = request.POST.get("day_of_week")
+            start_time_str = request.POST.get("start_time")
+            end_time_str = request.POST.get("end_time")
+            max_bookings = request.POST.get("max_bookings_per_slot", "1")
+            is_active = request.POST.get("is_active") == "on"
+            
+            if not all([activity_id, day_of_week, start_time_str, end_time_str]):
+                return render(request, template_name, {
+                    "error": "All fields are required",
+                    "slot": slot,
+                    "activities": Activity.objects.filter(is_active=True),
+                })
+            
+            try:
+                activity = Activity.objects.get(id=activity_id)
+                day_of_week = int(day_of_week)
+                start_time = datetime.strptime(start_time_str, "%H:%M").time()
+                end_time = datetime.strptime(end_time_str, "%H:%M").time()
+                max_bookings = int(max_bookings)
+                
+                if max_bookings < 1 or max_bookings > 100:
+                    raise ValueError("Max bookings must be between 1 and 100")
+                
+                if start_time >= end_time:
+                    raise ValueError("Start time must be before end time")
+                
+            except (ValueError, Activity.DoesNotExist) as e:
+                return render(request, template_name, {
+                    "error": f"Invalid input: {str(e)}",
+                    "slot": slot,
+                    "activities": Activity.objects.filter(is_active=True),
+                })
+            
+            # Check if duplicate exists (excluding current slot)
+            if AvailabilitySlot.objects.filter(
+                activity=activity,
+                day_of_week=day_of_week,
+                start_time=start_time,
+            ).exclude(id=slot_id).exists():
+                return render(request, template_name, {
+                    "error": "This slot already exists for this activity and day",
+                    "slot": slot,
+                    "activities": Activity.objects.filter(is_active=True),
+                })
+            
+            slot.activity = activity
+            slot.day_of_week = day_of_week
+            slot.start_time = start_time
+            slot.end_time = end_time
+            slot.max_bookings_per_slot = max_bookings
+            slot.is_active = is_active
+            slot.save()
+            
+            day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+            day_name = day_names[int(day_of_week)]
+            
+            return render(request, template_name, {
+                "success": f"Availability slot for {activity.name} on {day_name} updated successfully!",
+                "slot": slot,
+                "activities": Activity.objects.filter(is_active=True),
+            })
+        
+        except Exception as e:
+            return render(request, template_name, {
+                "error": f"Error: {str(e)}",
+                "slot": slot,
+                "activities": Activity.objects.filter(is_active=True),
+            })
+    
+    context = {
+        "slot": slot,
+        "activities": Activity.objects.filter(is_active=True),
+        "days_of_week": AvailabilitySlot.DAYS_OF_WEEK,
+    }
+    return render(request, template_name, context)
+
+
+@login_required(login_url="admin:login")
+@user_passes_test(is_admin, login_url="admin:login")
+@require_http_methods(["POST"])
+def delete_availability_slot(request, slot_id):
+    """Delete an availability slot"""
+    try:
+        slot = AvailabilitySlot.objects.select_related("activity").get(id=slot_id)
+        activity_name = slot.activity.name
+        slot.delete()
+        return JsonResponse({"success": True, "message": f"Slot deleted successfully"})
+    except AvailabilitySlot.DoesNotExist:
+        return JsonResponse({"error": "Slot not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+@login_required(login_url="admin:login")
+@user_passes_test(is_admin, login_url="admin:login")
+def booking_agenda(request):
+    """Calendar/agenda view of bookings"""
+    template_name = "booking/agenda.html"
+    
+    # Get date from request or use today
+    date_str = request.GET.get("date")
+    if date_str:
+        try:
+            selected_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        except ValueError:
+            selected_date = timezone.now().date()
+    else:
+        selected_date = timezone.now().date()
+    
+    day_of_week = selected_date.weekday()
+    
+    # Get all activities
+    activities = Activity.objects.filter(is_active=True)
+    
+    # Get slots for this day
+    slots = AvailabilitySlot.objects.filter(
+        day_of_week=day_of_week,
+        is_active=True
+    ).select_related("activity").order_by("start_time")
+    
+    # Build agenda data
+    agenda = {}
+    for slot in slots:
+        if slot.activity.id not in agenda:
+            agenda[slot.activity.id] = {
+                "activity": slot.activity,
+                "slots": []
+            }
+        
+        # Get bookings for this slot
+        bookings = Booking.objects.filter(
+            activity=slot.activity,
+            booking_date=selected_date,
+            booking_time=slot.start_time,
+        ).order_by("created_at")
+        
+        slot_data = {
+            "slot": slot,
+            "bookings": list(bookings),
+            "available_spots": slot.max_bookings_per_slot - bookings.count(),
+            "is_full": bookings.count() >= slot.max_bookings_per_slot,
+        }
+        agenda[slot.activity.id]["slots"].append(slot_data)
+    
+    # Date navigation
+    prev_date = selected_date - timedelta(days=1)
+    next_date = selected_date + timedelta(days=1)
+    
+    day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    day_name = day_names[day_of_week]
+    
+    context = {
+        "selected_date": selected_date,
+        "day_name": day_name,
+        "prev_date": prev_date,
+        "next_date": next_date,
+        "agenda": agenda.values(),
+        "activities": activities,
+    }
+    return render(request, template_name, context)

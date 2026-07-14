@@ -176,6 +176,7 @@
                 <th>Time</th>
                 <th>Max Bookings</th>
                 <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -189,6 +190,9 @@
                     <span class="slot-status {% if slot.is_active %}status-active{% else %}status-inactive{% endif %}">
                       {{ slot.is_active|yesno:"Active,Inactive" }}
                     </span>
+                  </td>
+                  <td>
+                    <a href="{% url 'booking:edit_availability_slot' slot.id %}" style="color: var(--brass); text-decoration: none; font-weight: 600;">Edit</a>
                   </td>
                 </tr>
               {% endfor %}

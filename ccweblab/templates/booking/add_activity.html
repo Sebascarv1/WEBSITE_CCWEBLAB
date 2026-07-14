@@ -149,9 +149,12 @@
                   {% endif %}
                   <p><strong>Duration:</strong> {{ activity.duration_minutes }} minutes</p>
                 </div>
-                <span class="activity-status {% if activity.is_active %}status-active{% else %}status-inactive{% endif %}">
-                  {{ activity.is_active|yesno:"Active,Inactive" }}
-                </span>
+                <div style="display: flex; gap: 8px; align-items: start;">
+                  <span class="activity-status {% if activity.is_active %}status-active{% else %}status-inactive{% endif %}">
+                    {{ activity.is_active|yesno:"Active,Inactive" }}
+                  </span>
+                  <a href="{% url 'booking:edit_activity' activity.id %}" class="action-btn" style="padding: 4px 12px; margin: 0; text-decoration: none; display: inline-block;">Edit</a>
+                </div>
               </div>
             </div>
           {% endfor %}

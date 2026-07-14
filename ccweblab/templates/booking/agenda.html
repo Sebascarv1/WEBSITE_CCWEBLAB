@@ -1,0 +1,280 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Booking Agenda | Gaira Labs Admin</title>
+  <meta name="description" content="Admin booking agenda view" />
+
+  <link rel="stylesheet" href="{% static 'css/services.css' %}">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .admin-header { background: #0f172e; color: white; padding: 16px 0; }
+    .admin-header a { color: #fff; text-decoration: none; }
+    .admin-header .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 16px; }
+    .admin-header strong { font-size: 1.1rem; }
+    .admin-nav { display: flex; gap: 24px; align-items: center; }
+    .admin-nav a { font-size: 0.95rem; padding: 8px 0; border-bottom: 2px solid transparent; transition: border-color 0.2s; }
+    .admin-nav a:hover { border-bottom-color: var(--brass); }
+
+    .agenda-container { max-width: 1400px; margin: 0 auto; padding: 32px 16px; }
+    
+    .agenda-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .agenda-header h1 { margin: 0; }
+    .date-nav { display: flex; gap: 16px; align-items: center; }
+    .date-nav a, .date-nav span { padding: 8px 16px; background: var(--brass); color: white; border-radius: 6px; text-decoration: none; font-weight: 600; }
+    .date-nav span { background: #ccc; cursor: default; }
+    .date-nav a:hover { background: var(--brass-light); }
+
+    .breadcrumb { margin-bottom: 24px; }
+    .breadcrumb a { color: var(--brass); text-decoration: none; margin-right: 8px; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    .agenda { display: grid; gap: 24px; }
+    .activity-section { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .activity-section h3 { margin: 0 0 16px; color: var(--brass); font-size: 1.3rem; }
+    
+    .slots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .slot-card { border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s; }
+    .slot-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    
+    .slot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .slot-time { font-weight: 700; font-size: 1.1rem; color: #333; }
+    .slot-capacity { font-size: 0.85rem; padding: 2px 8px; border-radius: 4px; }
+    .capacity-available { background: #d4edda; color: #155724; }
+    .capacity-full { background: #f8d7da; color: #721c24; }
+    
+    .slot-bookings { font-size: 0.9rem; color: var(--muted); margin-bottom: 12px; }
+    .booking-item { background: #f9f9f9; padding: 8px; border-radius: 4px; margin-bottom: 4px; font-size: 0.85rem; }
+    .booking-name { font-weight: 600; color: #333; }
+    .booking-email { color: var(--muted); }
+    .booking-status { display: inline-block; font-size: 0.75rem; padding: 2px 6px; border-radius: 3px; margin-top: 2px; }
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-confirmed { background: #d1ecf1; color: #0c5460; }
+    .status-completed { background: #d4edda; color: #155724; }
+    .status-cancelled { background: #f8d7da; color: #721c24; }
+
+    .empty-slots { text-align: center; padding: 24px; color: var(--muted); }
+
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+    .modal.active { display: flex; }
+    .modal-content { background: white; border-radius: 8px; padding: 32px; max-width: 500px; max-height: 80vh; overflow-y: auto; }
+    .modal-close { float: right; font-size: 1.5rem; cursor: pointer; }
+    .modal-title { margin-top: 0; color: var(--brass); }
+    .modal-field { margin-bottom: 16px; }
+    .modal-field label { display: block; font-weight: 600; margin-bottom: 4px; }
+    .modal-field input, .modal-field select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; }
+    .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
+    .modal-btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+    .btn-save { background: var(--brass); color: white; }
+    .btn-save:hover { background: var(--brass-light); }
+    .btn-cancel { background: #ddd; }
+    .btn-cancel:hover { background: #ccc; }
+
+    @media (max-width: 768px) {
+      .agenda-header { flex-direction: column; gap: 16px; }
+      .slots-grid { grid-template-columns: 1fr; }
+      .date-nav { width: 100%; }
+      .date-nav a, .date-nav span { flex: 1; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="nav">
+      <strong>📅 BOOKING AGENDA</strong>
+      <div class="admin-nav">
+        <a href="{% url 'booking:management' %}">← Back to Dashboard</a>
+        <a href="{% url 'services:welcome' %}">View Site</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="agenda-container">
+    <div class="breadcrumb">
+      <a href="{% url 'booking:management' %}">Dashboard</a> > Booking Agenda
+    </div>
+
+    <!-- Date Navigation -->
+    <div class="agenda-header">
+      <div>
+        <h1>{{ day_name }}, {{ selected_date|date:"F d, Y" }}</h1>
+        <p style="color: var(--muted); margin: 4px 0 0;">View and manage bookings by time slot</p>
+      </div>
+      <div class="date-nav">
+        <a href="?date={{ prev_date|date:'Y-m-d' }}">← Prev Day</a>
+        <a href="?date={{ selected_date|date:'Y-m-d' }}">Today</a>
+        <a href="?date={{ next_date|date:'Y-m-d' }}">Next Day →</a>
+      </div>
+    </div>
+
+    <!-- Agenda by Activity -->
+    <div class="agenda">
+      {% for activity_section in agenda %}
+        <div class="activity-section">
+          <h3>{{ activity_section.activity.name }}</h3>
+          
+          {% if activity_section.slots %}
+            <div class="slots-grid">
+              {% for slot_data in activity_section.slots %}
+                <div class="slot-card" onclick="openBookingModal(this)">
+                  <div class="slot-header">
+                    <div class="slot-time">{{ slot_data.slot.start_time|time:"H:i" }}</div>
+                    <div class="slot-capacity {% if slot_data.is_full %}capacity-full{% else %}capacity-available{% endif %}">
+                      {{ slot_data.bookings|length }}/{{ slot_data.slot.max_bookings_per_slot }}
+                    </div>
+                  </div>
+
+                  {% if slot_data.bookings %}
+                    <div class="slot-bookings">
+                      {% for booking in slot_data.bookings %}
+                        <div class="booking-item">
+                          <div class="booking-name">{{ booking.full_name }}</div>
+                          <div class="booking-email">{{ booking.email }}</div>
+                          <span class="booking-status status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <div class="empty-slots">No bookings</div>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="empty-slots">No availability slots for this day</div>
+          {% endif %}
+        </div>
+      {% empty %}
+        <div class="empty-slots">
+          <p>No activities scheduled for this day.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Booking Details Modal -->
+  <div class="modal" id="bookingModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeBookingModal()">&times;</span>
+      <h2 class="modal-title" id="modalTitle">Booking Details</h2>
+      
+      <div class="modal-field">
+        <label>Name</label>
+        <input type="text" id="bookingName" readonly>
+      </div>
+
+      <div class="modal-field">
+        <label>Email</label>
+        <input type="email" id="bookingEmail" readonly>
+      </div>
+
+      <div class="modal-field">
+        <label>Phone</label>
+        <input type="text" id="bookingPhone" readonly>
+      </div>
+
+      <div class="modal-field">
+        <label>Project Details</label>
+        <textarea id="bookingDetails" readonly style="height: 80px; resize: none;"></textarea>
+      </div>
+
+      <div class="modal-field">
+        <label>Status</label>
+        <select id="bookingStatus" onchange="updateBookingStatusModal()">
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn btn-save" onclick="updateBookingStatusModal()">✓ Save Status</button>
+        <button class="modal-btn btn-cancel" onclick="closeBookingModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentBookingId = null;
+
+    function openBookingModal(element) {
+      const bookingItems = element.querySelectorAll('.booking-item');
+      if (bookingItems.length === 0) return;
+      
+      const firstBooking = bookingItems[0];
+      const name = firstBooking.querySelector('.booking-name').textContent;
+      const email = firstBooking.querySelector('.booking-email').textContent;
+      
+      // Extract booking ID from slot data - we'll need to attach it
+      // For now, show first booking details
+      document.getElementById('bookingName').value = name;
+      document.getElementById('bookingEmail').value = email;
+      document.getElementById('bookingPhone').value = '';
+      document.getElementById('bookingDetails').value = '';
+      
+      document.getElementById('bookingModal').classList.add('active');
+    }
+
+    function closeBookingModal() {
+      document.getElementById('bookingModal').classList.remove('active');
+      currentBookingId = null;
+    }
+
+    function updateBookingStatusModal() {
+      if (!currentBookingId) {
+        alert('No booking selected');
+        return;
+      }
+      
+      const newStatus = document.getElementById('bookingStatus').value;
+      const formData = new FormData();
+      formData.append('booking_id', currentBookingId);
+      formData.append('status', newStatus);
+      formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+
+      fetch('{% url "booking:update_status" %}', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Status updated successfully');
+          location.reload();
+        } else {
+          alert('Error: ' + (data.error || 'Failed to update'));
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    }
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('bookingModal').addEventListener('click', function(e) {
+      if (e.target === this) closeBookingModal();
+    });
+  </script>
+</body>
+</html>
