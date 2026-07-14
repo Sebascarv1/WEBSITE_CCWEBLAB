@@ -14,79 +14,289 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    .admin-header { background: #0f172e; color: white; padding: 16px 0; }
-    .admin-header a { color: #fff; text-decoration: none; }
-    .admin-header .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1600px; margin: 0 auto; padding: 0 16px; }
-    .admin-header strong { font-size: 1.1rem; }
-    .admin-nav { display: flex; gap: 24px; align-items: center; }
-    .admin-nav a { font-size: 0.95rem; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; }
 
-    .agenda-container { max-width: 1600px; margin: 0 auto; padding: 24px 16px; }
+    .admin-header { 
+      background: linear-gradient(135deg, #0f172e 0%, #1a2a4e 100%); 
+      color: white; 
+      padding: 20px 0; 
+      box-shadow: 0 8px 32px rgba(15, 23, 46, 0.15);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .admin-header a { color: #fff; text-decoration: none; transition: opacity 0.3s; }
+    .admin-header a:hover { opacity: 0.8; }
+    .admin-header .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1800px; margin: 0 auto; padding: 0 24px; }
+    .admin-header strong { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.5px; }
+    .admin-nav { display: flex; gap: 32px; align-items: center; }
+    .admin-nav a { font-size: 0.95rem; font-weight: 500; }
+
+    .agenda-container { max-width: 1800px; margin: 0 auto; padding: 40px 24px; }
     
-    .agenda-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .agenda-header h1 { margin: 0; font-size: 1.8rem; }
-    .week-nav { display: flex; gap: 12px; align-items: center; }
-    .week-nav a, .week-nav span { padding: 8px 16px; background: var(--brass); color: white; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-    .week-nav span { background: #ccc; cursor: default; }
-    .week-nav a:hover { background: var(--brass-light); }
-
-    .breadcrumb { margin-bottom: 16px; font-size: 0.9rem; }
-    .breadcrumb a { color: var(--brass); text-decoration: none; margin-right: 8px; }
-
-    .activity-calendar { margin-bottom: 40px; background: white; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-    .activity-title { background: #f5f5f5; padding: 16px; border-bottom: 1px solid var(--border); }
-    .activity-title h3 { margin: 0; color: var(--brass); font-size: 1.2rem; }
-
-    .calendar-wrapper { overflow-x: auto; }
-    .calendar-grid { display: grid; grid-template-columns: 70px repeat(7, 1fr); gap: 0; }
+    .agenda-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; gap: 32px; }
+    .agenda-header h1 { margin: 0 0 8px; font-size: 2.2rem; font-weight: 700; color: #0f172e; font-family: 'Playfair Display', serif; letter-spacing: -0.02em; }
+    .agenda-header p { margin: 0; color: #6b7280; font-size: 1rem; font-weight: 400; }
     
-    .time-cell { background: #f9f9f9; border: 1px solid var(--border); padding: 12px 8px; text-align: center; font-weight: 600; font-size: 0.85rem; color: #666; }
-    .day-header { background: var(--brass); color: white; border: 1px solid var(--border); padding: 12px 8px; text-align: center; font-weight: 700; font-size: 0.9rem; }
-    .day-date { display: block; font-size: 0.75rem; font-weight: 400; margin-top: 2px; opacity: 0.9; }
+    .week-nav { display: flex; gap: 12px; align-items: center; background: white; padding: 12px 16px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); }
+    .week-nav a, .week-nav span { padding: 10px 18px; background: linear-gradient(135deg, #A6875C 0%, #8b6f47 100%); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; transition: all 0.3s; }
+    .week-nav span { background: #e5e7eb; color: #9ca3af; cursor: default; }
+    .week-nav a:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(166, 135, 92, 0.3); }
 
-    .time-slot { background: white; border: 1px solid var(--border); padding: 4px; min-height: 60px; cursor: pointer; transition: background 0.2s; position: relative; }
-    .time-slot:hover { background: #fafaf9; }
+    .breadcrumb { margin-bottom: 24px; font-size: 0.9rem; }
+    .breadcrumb a { color: #A6875C; text-decoration: none; font-weight: 500; }
+    .breadcrumb a:hover { text-decoration: underline; }
 
-    .slot-content { display: flex; flex-direction: column; gap: 2px; height: 100%; }
+    .activity-calendar { 
+      margin-bottom: 0; 
+      background: white; 
+      border-radius: 16px; 
+      overflow: hidden; 
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
     
-    .booking-badge { background: var(--brass); color: white; padding: 3px 6px; border-radius: 3px; font-size: 0.7rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; display: block; }
-    .booking-badge:hover { background: var(--brass-light); }
-    .service-name { font-weight: 700; }
-    
-    .time-slot.has-bookings { background: #fffbf0; }
-    .time-slot.no-availability { background: #f5f5f5; opacity: 0.8; }
-    
-    .booking-status { display: inline-block; padding: 1px 3px; border-radius: 2px; font-size: 0.65rem; margin-top: 1px; }
-    .status-pending { background: #fff3cd; color: #856404; }
-    .status-confirmed { background: #d1ecf1; color: #0c5460; }
-    .status-completed { background: #d4edda; color: #155724; }
-    .status-cancelled { background: #f8d7da; color: #721c24; }
+    .activity-title { 
+      background: linear-gradient(135deg, #0f172e 0%, #1a2a4e 100%); 
+      padding: 24px; 
+      border-bottom: none;
+    }
+    .activity-title h3 { 
+      margin: 0; 
+      color: white; 
+      font-size: 1.3rem; 
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
 
-    .available-slot { background: #d4edda; padding: 2px 4px; border-radius: 3px; font-size: 0.7rem; font-weight: 600; text-align: center; color: #155724; }
-    .no-availability { background: #f0f0f0; padding: 2px 4px; border-radius: 3px; font-size: 0.7rem; color: #999; text-align: center; }
-    .slot-capacity { font-size: 0.65rem; color: #999; text-align: center; }
+    .calendar-wrapper { overflow-x: auto; background: white; }
+    .calendar-grid { display: grid; grid-template-columns: 80px repeat(7, 1fr); gap: 0; background: white; }
+    
+    .time-cell { 
+      background: #f9fafb; 
+      border: 1px solid #e5e7eb; 
+      padding: 16px 8px; 
+      text-align: center; 
+      font-weight: 600; 
+      font-size: 0.85rem; 
+      color: #6b7280;
+      font-family: 'Playfair Display', serif;
+    }
+    
+    .day-header { 
+      background: linear-gradient(180deg, #0f172e 0%, #1a2a4e 100%);
+      color: white; 
+      border: 1px solid #e5e7eb; 
+      padding: 16px 8px; 
+      text-align: center; 
+      font-weight: 700; 
+      font-size: 0.95rem;
+      font-family: 'Playfair Display', serif;
+    }
+    .day-date { 
+      display: block; 
+      font-size: 0.75rem; 
+      font-weight: 400; 
+      margin-top: 4px; 
+      opacity: 0.85;
+      font-family: 'Inter', sans-serif;
+    }
 
-    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+    .time-slot { 
+      background: white; 
+      border: 1px solid #e5e7eb; 
+      padding: 6px; 
+      min-height: 70px; 
+      cursor: pointer; 
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .time-slot:hover { 
+      background: #f0f9ff; 
+      border-color: #A6875C;
+      box-shadow: inset 0 0 0 1px #A6875C;
+    }
+
+    .slot-content { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 3px; 
+      height: 100%;
+      justify-content: flex-start;
+    }
+    
+    .booking-badge { 
+      background: linear-gradient(135deg, #A6875C 0%, #8b6f47 100%);
+      color: white; 
+      padding: 5px 8px; 
+      border-radius: 6px; 
+      font-size: 0.7rem; 
+      font-weight: 600; 
+      white-space: nowrap; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+      cursor: pointer; 
+      display: block;
+      transition: all 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .booking-badge:hover { 
+      background: linear-gradient(135deg, #8b6f47 0%, #6b5837 100%);
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(166, 135, 92, 0.25);
+    }
+    .service-name { font-weight: 700; letter-spacing: 0.5px; }
+    
+    .time-slot.has-bookings { background: #fafaf0; }
+    .time-slot.no-availability { background: #f9fafb; }
+    
+    .booking-status { 
+      display: inline-block; 
+      padding: 2px 6px; 
+      border-radius: 4px; 
+      font-size: 0.65rem; 
+      margin-top: 2px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-confirmed { background: #bfdbfe; color: #1e40af; }
+    .status-completed { background: #dcfce7; color: #166534; }
+    .status-cancelled { background: #fee2e2; color: #991b1b; }
+
+    .available-slot { 
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      padding: 4px 6px; 
+      border-radius: 5px; 
+      font-size: 0.7rem; 
+      font-weight: 600; 
+      text-align: center; 
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    .no-availability { 
+      background: #f3f4f6; 
+      padding: 4px 6px; 
+      border-radius: 5px; 
+      font-size: 0.7rem; 
+      color: #9ca3af;
+      text-align: center;
+      border: 1px solid #e5e7eb;
+    }
+    .slot-capacity { 
+      font-size: 0.65rem; 
+      color: #9ca3af; 
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .modal { 
+      display: none; 
+      position: fixed; 
+      inset: 0; 
+      background: rgba(0, 0, 0, 0.6); 
+      z-index: 1000; 
+      align-items: center; 
+      justify-content: center;
+      backdrop-filter: blur(2px);
+    }
     .modal.active { display: flex; }
-    .modal-content { background: white; border-radius: 8px; padding: 32px; max-width: 500px; max-height: 80vh; overflow-y: auto; color: #333; }
-    .modal-close { float: right; font-size: 1.5rem; cursor: pointer; color: #666; }
-    .modal-close:hover { color: #333; }
-    .modal-title { margin: 16px 0 0; color: var(--brass); font-size: 1.3rem; }
-    .modal-field { margin-bottom: 16px; }
-    .modal-field label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.9rem; color: #333; }
-    .modal-field input, .modal-field select, .modal-field textarea { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-family: inherit; color: #333; background: white; }
-    .modal-field textarea { resize: vertical; min-height: 60px; }
-    .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
-    .btn-save { background: var(--brass); color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
-    .btn-save:hover { background: var(--brass-light); }
-    .btn-cancel { background: #ddd; color: #333; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; }
-    .btn-cancel:hover { background: #ccc; }
+    .modal-content { 
+      background: white; 
+      border-radius: 16px; 
+      padding: 32px; 
+      max-width: 520px; 
+      max-height: 85vh; 
+      overflow-y: auto;
+      color: #333;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .modal-close { 
+      float: right; 
+      font-size: 1.8rem; 
+      cursor: pointer; 
+      color: #9ca3af;
+      transition: color 0.2s;
+      font-weight: 300;
+      line-height: 1;
+    }
+    .modal-close:hover { color: #1f2937; }
+    .modal-title { 
+      margin: 16px 0 24px; 
+      color: #0f172e; 
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+    }
+    .modal-field { margin-bottom: 18px; }
+    .modal-field label { 
+      display: block; 
+      font-weight: 600; 
+      margin-bottom: 6px; 
+      font-size: 0.9rem; 
+      color: #374151;
+      letter-spacing: 0.3px;
+    }
+    .modal-field input, .modal-field select, .modal-field textarea { 
+      width: 100%; 
+      padding: 10px 12px; 
+      border: 1px solid #d1d5db; 
+      border-radius: 8px; 
+      font-family: inherit; 
+      color: #333; 
+      background: white;
+      transition: all 0.2s;
+    }
+    .modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus { 
+      outline: none; 
+      border-color: #A6875C;
+      box-shadow: 0 0 0 3px rgba(166, 135, 92, 0.1);
+    }
+    .modal-field textarea { resize: vertical; min-height: 70px; }
+    
+    .modal-actions { 
+      display: flex; 
+      gap: 12px; 
+      margin-top: 28px;
+    }
+    .btn-save { 
+      flex: 1;
+      background: linear-gradient(135deg, #A6875C 0%, #8b6f47 100%);
+      color: white; 
+      padding: 12px 20px; 
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .btn-save:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(166, 135, 92, 0.3);
+    }
+    .btn-cancel { 
+      flex: 1;
+      background: #f3f4f6; 
+      color: #374151; 
+      padding: 12px 20px; 
+      border: 1px solid #d1d5db;
+      border-radius: 8px; 
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-cancel:hover { 
+      background: #e5e7eb;
+      border-color: #9ca3af;
+    }
 
-    .no-data { text-align: center; padding: 40px; color: var(--muted); }
+    .no-data { text-align: center; padding: 60px 40px; color: #9ca3af; }
+    .no-data p { font-size: 1.1rem; }
 
     @media (max-width: 1200px) {
-      .calendar-grid { grid-template-columns: 60px repeat(7, 1fr); font-size: 0.85rem; }
-      .time-slot { min-height: 50px; }
+      .calendar-grid { grid-template-columns: 70px repeat(7, 1fr); font-size: 0.85rem; }
+      .time-slot { min-height: 60px; }
+      .agenda-header { flex-direction: column; gap: 20px; }
     }
 
     @media (max-width: 768px) {
@@ -94,44 +304,45 @@
       .week-nav { width: 100%; }
       .week-nav a, .week-nav span { flex: 1; text-align: center; }
       .calendar-grid { grid-template-columns: 50px repeat(7, 1fr); font-size: 0.75rem; }
-      .time-slot { min-height: 40px; }
-      .booking-badge { font-size: 0.65rem; padding: 1px 2px; }
+      .time-slot { min-height: 50px; padding: 3px; }
+      .booking-badge { font-size: 0.65rem; padding: 2px 4px; }
+      .modal-content { padding: 24px; }
     }
   </style>
 </head>
 <body>
   <header class="admin-header">
     <div class="nav">
-      <strong>📅 WEEKLY CALENDAR</strong>
+      <strong>Weekly Booking Calendar</strong>
       <div class="admin-nav">
-        <a href="{% url 'booking:management' %}">← Back to Dashboard</a>
-        <a href="{% url 'services:welcome' %}">View Site</a>
+        <a href="{% url 'booking:management' %}">Back to Dashboard</a>
+        <a href="{% url 'services:welcome' %}">View Website</a>
       </div>
     </div>
   </header>
 
   <div class="agenda-container">
     <div class="breadcrumb">
-      <a href="{% url 'booking:management' %}">Dashboard</a> > Weekly Calendar
+      <a href="{% url 'booking:management' %}">Dashboard</a> / Weekly Calendar
     </div>
 
     <!-- Week Navigation -->
     <div class="agenda-header">
       <div>
-        <h1>Week of {{ week_start|date:"F d" }} - {{ week_end|date:"F d, Y" }}</h1>
-        <p style="color: var(--muted); margin: 4px 0 0;">All bookings and availability by activity, day, and hour</p>
+        <h1>Week of {{ week_start|date:"F d" }} — {{ week_end|date:"F d, Y" }}</h1>
+        <p>Master bookings and availability across all services</p>
       </div>
       <div class="week-nav">
-        <a href="?date={{ prev_week|date:'Y-m-d' }}">← Prev Week</a>
+        <a href="?date={{ prev_week|date:'Y-m-d' }}">Previous Week</a>
         <a href="?date=">This Week</a>
-        <a href="?date={{ next_week|date:'Y-m-d' }}">Next Week →</a>
+        <a href="?date={{ next_week|date:'Y-m-d' }}">Next Week</a>
       </div>
     </div>
 
     <!-- Unified Weekly Calendar - All Services Mixed -->
     <div class="activity-calendar">
       <div class="activity-title">
-        <h3>📅 Master Booking Calendar - All Services</h3>
+        <h3>Booking Calendar — All Services</h3>
       </div>
 
       <div class="calendar-wrapper">
@@ -163,7 +374,7 @@
                           <span class="booking-status status-{{ booking.status }}">{{ booking.status_display }}</span>
                         {% endfor %}
                       {% elif hour_slot.is_available %}
-                        <div class="available-slot">✓ Available</div>
+                        <div class="available-slot">Available</div>
                         <span class="slot-capacity">{{ hour_slot.activities|length }} service(s)</span>
                       {% else %}
                         <div class="no-availability">No services</div>
@@ -191,17 +402,17 @@
       </div>
 
       <div class="modal-field">
-        <label>Name</label>
+        <label>Guest Name</label>
         <input type="text" id="bookingName" readonly>
       </div>
 
       <div class="modal-field">
-        <label>Email</label>
+        <label>Email Address</label>
         <input type="email" id="bookingEmail" readonly>
       </div>
 
       <div class="modal-field">
-        <label>Phone</label>
+        <label>Phone Number</label>
         <input type="text" id="bookingPhone" readonly>
       </div>
 
@@ -221,7 +432,7 @@
       </div>
 
       <div class="modal-actions">
-        <button class="btn-save" onclick="updateBookingStatusModal()">✓ Save Status</button>
+        <button class="btn-save" onclick="updateBookingStatusModal()">Save Status</button>
         <button class="btn-cancel" onclick="closeBookingModal()">Close</button>
       </div>
     </div>
