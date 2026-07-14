@@ -1,5 +1,4 @@
 {% load static %}
-{% load custom_filters %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -124,48 +123,46 @@
     </div>
 
     <!-- Weekly Calendar for Each Activity -->
-    {% for activity_id, activity_data in calendar_data.items %}
+    {% for activity_data in calendar_data %}
       <div class="activity-calendar">
         <div class="activity-title">
-          <h3>{{ activity_data.activity.name }} ({{ activity_data.activity.duration_minutes }}min)</h3>
+          <h3>{{ activity_data.name }} ({{ activity_data.duration }}min)</h3>
         </div>
 
         <div class="calendar-wrapper">
           <div class="calendar-grid">
             <!-- Header Row -->
             <div class="time-cell"></div>
-            {% for day_offset in "0123456" %}
-              {% with activity_data.days|get_dict_key:day_offset as day_data %}
-                <div class="day-header">
-                  {{ day_data.day_name }}
-                  <span class="day-date">{{ day_data.date|date:"M d" }}</span>
-                </div>
-              {% endwith %}
+            {% for day_data in activity_data.days %}
+              <div class="day-header">
+                {{ day_data.day_name }}
+                <span class="day-date">{{ day_data.date_str }}</span>
+              </div>
             {% endfor %}
 
             <!-- Time Rows -->
             {% for hour in hours %}
               <div class="time-cell">{{ hour|stringformat:"02d" }}:00</div>
               
-              {% for day_offset in "0123456" %}
-                {% with activity_data.days|get_dict_key:day_offset as day_data %}
-                  {% with day_data.hours|get_dict_key:hour as hour_slot %}
-                    <div class="time-slot" {% if hour_slot.bookings %}onclick="openBookingModal(event, {{ hour_slot.bookings|first|get_attr:'id' }}, '{{ hour_slot.bookings|first|get_attr:'full_name'|escapejs }}', '{{ hour_slot.bookings|first|get_attr:'email'|escapejs }}', '{{ hour_slot.bookings|first|get_attr:'phone'|escapejs }}', '{{ hour_slot.bookings|first|get_attr:'project_details'|escapejs }}', '{{ hour_slot.bookings|first|get_attr:'status'|escapejs }}')"{% endif %}>
+              {% for day_data in activity_data.days %}
+                {% for hour_slot in day_data.hours %}
+                  {% if hour_slot.hour == hour %}
+                    <div class="time-slot" {% if hour_slot.bookings %}onclick="openFirstBookingModal(event, {{ hour_slot.bookings|first }})"{% endif %}>
                       <div class="slot-content">
                         {% if hour_slot.bookings %}
                           {% for booking in hour_slot.bookings %}
-                            <div class="booking-badge" title="{{ booking.full_name }} - {{ booking.email }}">
-                              {{ booking.full_name|truncatewords:1 }}
+                            <div class="booking-badge" title="{{ booking.name }} - {{ booking.email }}" onclick="openBookingModal(event, {{ booking.id }}, '{{ booking.name|escapejs }}', '{{ booking.email|escapejs }}', '{{ booking.phone|escapejs }}', '{{ booking.details|escapejs }}', '{{ booking.status }}')">
+                              {{ booking.name|truncatewords:1 }}
                             </div>
-                            <span class="booking-status status-{{ booking.status }}">{{ booking.get_status_display|truncatewords:1 }}</span>
+                            <span class="booking-status status-{{ booking.status }}">{{ booking.status_display|truncatewords:1 }}</span>
                           {% endfor %}
-                        {% elif hour_slot.slots %}
+                        {% elif hour_slot.has_slots %}
                           <div class="available-slot">✓ Available</div>
                         {% endif %}
                       </div>
                     </div>
-                  {% endwith %}
-                {% endwith %}
+                  {% endif %}
+                {% endfor %}
               {% endfor %}
             {% endfor %}
           </div>
@@ -175,7 +172,7 @@
       <div class="no-data">
         <p>No activities scheduled.</p>
       </div>
-    {% endendfor %}
+    {% endfor %}
   </div>
 
   <!-- Booking Details Modal -->
@@ -224,8 +221,13 @@
   <script>
     let currentBookingId = null;
 
-    function openBookingModal(event, bookingId, name, email, phone, details, status) {
+    function openFirstBookingModal(event, booking) {
       event.stopPropagation();
+      openBookingModal(event, booking.id, booking.name, booking.email, booking.phone, booking.details, booking.status);
+    }
+
+    function openBookingModal(event, bookingId, name, email, phone, details, status) {
+      if (event) event.stopPropagation();
       currentBookingId = bookingId;
       document.getElementById('bookingName').value = name;
       document.getElementById('bookingEmail').value = email;
