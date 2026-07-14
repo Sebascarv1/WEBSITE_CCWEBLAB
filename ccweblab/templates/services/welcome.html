@@ -28,6 +28,7 @@
         <a href="#work">PROCESS</a>
         <a href="#about">ABOUT</a>
         <a href="#contact">CONTACT</a>
+        {% if user.is_staff %}<a href="{% url 'booking:management' %}" style="color: var(--brass); font-weight: 600;">🔒 ADMIN</a>{% endif %}
       </nav>
 
       <a href="{% url 'booking:home' %}" class="btn primary btn-sm">BOOK A CALL</a>

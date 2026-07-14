@@ -1,0 +1,263 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Booking Management | Gaira Labs Admin</title>
+  <meta name="description" content="Admin booking management dashboard" />
+
+  <link rel="stylesheet" href="{% static 'css/services.css' %}">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .admin-header { background: #0f172e; color: white; padding: 16px 0; }
+    .admin-header a { color: #fff; text-decoration: none; }
+    .admin-header .nav { display: flex; justify-content: space-between; align-items: center; }
+    .admin-header strong { font-size: 1.1rem; }
+    .admin-nav { display: flex; gap: 24px; align-items: center; }
+    .admin-nav a { font-size: 0.95rem; padding: 8px 0; border-bottom: 2px solid transparent; transition: border-color 0.2s; }
+    .admin-nav a:hover { border-bottom-color: var(--brass); }
+
+    .management-container { padding: 32px 0; }
+    .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: white; border: 1px solid var(--border); padding: 20px; border-radius: var(--radius); text-align: center; }
+    .stat-number { font-size: 2rem; font-weight: 700; color: var(--brass); margin-bottom: 8px; }
+    .stat-label { font-size: 0.9rem; color: var(--muted); }
+
+    .filters { background: white; padding: 20px; border-radius: var(--radius); margin-bottom: 24px; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--muted); }
+    .form-group input,
+    .form-group select { padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; }
+    .filter-btn { background: var(--brass); color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap; }
+    .filter-btn:hover { background: var(--brass-light); }
+
+    .bookings-table { background: white; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+    .table-wrapper { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #f5f5f5; padding: 12px 16px; text-align: left; font-size: 0.85rem; font-weight: 700; border-bottom: 2px solid var(--border); }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+    tr:hover { background: #fafaf9; }
+    .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-confirmed { background: #d1ecf1; color: #0c5460; }
+    .status-completed { background: #d4edda; color: #155724; }
+    .status-cancelled { background: #f8d7da; color: #721c24; }
+
+    .status-select { padding: 4px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.9rem; }
+    .status-select:focus { outline: none; border-color: var(--brass); }
+
+    .action-btn { padding: 4px 12px; margin-right: 4px; background: var(--brass); color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+    .action-btn:hover { background: var(--brass-light); }
+
+    .empty-state { text-align: center; padding: 48px 16px; color: var(--muted); }
+    .empty-state p { font-size: 1.1rem; }
+
+    .logout-btn { background: #e74c3c; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+    .logout-btn:hover { background: #c0392b; }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .filters { grid-template-columns: 1fr; }
+      th, td { padding: 8px 12px; font-size: 0.85rem; }
+      .status-badge, .action-btn { font-size: 0.75rem; padding: 2px 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="nav" style="max-width: 1200px; margin: 0 auto; padding: 0 16px;">
+      <strong>🔒 ADMIN PANEL</strong>
+      <div class="admin-nav">
+        <span>Welcome, {{ user.get_full_name|default:user.username }}</span>
+        <a href="{% url 'admin:index' %}">Django Admin</a>
+        <a href="{% url 'services:welcome' %}">View Site</a>
+        <form method="post" action="{% url 'admin:logout' %}" style="display: inline;">
+          {% csrf_token %}
+          <button type="submit" class="logout-btn">Logout</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <main class="management-container">
+    <div class="wrap">
+      <div style="margin-bottom: 32px;">
+        <h1 style="margin-bottom: 8px;">Booking Management</h1>
+        <p style="color: var(--muted);">Manage all customer bookings and consultations</p>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.total }}</div>
+          <div class="stat-label">Total Bookings</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.pending }}</div>
+          <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.confirmed }}</div>
+          <div class="stat-label">Confirmed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.completed }}</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.cancelled }}</div>
+          <div class="stat-label">Cancelled</div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <form class="filters" method="get">
+        <div class="form-group">
+          <label for="search">Search by Name/Email</label>
+          <input type="text" id="search" name="search" placeholder="Name or email..." value="{{ search_term }}">
+        </div>
+        <div class="form-group">
+          <label for="activity">Activity</label>
+          <select id="activity" name="activity">
+            <option value="">All Activities</option>
+            {% for activity in activities %}
+              <option value="{{ activity.id }}" {% if current_activity|stringformat:"s" == activity.id|stringformat:"s" %}selected{% endif %}>{{ activity.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" name="status">
+            <option value="">All Statuses</option>
+            {% for value, label in status_choices %}
+              <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sort">Sort By</label>
+          <select id="sort" name="sort">
+            <option value="-created_at" {% if current_sort == "-created_at" %}selected{% endif %}>Newest First</option>
+            <option value="created_at" {% if current_sort == "created_at" %}selected{% endif %}>Oldest First</option>
+            <option value="booking_date" {% if current_sort == "booking_date" %}selected{% endif %}>Booking Date (Early)</option>
+            <option value="-booking_date" {% if current_sort == "-booking_date" %}selected{% endif %}>Booking Date (Late)</option>
+            <option value="full_name" {% if current_sort == "full_name" %}selected{% endif %}>Name (A-Z)</option>
+          </select>
+        </div>
+        <button type="submit" class="filter-btn">Apply Filters</button>
+      </form>
+
+      <!-- Bookings Table -->
+      {% if bookings %}
+        <div class="bookings-table">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Activity</th>
+                  <th>Booking Date</th>
+                  <th>Time</th>
+                  <th>Budget</th>
+                  <th>Status</th>
+                  <th>Created</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for booking in bookings %}
+                  <tr>
+                    <td>{{ booking.full_name }}</td>
+                    <td><a href="mailto:{{ booking.email }}" style="color: var(--brass);">{{ booking.email }}</a></td>
+                    <td>{{ booking.phone|default:"-" }}</td>
+                    <td>{{ booking.activity.name }}</td>
+                    <td>{{ booking.booking_date|date:"M d, Y" }}</td>
+                    <td>{{ booking.booking_time|time:"H:i" }}</td>
+                    <td>{{ booking.budget|default:"-" }}</td>
+                    <td>
+                      <select class="status-select" data-booking-id="{{ booking.id }}" onchange="updateBookingStatus({{ booking.id }}, this.value)">
+                        {% for value, label in status_choices %}
+                          <option value="{{ value }}" {% if booking.status == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                      </select>
+                    </td>
+                    <td>{{ booking.created_at|date:"M d, Y H:i" }}</td>
+                    <td>
+                      <button class="action-btn" onclick="viewBookingDetails({{ booking.id }})">View</button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      {% else %}
+        <div class="empty-state">
+          <p>📋 No bookings found matching your filters.</p>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+
+  <script>
+    function updateBookingStatus(bookingId, newStatus) {
+      const formData = new FormData();
+      formData.append('booking_id', bookingId);
+      formData.append('status', newStatus);
+      formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCookie('csrftoken'));
+
+      fetch('{% url "booking:update_status" %}', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log('Status updated successfully');
+          // Optional: Add a visual feedback
+        } else {
+          alert('Error: ' + (data.error || 'Failed to update status'));
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to update booking status');
+      });
+    }
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    function viewBookingDetails(bookingId) {
+      // Create a modal or navigate to detail view
+      console.log('View booking details:', bookingId);
+      // For now, just highlight the row
+      const row = event.target.closest('tr');
+      row.style.background = '#fff3cd';
+      setTimeout(() => {
+        row.style.background = '';
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

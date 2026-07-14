@@ -3,6 +3,7 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
 from datetime import datetime, timedelta
 import json
@@ -159,3 +160,95 @@ def get_available_slots(request):
         return JsonResponse({"error": "Activity not found"}, status=404)
     except ValueError:
         return JsonResponse({"error": "Invalid date format"}, status=400)
+
+
+def is_admin(user):
+    """Check if user is admin/staff"""
+    return user.is_staff or user.is_superuser
+
+
+@login_required(login_url="admin:login")
+@user_passes_test(is_admin, login_url="admin:login")
+def booking_management(request):
+    """Admin-only booking management dashboard"""
+    template_name = "booking/management.html"
+    
+    # Get filter parameters
+    status = request.GET.get("status", "")
+    activity_id = request.GET.get("activity", "")
+    sort_by = request.GET.get("sort", "-created_at")
+    search = request.GET.get("search", "")
+    
+    # Base queryset
+    bookings = Booking.objects.all()
+    
+    # Apply filters
+    if status:
+        bookings = bookings.filter(status=status)
+    
+    if activity_id:
+        bookings = bookings.filter(activity_id=activity_id)
+    
+    if search:
+        bookings = bookings.filter(full_name__icontains=search) | bookings.filter(email__icontains=search)
+    
+    # Sort
+    valid_sorts = ["-created_at", "created_at", "booking_date", "-booking_date", "full_name"]
+    if sort_by not in valid_sorts:
+        sort_by = "-created_at"
+    bookings = bookings.order_by(sort_by)
+    
+    # Get stats
+    total_bookings = Booking.objects.count()
+    pending_count = Booking.objects.filter(status="pending").count()
+    confirmed_count = Booking.objects.filter(status="confirmed").count()
+    completed_count = Booking.objects.filter(status="completed").count()
+    cancelled_count = Booking.objects.filter(status="cancelled").count()
+    
+    context = {
+        "bookings": bookings,
+        "activities": Activity.objects.filter(is_active=True),
+        "status_choices": Booking.STATUS_CHOICES,
+        "stats": {
+            "total": total_bookings,
+            "pending": pending_count,
+            "confirmed": confirmed_count,
+            "completed": completed_count,
+            "cancelled": cancelled_count,
+        },
+        "current_status": status,
+        "current_activity": activity_id,
+        "current_sort": sort_by,
+        "search_term": search,
+    }
+    
+    return render(request, template_name, context)
+
+
+@login_required(login_url="admin:login")
+@user_passes_test(is_admin, login_url="admin:login")
+@require_http_methods(["POST"])
+def update_booking_status(request):
+    """Update booking status via AJAX"""
+    try:
+        booking_id = request.POST.get("booking_id")
+        new_status = request.POST.get("status")
+        
+        if new_status not in dict(Booking.STATUS_CHOICES):
+            return JsonResponse({"error": "Invalid status"}, status=400)
+        
+        booking = Booking.objects.get(id=booking_id)
+        old_status = booking.status
+        booking.status = new_status
+        booking.save()
+        
+        return JsonResponse({
+            "success": True,
+            "booking_id": booking_id,
+            "old_status": old_status,
+            "new_status": new_status,
+        })
+    except Booking.DoesNotExist:
+        return JsonResponse({"error": "Booking not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
