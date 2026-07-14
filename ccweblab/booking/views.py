@@ -390,6 +390,8 @@ def add_availability_slot(request):
 
 @login_required(login_url="admin:login")
 @user_passes_test(is_admin, login_url="admin:login")
+@login_required(login_url="admin:login")
+@user_passes_test(is_admin, login_url="admin:login")
 def edit_activity(request, activity_id):
     """Edit an existing activity"""
     template_name = "booking/edit_activity.html"
@@ -453,6 +455,8 @@ def delete_activity(request, activity_id):
         return JsonResponse({"error": str(e)}, status=500)
 
 
+@login_required(login_url="admin:login")
+@user_passes_test(is_admin, login_url="admin:login")
 @login_required(login_url="admin:login")
 @user_passes_test(is_admin, login_url="admin:login")
 def edit_availability_slot(request, slot_id):
@@ -560,6 +564,8 @@ def delete_availability_slot(request, slot_id):
         return JsonResponse({"error": str(e)}, status=500)
 
 
+@login_required(login_url="admin:login")
+@user_passes_test(is_admin, login_url="admin:login")
 @login_required(login_url="admin:login")
 @user_passes_test(is_admin, login_url="admin:login")
 def booking_agenda(request):

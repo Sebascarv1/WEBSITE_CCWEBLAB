@@ -51,7 +51,8 @@
     .capacity-full { background: #f8d7da; color: #721c24; }
     
     .slot-bookings { font-size: 0.9rem; color: var(--muted); margin-bottom: 12px; }
-    .booking-item { background: #f9f9f9; padding: 8px; border-radius: 4px; margin-bottom: 4px; font-size: 0.85rem; }
+    .booking-item { background: #f9f9f9; padding: 8px; border-radius: 4px; margin-bottom: 4px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+    .booking-item:hover { background: #f0f0f0; }
     .booking-name { font-weight: 600; color: #333; }
     .booking-email { color: var(--muted); }
     .booking-status { display: inline-block; font-size: 0.75rem; padding: 2px 6px; border-radius: 3px; margin-top: 2px; }
@@ -123,7 +124,7 @@
           {% if activity_section.slots %}
             <div class="slots-grid">
               {% for slot_data in activity_section.slots %}
-                <div class="slot-card" onclick="openBookingModal(this)">
+                <div class="slot-card">
                   <div class="slot-header">
                     <div class="slot-time">{{ slot_data.slot.start_time|time:"H:i" }}</div>
                     <div class="slot-capacity {% if slot_data.is_full %}capacity-full{% else %}capacity-available{% endif %}">
@@ -134,7 +135,7 @@
                   {% if slot_data.bookings %}
                     <div class="slot-bookings">
                       {% for booking in slot_data.bookings %}
-                        <div class="booking-item">
+                        <div class="booking-item" onclick="openBookingModal({{ booking.id }}, '{{ booking.full_name|escapejs }}', '{{ booking.email|escapejs }}', '{{ booking.phone|escapejs }}', '{{ booking.project_details|escapejs }}', '{{ booking.status }}')">
                           <div class="booking-name">{{ booking.full_name }}</div>
                           <div class="booking-email">{{ booking.email }}</div>
                           <span class="booking-status status-{{ booking.status }}">{{ booking.get_status_display }}</span>
@@ -205,20 +206,13 @@
   <script>
     let currentBookingId = null;
 
-    function openBookingModal(element) {
-      const bookingItems = element.querySelectorAll('.booking-item');
-      if (bookingItems.length === 0) return;
-      
-      const firstBooking = bookingItems[0];
-      const name = firstBooking.querySelector('.booking-name').textContent;
-      const email = firstBooking.querySelector('.booking-email').textContent;
-      
-      // Extract booking ID from slot data - we'll need to attach it
-      // For now, show first booking details
+    function openBookingModal(bookingId, name, email, phone, details, status) {
+      currentBookingId = bookingId;
       document.getElementById('bookingName').value = name;
       document.getElementById('bookingEmail').value = email;
-      document.getElementById('bookingPhone').value = '';
-      document.getElementById('bookingDetails').value = '';
+      document.getElementById('bookingPhone').value = phone;
+      document.getElementById('bookingDetails').value = details;
+      document.getElementById('bookingStatus').value = status;
       
       document.getElementById('bookingModal').classList.add('active');
     }
