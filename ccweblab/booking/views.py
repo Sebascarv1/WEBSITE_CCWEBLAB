@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 import json
 
 from .models import Activity, AvailabilitySlot, Booking, BookingTerms
+from .emails import send_booking_confirmation_email, send_booking_admin_notification, send_booking_status_update
 
 
 class BookingHomeView(View):
@@ -93,6 +94,10 @@ class BookingHomeView(View):
                 terms_accepted=terms_accepted,
                 status="pending",
             )
+
+            # Send confirmation emails
+            send_booking_confirmation_email(booking)
+            send_booking_admin_notification(booking)
 
             return render(
                 request,
@@ -241,6 +246,10 @@ def update_booking_status(request):
         old_status = booking.status
         booking.status = new_status
         booking.save()
+        
+        # Send status update email to customer
+        if old_status != new_status:
+            send_booking_status_update(booking)
         
         return JsonResponse({
             "success": True,

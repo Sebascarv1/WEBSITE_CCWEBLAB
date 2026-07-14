@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 700px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #0f172e 0%, #1a2a4e 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0; text-align: center; }
+    .header h1 { margin: 0; font-size: 1.8rem; font-weight: 700; }
+    .content { background: #f9fafb; padding: 30px; border: 1px solid #e5e7eb; }
+    .section { margin-bottom: 24px; }
+    .section-title { font-weight: 700; color: #0f172e; margin-bottom: 12px; font-size: 1.1rem; border-bottom: 2px solid #A6875C; padding-bottom: 8px; }
+    .detail-row { display: flex; justify-content: space-between; padding: 8px 0; }
+    .detail-label { font-weight: 600; color: #6b7280; width: 140px; }
+    .detail-value { color: #0f172e; flex: 1; }
+    .cta-button { display: inline-block; background: linear-gradient(135deg, #A6875C 0%, #8b6f47 100%); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; margin-top: 16px; }
+    .footer { background: #f3f4f6; padding: 20px; text-align: center; font-size: 0.85rem; color: #6b7280; border-radius: 0 0 8px 8px; }
+    .footer p { margin: 8px 0; }
+    .alert { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; border-radius: 4px; margin: 16px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>New Booking Received</h1>
+      <p style="margin: 8px 0 0; opacity: 0.9;">Action Required: Please review and confirm</p>
+    </div>
+    
+    <div class="content">
+      <div class="alert">
+        <strong>Admin Alert:</strong> A new booking has been submitted and requires your review.
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Customer Information</div>
+        <div class="detail-row">
+          <span class="detail-label">Name:</span>
+          <span class="detail-value"><strong>{{ customer_name }}</strong></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Email:</span>
+          <span class="detail-value"><strong>{{ customer_email }}</strong></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Phone:</span>
+          <span class="detail-value">{{ customer_phone }}</span>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Booking Details</div>
+        <div class="detail-row">
+          <span class="detail-label">Service:</span>
+          <span class="detail-value"><strong>{{ activity_name }}</strong></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Date:</span>
+          <span class="detail-value"><strong>{{ booking_date }}</strong></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Time:</span>
+          <span class="detail-value"><strong>{{ booking_time }}</strong></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Budget:</span>
+          <span class="detail-value">{{ budget }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Timeline:</span>
+          <span class="detail-value">{{ timeline }}</span>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Project Details</div>
+        <p style="background: white; padding: 12px; border-radius: 6px; border-left: 4px solid #A6875C; font-style: italic;">{{ project_details }}</p>
+      </div>
+      
+      <p>Please log in to the admin dashboard to review, confirm, or decline this booking.</p>
+      
+      <a href="{{ admin_url }}" class="cta-button">Review in Admin Dashboard</a>
+    </div>
+    
+    <div class="footer">
+      <p><strong>Gaira Labs Admin System</strong></p>
+      <p>Booking Management System</p>
+    </div>
+  </div>
+</body>
+</html>

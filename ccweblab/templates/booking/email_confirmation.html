@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #0f172e 0%, #1a2a4e 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0; text-align: center; }
+    .header h1 { margin: 0; font-size: 1.8rem; font-weight: 700; }
+    .content { background: #f9fafb; padding: 30px; border: 1px solid #e5e7eb; }
+    .section { margin-bottom: 24px; }
+    .section-title { font-weight: 700; color: #0f172e; margin-bottom: 12px; font-size: 1.1rem; }
+    .booking-detail { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
+    .booking-detail-label { font-weight: 600; color: #6b7280; }
+    .booking-detail-value { color: #0f172e; }
+    .status-badge { display: inline-block; padding: 6px 12px; border-radius: 6px; font-weight: 600; font-size: 0.9rem; }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-confirmed { background: #bfdbfe; color: #1e40af; }
+    .cta-button { display: inline-block; background: linear-gradient(135deg, #A6875C 0%, #8b6f47 100%); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; margin-top: 16px; }
+    .footer { background: #f3f4f6; padding: 20px; text-align: center; font-size: 0.85rem; color: #6b7280; border-radius: 0 0 8px 8px; }
+    .footer p { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Booking Confirmed</h1>
+      <p style="margin: 8px 0 0; opacity: 0.9;">Thank you for choosing Gaira Labs</p>
+    </div>
+    
+    <div class="content">
+      <p>Hello {{ customer_name }},</p>
+      
+      <p>Thank you for your booking! We've received your request and are excited to work with you on your project.</p>
+      
+      <div class="section">
+        <div class="section-title">Your Booking Details</div>
+        <div class="booking-detail">
+          <span class="booking-detail-label">Service:</span>
+          <span class="booking-detail-value"><strong>{{ activity_name }}</strong></span>
+        </div>
+        <div class="booking-detail">
+          <span class="booking-detail-label">Date:</span>
+          <span class="booking-detail-value"><strong>{{ booking_date }}</strong></span>
+        </div>
+        <div class="booking-detail">
+          <span class="booking-detail-label">Time:</span>
+          <span class="booking-detail-value"><strong>{{ booking_time }}</strong></span>
+        </div>
+        <div class="booking-detail">
+          <span class="booking-detail-label">Status:</span>
+          <span class="booking-detail-value"><span class="status-badge status-pending">Pending Review</span></span>
+        </div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">What's Next?</div>
+        <p>Our team will review your booking and project details shortly. We'll send you a confirmation email once everything is confirmed. This typically happens within 24 hours during business days.</p>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Your Project Details</div>
+        <p style="background: white; padding: 12px; border-radius: 6px; border-left: 4px solid #A6875C; font-style: italic;">{{ project_details }}</p>
+      </div>
+      
+      <p>If you have any questions or need to make changes, please reply to this email or visit our website.</p>
+      
+      <a href="{{ website_url }}" class="cta-button">Visit Our Website</a>
+    </div>
+    
+    <div class="footer">
+      <p><strong>Gaira Labs</strong></p>
+      <p>Professional Web Engineering & Design</p>
+      <p style="margin-top: 16px; font-size: 0.8rem; color: #9ca3af;">This is an automated email. Please do not reply to confirm your booking.</p>
+    </div>
+  </div>
+</body>
+</html>
