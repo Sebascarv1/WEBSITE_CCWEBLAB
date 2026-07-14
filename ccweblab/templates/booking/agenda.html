@@ -4,8 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Booking Agenda | Gaira Labs Admin</title>
-  <meta name="description" content="Admin booking agenda view" />
+  <title>Weekly Booking Calendar | Gaira Labs Admin</title>
 
   <link rel="stylesheet" href="{% static 'css/services.css' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
@@ -17,79 +16,87 @@
   <style>
     .admin-header { background: #0f172e; color: white; padding: 16px 0; }
     .admin-header a { color: #fff; text-decoration: none; }
-    .admin-header .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 16px; }
+    .admin-header .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1600px; margin: 0 auto; padding: 0 16px; }
     .admin-header strong { font-size: 1.1rem; }
     .admin-nav { display: flex; gap: 24px; align-items: center; }
-    .admin-nav a { font-size: 0.95rem; padding: 8px 0; border-bottom: 2px solid transparent; transition: border-color 0.2s; }
-    .admin-nav a:hover { border-bottom-color: var(--brass); }
+    .admin-nav a { font-size: 0.95rem; }
 
-    .agenda-container { max-width: 1400px; margin: 0 auto; padding: 32px 16px; }
+    .agenda-container { max-width: 1600px; margin: 0 auto; padding: 24px 16px; }
     
-    .agenda-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-    .agenda-header h1 { margin: 0; }
-    .date-nav { display: flex; gap: 16px; align-items: center; }
-    .date-nav a, .date-nav span { padding: 8px 16px; background: var(--brass); color: white; border-radius: 6px; text-decoration: none; font-weight: 600; }
-    .date-nav span { background: #ccc; cursor: default; }
-    .date-nav a:hover { background: var(--brass-light); }
+    .agenda-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .agenda-header h1 { margin: 0; font-size: 1.8rem; }
+    .week-nav { display: flex; gap: 12px; align-items: center; }
+    .week-nav a, .week-nav span { padding: 8px 16px; background: var(--brass); color: white; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .week-nav span { background: #ccc; cursor: default; }
+    .week-nav a:hover { background: var(--brass-light); }
 
-    .breadcrumb { margin-bottom: 24px; }
+    .breadcrumb { margin-bottom: 16px; font-size: 0.9rem; }
     .breadcrumb a { color: var(--brass); text-decoration: none; margin-right: 8px; }
-    .breadcrumb a:hover { text-decoration: underline; }
 
-    .agenda { display: grid; gap: 24px; }
-    .activity-section { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
-    .activity-section h3 { margin: 0 0 16px; color: var(--brass); font-size: 1.3rem; }
+    .activity-calendar { margin-bottom: 40px; background: white; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .activity-title { background: #f5f5f5; padding: 16px; border-bottom: 1px solid var(--border); }
+    .activity-title h3 { margin: 0; color: var(--brass); font-size: 1.2rem; }
+
+    .calendar-wrapper { overflow-x: auto; }
+    .calendar-grid { display: grid; grid-template-columns: 70px repeat(7, 1fr); gap: 0; }
     
-    .slots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-    .slot-card { border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.3s; }
-    .slot-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .time-cell { background: #f9f9f9; border: 1px solid var(--border); padding: 12px 8px; text-align: center; font-weight: 600; font-size: 0.85rem; color: #666; }
+    .day-header { background: var(--brass); color: white; border: 1px solid var(--border); padding: 12px 8px; text-align: center; font-weight: 700; font-size: 0.9rem; }
+    .day-date { display: block; font-size: 0.75rem; font-weight: 400; margin-top: 2px; opacity: 0.9; }
+
+    .time-slot { background: white; border: 1px solid var(--border); padding: 4px; min-height: 60px; cursor: pointer; transition: background 0.2s; position: relative; }
+    .time-slot:hover { background: #fafaf9; }
+
+    .slot-content { display: flex; flex-direction: column; gap: 2px; height: 100%; }
     
-    .slot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .slot-time { font-weight: 700; font-size: 1.1rem; color: #333; }
-    .slot-capacity { font-size: 0.85rem; padding: 2px 8px; border-radius: 4px; }
-    .capacity-available { background: #d4edda; color: #155724; }
-    .capacity-full { background: #f8d7da; color: #721c24; }
+    .booking-badge { background: var(--brass); color: white; padding: 3px 6px; border-radius: 3px; font-size: 0.7rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+    .booking-badge:hover { background: var(--brass-light); }
     
-    .slot-bookings { font-size: 0.9rem; color: var(--muted); margin-bottom: 12px; }
-    .booking-item { background: #f9f9f9; padding: 8px; border-radius: 4px; margin-bottom: 4px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
-    .booking-item:hover { background: #f0f0f0; }
-    .booking-name { font-weight: 600; color: #333; }
-    .booking-email { color: var(--muted); }
-    .booking-status { display: inline-block; font-size: 0.75rem; padding: 2px 6px; border-radius: 3px; margin-top: 2px; }
+    .booking-status { display: inline-block; padding: 1px 3px; border-radius: 2px; font-size: 0.65rem; margin-top: 1px; }
     .status-pending { background: #fff3cd; color: #856404; }
     .status-confirmed { background: #d1ecf1; color: #0c5460; }
     .status-completed { background: #d4edda; color: #155724; }
     .status-cancelled { background: #f8d7da; color: #721c24; }
 
-    .empty-slots { text-align: center; padding: 24px; color: var(--muted); }
+    .available-slot { background: #d4edda; padding: 2px 4px; border-radius: 3px; font-size: 0.7rem; font-weight: 600; text-align: center; color: #155724; }
 
     .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
     .modal.active { display: flex; }
     .modal-content { background: white; border-radius: 8px; padding: 32px; max-width: 500px; max-height: 80vh; overflow-y: auto; }
-    .modal-close { float: right; font-size: 1.5rem; cursor: pointer; }
-    .modal-title { margin-top: 0; color: var(--brass); }
+    .modal-close { float: right; font-size: 1.5rem; cursor: pointer; color: #999; }
+    .modal-close:hover { color: #333; }
+    .modal-title { margin: 16px 0 0; color: var(--brass); }
     .modal-field { margin-bottom: 16px; }
-    .modal-field label { display: block; font-weight: 600; margin-bottom: 4px; }
-    .modal-field input, .modal-field select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; }
+    .modal-field label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.9rem; }
+    .modal-field input, .modal-field select, .modal-field textarea { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-family: inherit; }
+    .modal-field textarea { resize: vertical; min-height: 60px; }
     .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
-    .modal-btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
-    .btn-save { background: var(--brass); color: white; }
+    .btn-save { background: var(--brass); color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
     .btn-save:hover { background: var(--brass-light); }
-    .btn-cancel { background: #ddd; }
+    .btn-cancel { background: #ddd; color: #333; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; }
     .btn-cancel:hover { background: #ccc; }
 
+    .no-data { text-align: center; padding: 40px; color: var(--muted); }
+
+    @media (max-width: 1200px) {
+      .calendar-grid { grid-template-columns: 60px repeat(7, 1fr); font-size: 0.85rem; }
+      .time-slot { min-height: 50px; }
+    }
+
     @media (max-width: 768px) {
-      .agenda-header { flex-direction: column; gap: 16px; }
-      .slots-grid { grid-template-columns: 1fr; }
-      .date-nav { width: 100%; }
-      .date-nav a, .date-nav span { flex: 1; text-align: center; }
+      .agenda-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+      .week-nav { width: 100%; }
+      .week-nav a, .week-nav span { flex: 1; text-align: center; }
+      .calendar-grid { grid-template-columns: 50px repeat(7, 1fr); font-size: 0.75rem; }
+      .time-slot { min-height: 40px; }
+      .booking-badge { font-size: 0.65rem; padding: 1px 2px; }
     }
   </style>
 </head>
 <body>
   <header class="admin-header">
     <div class="nav">
-      <strong>📅 BOOKING AGENDA</strong>
+      <strong>📅 WEEKLY CALENDAR</strong>
       <div class="admin-nav">
         <a href="{% url 'booking:management' %}">← Back to Dashboard</a>
         <a href="{% url 'services:welcome' %}">View Site</a>
@@ -99,72 +106,82 @@
 
   <div class="agenda-container">
     <div class="breadcrumb">
-      <a href="{% url 'booking:management' %}">Dashboard</a> > Booking Agenda
+      <a href="{% url 'booking:management' %}">Dashboard</a> > Weekly Calendar
     </div>
 
-    <!-- Date Navigation -->
+    <!-- Week Navigation -->
     <div class="agenda-header">
       <div>
-        <h1>{{ day_name }}, {{ selected_date|date:"F d, Y" }}</h1>
-        <p style="color: var(--muted); margin: 4px 0 0;">View and manage bookings by time slot</p>
+        <h1>Week of {{ week_start|date:"F d" }} - {{ week_end|date:"F d, Y" }}</h1>
+        <p style="color: var(--muted); margin: 4px 0 0;">All bookings and availability by activity, day, and hour</p>
       </div>
-      <div class="date-nav">
-        <a href="?date={{ prev_date|date:'Y-m-d' }}">← Prev Day</a>
-        <a href="?date={{ selected_date|date:'Y-m-d' }}">Today</a>
-        <a href="?date={{ next_date|date:'Y-m-d' }}">Next Day →</a>
+      <div class="week-nav">
+        <a href="?date={{ prev_week|date:'Y-m-d' }}">← Prev Week</a>
+        <a href="?date=">This Week</a>
+        <a href="?date={{ next_week|date:'Y-m-d' }}">Next Week →</a>
       </div>
     </div>
 
-    <!-- Agenda by Activity -->
-    <div class="agenda">
-      {% for activity_section in agenda %}
-        <div class="activity-section">
-          <h3>{{ activity_section.activity.name }}</h3>
-          
-          {% if activity_section.slots %}
-            <div class="slots-grid">
-              {% for slot_data in activity_section.slots %}
-                <div class="slot-card">
-                  <div class="slot-header">
-                    <div class="slot-time">{{ slot_data.slot.start_time|time:"H:i" }}</div>
-                    <div class="slot-capacity {% if slot_data.is_full %}capacity-full{% else %}capacity-available{% endif %}">
-                      {{ slot_data.bookings|length }}/{{ slot_data.slot.max_bookings_per_slot }}
-                    </div>
-                  </div>
+    <!-- Weekly Calendar for Each Activity -->
+    {% for activity_id, activity_data in calendar_data.items %}
+      <div class="activity-calendar">
+        <div class="activity-title">
+          <h3>{{ activity_data.activity.name }} ({{ activity_data.activity.duration_minutes }}min)</h3>
+        </div>
 
-                  {% if slot_data.bookings %}
-                    <div class="slot-bookings">
-                      {% for booking in slot_data.bookings %}
-                        <div class="booking-item" onclick="openBookingModal({{ booking.id }}, '{{ booking.full_name|escapejs }}', '{{ booking.email|escapejs }}', '{{ booking.phone|escapejs }}', '{{ booking.project_details|escapejs }}', '{{ booking.status }}')">
-                          <div class="booking-name">{{ booking.full_name }}</div>
-                          <div class="booking-email">{{ booking.email }}</div>
-                          <span class="booking-status status-{{ booking.status }}">{{ booking.get_status_display }}</span>
-                        </div>
-                      {% endfor %}
-                    </div>
-                  {% else %}
-                    <div class="empty-slots">No bookings</div>
-                  {% endif %}
+        <div class="calendar-wrapper">
+          <div class="calendar-grid">
+            <!-- Header Row -->
+            <div class="time-cell"></div>
+            {% for day_offset in "0123456" %}
+              {% with activity_data.days|get_dict_key:day_offset as day_data %}
+                <div class="day-header">
+                  {{ day_data.day_name }}
+                  <span class="day-date">{{ day_data.date|date:"M d" }}</span>
                 </div>
+              {% endwith %}
+            {% endfor %}
+
+            <!-- Time Rows -->
+            {% for hour in hours %}
+              <div class="time-cell">{{ hour|stringformat:"02d" }}:00</div>
+              
+              {% for day_offset in "0123456" %}
+                {% with activity_data.days|get_dict_key:day_offset as day_data %}
+                  {% with day_data.hours|get_dict_key:hour as hour_slot %}
+                    <div class="time-slot" {% if hour_slot.bookings %}onclick="openBookingModal(event, {{ hour_slot.bookings|first|get_attr:'id' }}, '{{ hour_slot.bookings|first|get_attr:'full_name'|escapejs }}', '{{ hour_slot.bookings|first|get_attr:'email'|escapejs }}', '{{ hour_slot.bookings|first|get_attr:'phone'|escapejs }}', '{{ hour_slot.bookings|first|get_attr:'project_details'|escapejs }}', '{{ hour_slot.bookings|first|get_attr:'status'|escapejs }}')"{% endif %}>
+                      <div class="slot-content">
+                        {% if hour_slot.bookings %}
+                          {% for booking in hour_slot.bookings %}
+                            <div class="booking-badge" title="{{ booking.full_name }} - {{ booking.email }}">
+                              {{ booking.full_name|truncatewords:1 }}
+                            </div>
+                            <span class="booking-status status-{{ booking.status }}">{{ booking.get_status_display|truncatewords:1 }}</span>
+                          {% endfor %}
+                        {% elif hour_slot.slots %}
+                          <div class="available-slot">✓ Available</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endwith %}
+                {% endwith %}
               {% endfor %}
-            </div>
-          {% else %}
-            <div class="empty-slots">No availability slots for this day</div>
-          {% endif %}
+            {% endfor %}
+          </div>
         </div>
-      {% empty %}
-        <div class="empty-slots">
-          <p>No activities scheduled for this day.</p>
-        </div>
-      {% endfor %}
-    </div>
+      </div>
+    {% empty %}
+      <div class="no-data">
+        <p>No activities scheduled.</p>
+      </div>
+    {% endendfor %}
   </div>
 
   <!-- Booking Details Modal -->
   <div class="modal" id="bookingModal">
     <div class="modal-content">
       <span class="modal-close" onclick="closeBookingModal()">&times;</span>
-      <h2 class="modal-title" id="modalTitle">Booking Details</h2>
+      <h2 class="modal-title">Booking Details</h2>
       
       <div class="modal-field">
         <label>Name</label>
@@ -183,7 +200,7 @@
 
       <div class="modal-field">
         <label>Project Details</label>
-        <textarea id="bookingDetails" readonly style="height: 80px; resize: none;"></textarea>
+        <textarea id="bookingDetails" readonly></textarea>
       </div>
 
       <div class="modal-field">
@@ -197,8 +214,8 @@
       </div>
 
       <div class="modal-actions">
-        <button class="modal-btn btn-save" onclick="updateBookingStatusModal()">✓ Save Status</button>
-        <button class="modal-btn btn-cancel" onclick="closeBookingModal()">Cancel</button>
+        <button class="btn-save" onclick="updateBookingStatusModal()">✓ Save Status</button>
+        <button class="btn-cancel" onclick="closeBookingModal()">Close</button>
       </div>
     </div>
   </div>
@@ -206,7 +223,8 @@
   <script>
     let currentBookingId = null;
 
-    function openBookingModal(bookingId, name, email, phone, details, status) {
+    function openBookingModal(event, bookingId, name, email, phone, details, status) {
+      event.stopPropagation();
       currentBookingId = bookingId;
       document.getElementById('bookingName').value = name;
       document.getElementById('bookingEmail').value = email;
@@ -247,7 +265,10 @@
           alert('Error: ' + (data.error || 'Failed to update'));
         }
       })
-      .catch(error => console.error('Error:', error));
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating status');
+      });
     }
 
     function getCookie(name) {
@@ -270,5 +291,8 @@
       if (e.target === this) closeBookingModal();
     });
   </script>
+
+  <!-- Template filters for dict/object access -->
+  {% load custom_filters %}
 </body>
 </html>
