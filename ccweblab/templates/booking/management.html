@@ -183,6 +183,7 @@
                   <th>Time</th>
                   <th>Budget</th>
                   <th>Status</th>
+                  <th>Update</th>
                   <th>Created</th>
                   <th>Action</th>
                 </tr>
@@ -197,6 +198,9 @@
                     <td>{{ booking.booking_date|date:"M d, Y" }}</td>
                     <td>{{ booking.booking_time|time:"H:i" }}</td>
                     <td>{{ booking.budget|default:"-" }}</td>
+                    <td>
+                      <span class="status-badge status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+                    </td>
                     <td>
                       <select class="status-select" data-booking-id="{{ booking.id }}" onchange="updateBookingStatus({{ booking.id }}, this.value)">
                         {% for value, label in status_choices %}
