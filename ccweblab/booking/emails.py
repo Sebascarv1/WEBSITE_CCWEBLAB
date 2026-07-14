@@ -11,8 +11,11 @@ logger = logging.getLogger(__name__)
 
 def _send_booking_confirmation_email_async(booking):
     """Internal function to send confirmation email in background thread"""
+    logger.info(f"[EMAIL] Starting confirmation email send for booking {booking.id}")
     try:
         subject = f"Booking Confirmation — {booking.activity.name}"
+        logger.debug(f"[EMAIL] Confirmation email subject: {subject}")
+        logger.debug(f"[EMAIL] Recipient: {booking.email}")
         
         context = {
             "booking": booking,
@@ -28,7 +31,9 @@ def _send_booking_confirmation_email_async(booking):
         try:
             html_message = render_to_string("booking/email_confirmation.html", context)
             plain_message = strip_tags(html_message)
-        except:
+            logger.debug("[EMAIL] Using HTML template for confirmation email")
+        except Exception as template_error:
+            logger.warning(f"[EMAIL] Failed to render HTML template: {template_error}. Using plain text.")
             plain_message = f"""
 Hello {booking.full_name},
 
@@ -47,6 +52,7 @@ Gaira Labs Team
             """
             html_message = None
         
+        logger.info(f"[EMAIL] Sending confirmation email to {booking.email} via {settings.EMAIL_HOST}:{settings.EMAIL_PORT}")
         send_mail(
             subject=subject,
             message=plain_message,
@@ -55,21 +61,26 @@ Gaira Labs Team
             html_message=html_message,
             fail_silently=False,
         )
-        logger.info(f"Booking confirmation email sent to {booking.email}")
+        logger.info(f"[EMAIL] ✓ Booking confirmation email successfully sent to {booking.email} for booking {booking.id}")
     except Exception as e:
-        logger.error(f"Error sending booking confirmation email: {e}")
+        logger.error(f"[EMAIL] ✗ Error sending booking confirmation email for booking {booking.id}: {type(e).__name__}: {e}", exc_info=True)
 
 
 def send_booking_confirmation_email(booking):
     """Send confirmation email to customer (non-blocking)"""
+    logger.debug(f"[EMAIL] Spawning background thread for confirmation email (booking {booking.id})")
     thread = Thread(target=_send_booking_confirmation_email_async, args=(booking,), daemon=True)
     thread.start()
+    logger.debug(f"[EMAIL] Background thread started for confirmation email")
 
 
 def _send_booking_admin_notification_async(booking):
     """Internal function to send admin notification in background thread"""
+    logger.info(f"[EMAIL] Starting admin notification send for booking {booking.id}")
     try:
         subject = f"New Booking — {booking.activity.name} on {booking.booking_date}"
+        logger.debug(f"[EMAIL] Admin notification subject: {subject}")
+        logger.debug(f"[EMAIL] Admin recipient: {settings.CONTACT_TO_EMAIL}")
         
         context = {
             "booking": booking,
@@ -82,7 +93,9 @@ def _send_booking_admin_notification_async(booking):
         try:
             html_message = render_to_string("booking/email_admin_notification.html", context)
             plain_message = strip_tags(html_message)
-        except:
+            logger.debug("[EMAIL] Using HTML template for admin notification")
+        except Exception as template_error:
+            logger.warning(f"[EMAIL] Failed to render HTML template: {template_error}. Using plain text.")
             plain_message = f"""
 New Booking Received
 
@@ -96,6 +109,7 @@ Status: {booking.status}
             """
             html_message = None
         
+        logger.info(f"[EMAIL] Sending admin notification to {settings.CONTACT_TO_EMAIL} via {settings.EMAIL_HOST}:{settings.EMAIL_PORT}")
         send_mail(
             subject=subject,
             message=plain_message,
@@ -104,19 +118,22 @@ Status: {booking.status}
             html_message=html_message,
             fail_silently=False,
         )
-        logger.info(f"Admin notification sent for booking {booking.id}")
+        logger.info(f"[EMAIL] ✓ Admin notification successfully sent for booking {booking.id}")
     except Exception as e:
-        logger.error(f"Error sending admin notification: {e}")
+        logger.error(f"[EMAIL] ✗ Error sending admin notification for booking {booking.id}: {type(e).__name__}: {e}", exc_info=True)
 
 
 def send_booking_admin_notification(booking):
     """Send notification email to admin (non-blocking)"""
+    logger.debug(f"[EMAIL] Spawning background thread for admin notification (booking {booking.id})")
     thread = Thread(target=_send_booking_admin_notification_async, args=(booking,), daemon=True)
     thread.start()
+    logger.debug(f"[EMAIL] Background thread started for admin notification")
 
 
 def _send_booking_status_update_async(booking):
     """Internal function to send status update in background thread"""
+    logger.info(f"[EMAIL] Starting status update email send for booking {booking.id}")
     try:
         status_messages = {
             "pending": "Your booking is being reviewed",
@@ -127,6 +144,9 @@ def _send_booking_status_update_async(booking):
         
         subject = f"Booking Update — {booking.activity.name}"
         status_message = status_messages.get(booking.status, "Your booking has been updated")
+        logger.debug(f"[EMAIL] Status update subject: {subject}")
+        logger.debug(f"[EMAIL] Status message: {status_message}")
+        logger.debug(f"[EMAIL] Recipient: {booking.email}")
         
         context = {
             "booking": booking,
@@ -140,7 +160,9 @@ def _send_booking_status_update_async(booking):
         try:
             html_message = render_to_string("booking/email_status_update.html", context)
             plain_message = strip_tags(html_message)
-        except:
+            logger.debug("[EMAIL] Using HTML template for status update email")
+        except Exception as template_error:
+            logger.warning(f"[EMAIL] Failed to render HTML template: {template_error}. Using plain text.")
             plain_message = f"""
 Hello {booking.full_name},
 
@@ -159,6 +181,7 @@ Gaira Labs Team
             """
             html_message = None
         
+        logger.info(f"[EMAIL] Sending status update email to {booking.email} via {settings.EMAIL_HOST}:{settings.EMAIL_PORT}")
         send_mail(
             subject=subject,
             message=plain_message,
@@ -167,12 +190,14 @@ Gaira Labs Team
             html_message=html_message,
             fail_silently=False,
         )
-        logger.info(f"Status update email sent to {booking.email} for booking {booking.id}")
+        logger.info(f"[EMAIL] ✓ Status update email successfully sent to {booking.email} for booking {booking.id}")
     except Exception as e:
-        logger.error(f"Error sending status update email: {e}")
+        logger.error(f"[EMAIL] ✗ Error sending status update email for booking {booking.id}: {type(e).__name__}: {e}", exc_info=True)
 
 
 def send_booking_status_update(booking):
     """Send status update email to customer (non-blocking)"""
+    logger.debug(f"[EMAIL] Spawning background thread for status update email (booking {booking.id})")
     thread = Thread(target=_send_booking_status_update_async, args=(booking,), daemon=True)
     thread.start()
+    logger.debug(f"[EMAIL] Background thread started for status update email")
