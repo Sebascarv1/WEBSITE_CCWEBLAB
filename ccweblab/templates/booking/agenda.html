@@ -62,13 +62,13 @@
 
     .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
     .modal.active { display: flex; }
-    .modal-content { background: white; border-radius: 8px; padding: 32px; max-width: 500px; max-height: 80vh; overflow-y: auto; }
-    .modal-close { float: right; font-size: 1.5rem; cursor: pointer; color: #999; }
+    .modal-content { background: white; border-radius: 8px; padding: 32px; max-width: 500px; max-height: 80vh; overflow-y: auto; color: #333; }
+    .modal-close { float: right; font-size: 1.5rem; cursor: pointer; color: #666; }
     .modal-close:hover { color: #333; }
-    .modal-title { margin: 16px 0 0; color: var(--brass); }
+    .modal-title { margin: 16px 0 0; color: var(--brass); font-size: 1.3rem; }
     .modal-field { margin-bottom: 16px; }
-    .modal-field label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.9rem; }
-    .modal-field input, .modal-field select, .modal-field textarea { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-family: inherit; }
+    .modal-field label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.9rem; color: #333; }
+    .modal-field input, .modal-field select, .modal-field textarea { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-family: inherit; color: #333; background: white; }
     .modal-field textarea { resize: vertical; min-height: 60px; }
     .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
     .btn-save { background: var(--brass); color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
