@@ -3,10 +3,14 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.utils.html import strip_tags
+from threading import Thread
+import logging
+
+logger = logging.getLogger(__name__)
 
 
-def send_booking_confirmation_email(booking):
-    """Send confirmation email to customer after booking is created"""
+def _send_booking_confirmation_email_async(booking):
+    """Internal function to send confirmation email in background thread"""
     try:
         subject = f"Booking Confirmation — {booking.activity.name}"
         
@@ -51,14 +55,19 @@ Gaira Labs Team
             html_message=html_message,
             fail_silently=False,
         )
-        return True
+        logger.info(f"Booking confirmation email sent to {booking.email}")
     except Exception as e:
-        print(f"Error sending booking confirmation email: {e}")
-        return False
+        logger.error(f"Error sending booking confirmation email: {e}")
 
 
-def send_booking_admin_notification(booking):
-    """Send notification email to admin about new booking"""
+def send_booking_confirmation_email(booking):
+    """Send confirmation email to customer (non-blocking)"""
+    thread = Thread(target=_send_booking_confirmation_email_async, args=(booking,), daemon=True)
+    thread.start()
+
+
+def _send_booking_admin_notification_async(booking):
+    """Internal function to send admin notification in background thread"""
     try:
         subject = f"New Booking — {booking.activity.name} on {booking.booking_date}"
         
@@ -68,12 +77,6 @@ def send_booking_admin_notification(booking):
             "customer_name": booking.full_name,
             "customer_email": booking.email,
             "customer_phone": booking.phone,
-            "booking_date": booking.booking_date.strftime("%A, %B %d, %Y"),
-            "booking_time": booking.booking_time.strftime("%I:%M %p"),
-            "project_details": booking.project_details,
-            "budget": booking.budget or "Not specified",
-            "timeline": booking.timeline or "Not specified",
-            "admin_url": "https://gairalabs.com/admin/booking/booking/",
         }
         
         try:
@@ -81,25 +84,15 @@ def send_booking_admin_notification(booking):
             plain_message = strip_tags(html_message)
         except:
             plain_message = f"""
-New Booking Notification
+New Booking Received
 
 Service: {booking.activity.name}
 Customer: {booking.full_name}
 Email: {booking.email}
 Phone: {booking.phone}
-
-Date: {context['booking_date']}
-Time: {context['booking_time']}
-
-Budget: {context['budget']}
-Timeline: {context['timeline']}
-
-Project Details:
-{booking.project_details}
-
-Status: {booking.get_status_display()}
-
-Please review and confirm this booking in the admin dashboard.
+Date: {booking.booking_date}
+Time: {booking.booking_time}
+Status: {booking.status}
             """
             html_message = None
         
@@ -111,14 +104,19 @@ Please review and confirm this booking in the admin dashboard.
             html_message=html_message,
             fail_silently=False,
         )
-        return True
+        logger.info(f"Admin notification sent for booking {booking.id}")
     except Exception as e:
-        print(f"Error sending booking admin notification: {e}")
-        return False
+        logger.error(f"Error sending admin notification: {e}")
 
 
-def send_booking_status_update(booking):
-    """Send status update email to customer"""
+def send_booking_admin_notification(booking):
+    """Send notification email to admin (non-blocking)"""
+    thread = Thread(target=_send_booking_admin_notification_async, args=(booking,), daemon=True)
+    thread.start()
+
+
+def _send_booking_status_update_async(booking):
+    """Internal function to send status update in background thread"""
     try:
         status_messages = {
             "pending": "Your booking is being reviewed",
@@ -154,6 +152,8 @@ Time: {context['booking_time']}
 
 Booking Status: {booking.get_status_display()}
 
+If you have any questions, please contact us.
+
 Best regards,
 Gaira Labs Team
             """
@@ -167,7 +167,12 @@ Gaira Labs Team
             html_message=html_message,
             fail_silently=False,
         )
-        return True
+        logger.info(f"Status update email sent to {booking.email} for booking {booking.id}")
     except Exception as e:
-        print(f"Error sending status update email: {e}")
-        return False
+        logger.error(f"Error sending status update email: {e}")
+
+
+def send_booking_status_update(booking):
+    """Send status update email to customer (non-blocking)"""
+    thread = Thread(target=_send_booking_status_update_async, args=(booking,), daemon=True)
+    thread.start()
